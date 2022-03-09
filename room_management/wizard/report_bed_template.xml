@@ -23,7 +23,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr style="background-color:gray;text-align:center">
-                                <th t-if="o.reserved">اسم العميل</th>
+                                <th t-if="o.reserved">اسم النزيل</th>
                                 <th>غرفة</th>
                                 <th>سرير</th>
                                 <th t-if="o.reserved">حجز من</th>
@@ -35,7 +35,7 @@
                             <t t-foreach="o.line_ids" t-as="l">
                                 <tr style="text-align:center">
                                      <td t-if="o.reserved">
-                                        <span t-esc="l.partner_name" />
+                                        <span t-esc="l.customer_name" />
                                     </td>
                                      <td>
                                         <span t-esc="l.room_id"/>

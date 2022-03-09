@@ -29,7 +29,7 @@ class FolkBedWizard(models.TransientModel):
                 if bed_reserved_search:
                     for ex in bed_reserved_search:
                         line_ids.append((0, 0, {
-                            'partner_name': ex.partner_name.name,
+                            'customer_name': ex.customer_name.name,
                             'responsible_id': ex.responsible_id.name,
                             'bed_reserve_from': ex.bed_reserve_from,
                             'bed_reserve_to': ex.bed_reserve_to,
@@ -42,7 +42,7 @@ class FolkBedWizard(models.TransientModel):
                 # print(bed_search)
                 # for bed in bed_search:
                 not_reserved_beds = self.env['folk.rooms.accommodations'].search(
-                        [('bed_reserve_to', '<=', datetime.today())])
+                        [('bed_reserve_to', '<', datetime.today())])
                 print(not_reserved_beds)
                 if not_reserved_beds:
                     for b in not_reserved_beds:
@@ -63,7 +63,7 @@ class FolkBedWizard(models.TransientModel):
             'report_name': 'room_management.folk_bed_report',
             'report_type': 'qweb-html',
             'report_file': 'room_management.folk_bed_report',
-            'name': 'folk_clean',
+            'name': 'folk_reservation',
             'flags': {'action_buttons': True},
         }
 
@@ -72,8 +72,8 @@ class BedWizardLine(models.TransientModel):
     _name = 'alfolk.bed.report.line'
 
     wizard_id = fields.Many2one('alfolk.bed.report', ondelete='cascade')
-    # customer_name = fields.Char("Customer")
-    partner_name = fields.Char("Partner")
+    customer_name = fields.Char("Customer")
+    # partner_name = fields.Char("Partner")
     bed_reserve_from = fields.Date("Reserve From", default=datetime.today())
     bed_reserve_to = fields.Date("Reserve To", default=datetime.today())
     room_id = fields.Char("Room")

@@ -125,7 +125,7 @@
     </record>
     <menuitem id="clean_menu"
               name="Clean Menu"
-              parent="room_menu"
+              parent="room_reservation_menu"
               action="clean_action"
               sequence="40"/>
 </odoo>
