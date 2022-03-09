@@ -99,7 +99,7 @@
     </record>
     <menuitem id="floor_menu"
               name="Floor Menu"
-              parent="room_menu"
+              parent="room_reservation_menu"
               action="floors_action"
               sequence="20"/>
 </odoo>

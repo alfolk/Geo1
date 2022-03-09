@@ -12,8 +12,8 @@ class RoomsAccommodationsAlfolk(models.Model):
 
     # category_type = fields.Selection([
     #     ('resident', 'resident'), ('non', 'Non-resident')], string='Category Type')
-    partner_name = fields.Many2one('partner.category', store=True, index=True, string="partner", tracking=True,
-                                   required=True, domain="[('category_type', '=','resident')]")
+    # partner_name = fields.Many2one('partner.category', store=True, index=True, string="partner", tracking=True,
+    #                                required=True)
 
     room_id = fields.Many2one("folk.rooms", "Room", tracking=True, domain=[('status', '=', 'available')])
 

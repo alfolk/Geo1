@@ -23,7 +23,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr style="background-color:gray;text-align:center">
-                                <th t-if="o.reserved">اسم العميل</th>
+                                <th t-if="o.reserved">اسم النزيل</th>
                                 <th>غرفة</th>
                                 <th>سرير</th>
                                 <th t-if="o.reserved">حجز من</th>

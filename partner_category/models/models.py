@@ -18,8 +18,8 @@ class res_partner_category(models.Model):
 
 class res_partner_edit(models.Model):
     _inherit = 'res.partner'
-    category = fields.Many2one('partner.category', "Category",store=True)
-    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], "Gender",store=True)
+    category = fields.Many2one('partner.category', "Category", store=True)
+    gender = fields.Selection([('male', 'Male'), ('female', 'Female')], "Gender", store=True)
     father_name = fields.Char('Father Name', store=True)
     mother_name = fields.Char('Mother Name', store=True)
     date_of_birth = fields.Date('Birth Of Date', store=True)
@@ -29,10 +29,12 @@ class res_partner_edit(models.Model):
     def calculate_age(self):
         for record in self:
             if record.date_of_birth:
-                  today = date.today()
-                  record.age= today.year - self.date_of_birth.year - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+                today = date.today()
+                record.age = today.year - self.date_of_birth.year - (
+                            (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
             else:
-               return False
+                return False
+
     # @api.depends('date_of_birth')
     # def compute_age(self):
     #     for record in self:
@@ -43,3 +45,13 @@ class res_partner_edit(models.Model):
     #             record.age = False
 
     age = fields.Char('Age', store=True, compute='calculate_age')
+
+
+class sales_order(models.Model):
+    _inherit = 'sale.order'
+    category = fields.Many2one('partner.category', "Category", store=True)
+
+    @api.onchange('category')
+    def _onchange_cust_categ_id(self):
+        self.partner_id = False
+        return {'domain': {'person': [('partner_id', '=', self.category.id)]}}

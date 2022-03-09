@@ -155,10 +155,10 @@
 
         </record>
 
-        <menuitem id="room_root" name="Rooms"/>
+<!--        <menuitem id="room_root" name="Rooms"/>-->
         <menuitem id="room_menu"
                   name="Rooms Menu"
-                  parent="room_root"
+                  parent="room_reservation_menu"
                   action="rooms_action"
                   sequence="10"/>
     </data>
