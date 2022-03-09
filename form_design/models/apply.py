@@ -288,6 +288,12 @@ class FormApplyLine(models.Model):
                 elif record.matrix_answer_type == 'char':
                     record.answer = ','.join(
                         [r.name + ' ' + r.val_name for r in record.answers_ids.filtered(lambda x: x.textChar)])
+                elif record.matrix_answer_type == 'numerical_box':
+                    record.answer = ','.join(
+                        [r.name + ' ' + r.val_name for r in record.answers_ids.filtered(lambda x: x.value)])
+                else:
+                    record.answer = False
+
             else:
                 record.answer = False
 
