@@ -51,6 +51,7 @@ class alfolk_medication_chart_record(models.Model):
     _name = 'medication.planning'
     _description = 'Medication Planned'
     _rec_name = 'person'
+    category = fields.Many2one('partner.category', "Category", store=True)
 
     def unlink(self):
         for l in self:
