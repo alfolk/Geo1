@@ -102,7 +102,6 @@
                         </div>
 
                         <group>
-                            <field name="category"/>
                             <field name="person"
                                    attrs="{'readonly':[('state','in',('close','picking','receive_med'))]}"/>
                                                      <field name="warehouse"
