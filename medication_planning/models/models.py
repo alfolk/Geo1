@@ -51,7 +51,6 @@ class alfolk_medication_chart_record(models.Model):
     _name = 'medication.planning'
     _description = 'Medication Planned'
     _rec_name = 'person'
-    category = fields.Many2one('partner.category', "Category", store=True)
 
     def unlink(self):
         for l in self:
@@ -59,10 +58,6 @@ class alfolk_medication_chart_record(models.Model):
                 raise UserError(_('Cannot delete a item in post state'))
             return super(alfolk_medication_chart_record, self).unlink()
 
-    @api.onchange('category')
-    def _onchange_cust_categ_id(self):
-        self.person = False
-        return {'domain': {'person': [('category', '=', self.category.id)]}}
 
     @api.depends('line_id.quantity_re')
     def get_total_return(self):
@@ -293,22 +288,19 @@ class alfolk_medication_chart_record_line(models.Model):
         else:
             return {'domain': False}
 
-    @api.model
+    @api.onchange('medication')
     def _getline1(self):
-        employees = self.env['product.product'].search([('id', '=', self.medication.id),
+        if self.medication:
+            employees = self.env['product.product'].search([('id', '=', self.medication.id),
                                                        ])
-        t = []
-        for l in employees:
-            t.append(l.uom_id.id)
-        if t:
-            return t[0]
-        else:
-            return False
+        
+            self.product_uom_id=(employees.uom_id.id)
+            self.product_uom_ids=(employees.uom_id.id)
 
 
-    product_uom_id = fields.Many2one(related='medication.uom_id',string= 'Unit of Measure', default=_getline1,store=True)
+    product_uom_id = fields.Many2one('uom.uom',string= 'Unit of Measure', default=_getline1,store=True)
 
-    product_uom_ids = fields.Many2one(related='medication.uom_id',string= 'Unit of Measure', store=True)
+    product_uom_ids = fields.Many2one('uom.uom',string= 'Unit of Measure', store=True)
 
 
 class alfolk_medication_chart_record_day(models.Model):

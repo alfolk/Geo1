@@ -53,7 +53,7 @@
                                                     <tr>
                                                         <td class="text-left" width='200px'
                                                             style="border: 1px solid black;">
-                                                            <span t-field="o.employee_id.name"/>
+                                                            <span t-field="o.person.name"/>
 
                                                         </td>
                                                         <td class="text-left" width='200px'
