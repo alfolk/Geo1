@@ -55,7 +55,7 @@ class alfolk_medication_chart_record(models.Model):
 
     def unlink(self):
         for l in self:
-            if  l.state != 'draft':
+            if l.state != 'draft':
                 raise UserError(_('Cannot delete a item in post state'))
             return super(alfolk_medication_chart_record, self).unlink()
 
@@ -218,7 +218,7 @@ class alfolk_medication_chart_record(models.Model):
     medication_duration = fields.Char('Medicine Duration', store=True)
     line_id = fields.One2many('medication.planning.line', 'line_id')
     line_ids = fields.One2many('medication.planning.day', 'line_ids')
-    state = fields.Selection(selection=_STATES, string='Status', index=True, track_visibility='onchange', required=True,
+    state = fields.Selection(selection=_STATES, string='Status', index=True, required=True,
                              copy=False, default='draft', store=True)
 
     @api.model
@@ -297,15 +297,14 @@ class alfolk_medication_chart_record_line(models.Model):
     def _getline1(self):
         if self.medication:
             employees = self.env['product.product'].search([('id', '=', self.medication.id),
-                                                       ])
-        
-            self.product_uom_id=(employees.uom_id.id)
-            self.product_uom_ids=(employees.uom_id.id)
+                                                            ])
 
+            self.product_uom_id = (employees.uom_id.id)
+            self.product_uom_ids = (employees.uom_id.id)
 
-    product_uom_id = fields.Many2one('uom.uom',string= 'Unit of Measure', default=_getline1,store=True)
+    product_uom_id = fields.Many2one('uom.uom', string='Unit of Measure', default=_getline1, store=True)
 
-    product_uom_ids = fields.Many2one('uom.uom',string= 'Unit of Measure', store=True)
+    product_uom_ids = fields.Many2one('uom.uom', string='Unit of Measure', store=True)
 
 
 class alfolk_medication_chart_record_day(models.Model):
@@ -329,29 +328,8 @@ class alfolk_medication_chart_record_day(models.Model):
 
     product_uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=True, store=True)
 
-    @api.depends('quantity', 'line_ids', 'medication')
-    def _compute_quantity(self):
-        for line in self:
-            if line.line_ids:
-                product = self.env['medication.planning.line'].search(
-                    [('line_id', '=', line.line_ids.id), ('medication', '=', line.medication.id)])
-                if product:
-                    line.quantity_received = product.quantity_received
-                else:
-                    line.quantity_received = 0
-            if line.medication:
-                product_re = self.env['medication.planning.day'].search(
-                    [('line_ids', '=', line.line_ids.id), ('medication', '=', line.medication.id)])
-                sum = 0
-                if product_re:
-                    for r in product_re:
-                        sum += r.quantity
-                        line.quantity_re = line.quantity_received - sum
-                else:
-                    line.quantity_re = 0
-
-    quantity_received = fields.Float(string='Quantity received', compute='_compute_quantity', store=True)
-    quantity_re = fields.Float(string='Quantity re', compute='_compute_quantity', store=True)
+    quantity_received = fields.Float(string='Quantity received', store=True)
+    quantity_re = fields.Float(string='Quantity re', store=True)
     employee = fields.Many2one('hr.employee', required=True, string='Employee', store=True)
     products = fields.Many2many('product.product', string='product', store=False, related='line_ids.products', )
     is_taken = fields.Boolean(string='IS Taken?', store=True)
