@@ -200,6 +200,12 @@
                                                         </td>
                                                         <td class="text-center" width='200px'
                                                             style="border: 1px solid black;">
+                                                            <span style="font-size: 13px" t-esc="l.is_taken"
+                                                            />
+
+                                                        </td>
+                                                        <td class="text-center" width='200px'
+                                                            style="border: 1px solid black;">
                                                             <span style="font-size: 13px" t-esc="l.employee.name"
                                                             />
 
