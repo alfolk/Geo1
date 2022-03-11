@@ -326,6 +326,7 @@ class alfolk_medication_chart_record_day(models.Model):
         else:
             return {'domain': False}
 
+
     product_uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=True, store=True)
 
     quantity_received = fields.Float(string='Quantity received', store=True)
