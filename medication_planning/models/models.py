@@ -59,6 +59,10 @@ class alfolk_medication_chart_record(models.Model):
                 raise UserError(_('Cannot delete a item in post state'))
             return super(alfolk_medication_chart_record, self).unlink()
 
+    @api.onchange('category')
+    def _onchange_cust_categ_id(self):
+        self.person = False
+        return {'domain': {'person': [('category', '=', self.category.id)]}}
 
     @api.depends('line_id.quantity_re')
     def get_total_return(self):
