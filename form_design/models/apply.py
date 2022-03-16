@@ -29,7 +29,8 @@ class ApplyFormDesign(models.Model):
 
     type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Type", default='resident', store=True,
                             tracking=True)
-    answers_ids = fields.One2many('form.apply.line.matrix', 'apply_id', string='Matrix Answer', store=True, readonly=False)
+    answers_ids = fields.One2many('form.apply.line.matrix','apply_id', string='Matrix Answer',store=True)
+
     one_matrix = fields.Boolean(compute='_compute_one_matrix')
 
     def _compute_one_matrix(self):
@@ -68,6 +69,7 @@ class ApplyFormDesign(models.Model):
     @api.onchange('form_id')
     def form_change(self):
         for record in self:
+            record.apply_ids =False
             forms = record.form_id
             lines = []
             if record.state == 'draft' and not record.apply_ids and record.form_id:
@@ -207,8 +209,7 @@ class FormApplyLine(models.Model):
                 record.name = record.form_line_id.title
                 record.question_type = record.form_line_id.question_type
 
-    @api.depends('form_line_id')
-    @api.onchange('form_line_id')
+    @api.constrains('form_line_id')
     def compute_answer_lines(self):
         for record in self:
             answers = record.answers_ids
@@ -233,7 +234,7 @@ class FormApplyLine(models.Model):
                                      answers += record.answers_ids.create({
                                             'name': m.value,
                                             'val_name': c.value,
-                                            'apply_id': record.apply_id.id,
+                                         'apply_id': record.apply_id._origin.id,
 
                                          'is_required': m.is_required,
                                             'is_header': m.is_header,
@@ -256,13 +257,12 @@ class FormApplyLine(models.Model):
                                 answers += record.answers_ids.create({
                                     'name': m.value,
                                     'val_name': WeakDays[c],
-                                    'apply_id': record.apply_id.id,
+                                    'apply_id': record.apply_id._origin.id,
                                     'is_required': m.is_required,
                                     'type': record.matrix_answer_type,
 
                                 })
             record.answers_ids = answers
-
 
     user_id = fields.Many2one('res.users', string='Responsible', tracking=True, store=True)
     state = fields.Selection(related='apply_id.state', store=True)
@@ -285,8 +285,7 @@ class FormApplyLine(models.Model):
                                    store=True)
     suggested_ids = fields.Many2many('form.line.answer', string='Suggested Answer',
                                      domain="[('question_id','=',form_line_id)]")
-    answers_ids = fields.One2many('form.apply.line.matrix', 'form_line_id', string='Matrix Answer', store=True,
-                                  compute='compute_answer_lines', readonly=False)
+    answers_ids = fields.One2many('form.apply.line.matrix', 'form_line_id', string='Matrix Answer', store=True)
 
     question_type = fields.Selection([
         ('text_box', 'Multiple Lines Text Box'),
@@ -314,9 +313,7 @@ class FormApplyLine(models.Model):
         ids.sort()
         if self._origin.id in ids:
             next_index = ids.index(self._origin.id) + 1
-            print(next_index)
             if next_index < len(ids):
-                print(next_index)
 
                 return {
                     'name': _('Answers'),

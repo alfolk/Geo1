@@ -104,7 +104,7 @@
 
 
                     <field name="answers_ids" widget="x2many_2d_matrix" field_x_axis="val_name"
-                           field_y_axis="name" field_value="textChar" field_type="type" field_datetime="date_time"
+                           field_y_axis="name" field_value="textChar" field_type="type"
                            string="Answer"
                            attrs="{'invisible':[('question_type','!=','matrix')],'required':[('question_type','=','matrix')]}">
                         <tree>
