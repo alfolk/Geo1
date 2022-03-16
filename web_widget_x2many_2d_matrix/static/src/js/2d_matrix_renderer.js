@@ -179,7 +179,8 @@ odoo.define("web_widget_x2many_2d_matrix.X2Many2dMatrixRenderer", function (requ
             return _.map(
                 this.rows,
                 function (row) {
-                    row.attrs.name = this.matrix_data.field_value;
+//                    row.attrs.name = this.matrix_data.field_value;
+
                     return this._renderRow(row);
                 }.bind(this)
             );
@@ -199,13 +200,39 @@ odoo.define("web_widget_x2many_2d_matrix.X2Many2dMatrixRenderer", function (requ
             var $tr = $("<tr/>", {class: "o_data_row"}),
                 _data = _.without(row.data, undefined);
             $tr = $tr.append(this._renderLabelCell(_data[0]));
+
             var $cells = this.columns.map(
                 function (column, index) {
                     var record = row.data[index];
                     // Make the widget use our field value for each cell
-                    column.attrs.name = this.matrix_data.field_value;
-                    return this._renderBodyCell(record, column, index, {mode: ""});
+
+                     var field_value =''
+                     if (record.data.type == 'boolean')
+                {
+                   field_value ='check'
+                }
+                else if (record.data.type == 'numerical_box'){
+                         field_value ='value'
+                }
+                else if (record.data.type == 'char'){
+                         field_value ='textChar'
+                }
+                else if (record.data.type == 'date'){
+                         field_value ='date'
+                }
+                else if (record.data.type == 'datetime'){
+                         field_value ='date_time'
+                }else if (record.data.type == 'text'){
+                         field_value ='text'
+                }
+                    column.attrs.name = field_value;
+                    console.log(record.data.is_header)
+                    if (record.data.is_header == false){
+                          return this._renderBodyCell(record, column, index, {mode: ""});
+
+                    }
                 }.bind(this)
+
             );
 
             $tr = $tr.append($cells);
@@ -310,8 +337,8 @@ odoo.define("web_widget_x2many_2d_matrix.X2Many2dMatrixRenderer", function (requ
             }
 
             var $el = this._renderFieldWidget(node, record, _.pick(options, "mode"));
-             console.log($el);
-            return $td.append($el);
+            $td = $td.append($el)
+            return $td ;
         },
 
         /**

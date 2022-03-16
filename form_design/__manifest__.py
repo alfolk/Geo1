@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "form_design",
+    'name': "Form Design",
 
     'summary': """
       free create and fill forms""",
@@ -18,6 +18,7 @@
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/applyLine.xml',
         'views/apply.xml',
     ],
     'demo': [
