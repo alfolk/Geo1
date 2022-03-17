@@ -42,6 +42,7 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
             this.x_axis_clickable = this.parse_boolean(node.x_axis_clickable || "1");
             this.y_axis_clickable = this.parse_boolean(node.y_axis_clickable || "1");
             this.field_value = node.field_value || this.field_value;
+            this.field_type = node.field_type || this.field_type;
             // TODO: is this really needed? Holger?
             for (var property in node) {
                 if (property.startsWith("field_att_")) {
@@ -85,11 +86,33 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
             this.by_y_axis = {};
             this.x_axis = [];
             this.y_axis = [];
+            this.y_type_axis = [];
             _.each(
                 records,
                 function (record) {
+                if (record.data[this.field_type] == 'boolean')
+                {
+                   this.field_value ='check'
+                }
+                else if (record.data[this.field_type] == 'numerical_box'){
+                         this.field_value ='value'
+                }
+                else if (record.data[this.field_type] == 'char'){
+                         this.field_value ='textChar'
+                }
+                else if (record.data[this.field_type] == 'date'){
+                         this.field_value ='date'
+                }
+                else if (record.data[this.field_type] == 'datetime'){
+                         this.field_value ='date_time'
+                }else if (record.data[this.field_type] == 'text'){
+                         this.field_value ='text'
+                }
+                  console.log(record.data[this.field_type]);
+
                     var x = record.data[this.field_x_axis],
                         y = record.data[this.field_y_axis];
+                    var    type =record.data[this.field_type] ;
                     if (x.type === "record") {
                         // We have a related record
                         x = x.data.display_name;
@@ -124,6 +147,7 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
                 }.bind(this)
             );
             this.matrix_data = {
+                field_type: this.field_type,
                 field_value: this.field_value,
                 field_x_axis: this.field_x_axis,
                 field_y_axis: this.field_y_axis,
@@ -141,6 +165,7 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
          * @returns {Object}
          */
         _make_column: function (x) {
+        console.log(x);
             return {
                 // Simulate node parsed on xml arch
                 tag: "field",
@@ -164,12 +189,14 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
                 tag: "field",
                 attrs: {
                     name: this.field_y_axis,
-                    string: y,
+                    string: y.value,
                 },
                 data: [],
             };
             _.each(self.x_axis, function (x) {
                 row.data.push(self.by_y_axis[y][x]);
+                var record = self.by_y_axis[y][x]
+                row.attrs.name =record.data.type;
             });
             return row;
         },

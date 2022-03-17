@@ -159,6 +159,7 @@ msgstr "الاجابة"
 msgid "Question"
 msgstr "السؤال"
 
+
 #. module: form_design
 #: model_terms:ir.ui.view,arch_db:form_design.form_apply_line_form_view
 #: model:ir.model.fields,field_description:form_design.field_form_apply_line__note
@@ -180,6 +181,11 @@ msgstr "تسجيل"
 #: model_terms:ir.ui.view,arch_db:form_design.form_apply_form_view
 msgid "Set Close"
 msgstr "غلق"
+
+#. module: form_design
+#: model_terms:ir.ui.view,arch_db:form_design.form_apply_form_view
+msgid "Reset to Draft"
+msgstr "أعادة فتح"
 
 
 #. module: form_design
@@ -225,3 +231,4 @@ msgstr "عناصر ملء إستمارة"
 #: model:ir.ui.menu,name:form_design.form_design_menu_root
 msgid "Form Design"
 msgstr "تصميم الإستمارات"
+

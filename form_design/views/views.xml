@@ -19,8 +19,9 @@
                         </div>
                         <group>
                             <group>
+                               <field name="category" force_save="1"/>
+
                                 <field name="res_id"/>
-                            <field name="category" force_save="1"/>
                             </group>
                             <group>
                                 <field name="allow_add"/>
@@ -117,6 +118,9 @@
                             <separator/>
                         </div>
                         <group>
+                            <group>
+                              <field name="user_id" />
+                            </group>
                             <field name="question_type" widget="radio"/>
                             <group attrs="{'invisible': [('question_type', 'not in', ['simple_choice', 'multiple_choice', 'matrix'])]}">
 
@@ -124,6 +128,9 @@
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <field name="value" string="Choices"/>
+                                        <field name="is_required" attrs="{'column_invisible': [('parent.question_type','!=', 'matrix')]}"/>
+                                        <field name="is_header" attrs="{'column_invisible': [('parent.question_type','!=', 'matrix')]}"/>
+
                                     </tree>
                                 </field>
                             </group>
@@ -141,6 +148,9 @@
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <field name="value" string="Choices"/>
+                                        <field name="type" string="Column Type" attrs="{'column_invisible': [('parent.matrix_answer_type','!=', 'multi')],
+                                        'required': [('parent.matrix_answer_type','=', 'multi')]}"/>
+
                                     </tree>
                                 </field>
                             </group>

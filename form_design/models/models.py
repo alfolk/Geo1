@@ -1,7 +1,6 @@
 from odoo import models, fields, _
 
-
-WeakDays = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+WeakDays = ['السبت', 'الاحد', 'الاثنين', 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعه']
 
 
 class FormDesign(models.Model):
@@ -12,11 +11,17 @@ class FormDesign(models.Model):
     def compute_form_fill_in(self):
         for record in self:
             record.fill_count = len(record.form_ids)
-    category = fields.Many2one('partner.category','Partner Category', store=True)
+
+    category = fields.Many2one('partner.category', 'Partner Category', store=True)
     name = fields.Char('Form Title', required=True, translate=True, tracking=True, store=True, index=True, )
     color = fields.Integer('Color Index', default=0)
     fill_count = fields.Integer('Form Fill In count', default=0, compute='compute_form_fill_in')
-    form_ids = fields.One2many('form.apply', 'form_id', 'Form Fill In')
+    form_ids = fields.Many2many('form.apply', compute='compute_form_ids',string= 'Form Fill In')
+
+    def compute_form_ids(self):
+        for record in self:
+            record.form_ids = record.form_ids.search([('form_id','=',record.ids)])
+
     description = fields.Html(
         "Description", sanitize=False, translate=True, tracking=True, store=True, index=True, )
     description_done = fields.Html(
@@ -30,13 +35,25 @@ class FormDesign(models.Model):
 
     def view_form_fill_in(self):
         return {
-            'name': _(f'Filled out forms of {self.name}'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'form.apply',
-            'view_mode': 'tree,form',
-            'domain': [('id', 'in', self.form_ids.ids)],
-            'context': "{'default_form_id': " + str(self._origin.id) + "}",
-        }
+                'name': _(f'Filled out forms of {self.name}'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'form.apply',
+                'view_mode': 'tree,form',
+                'domain': [('form_id', '=', self._origin.id)],
+                'context': "{'default_form_id': " + str(self._origin.id) + "}",
+            }
+
+    def view_form_fill_out_line(self):
+        id = self.env.context.get('apply_id')
+        if id:
+            return {
+                'name': _(f'Filled out forms of {self.name}'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'form.apply.line',
+                'view_mode': 'tree,form',
+                'domain': [('apply_id', '=', id),('form_id', '=', self._origin.id)],
+                # 'context': "{'default_form_id': " + str(self._origin.id) + "}",
+            }
 
     def form_fill_in(self):
         lines = []
@@ -74,6 +91,7 @@ class FormDesignLine(models.Model):
              "question or to illustrate it with pictures or a video")
 
     form_id = fields.Many2one('form.design', string='Form', ondelete='cascade', tracking=True, store=True, index=True)
+    user_id = fields.Many2one('res.users', string='Responsible', tracking=True, store=True)
     sequence = fields.Integer('Sequence', default=10, tracking=True, store=True, index=True)
     question_type = fields.Selection([
         ('date', 'Date'),
@@ -100,7 +118,8 @@ class FormDesignLine(models.Model):
                                            ('boolean', 'CheckBox'),
                                            ('numerical_box', 'Numerical Value'),
                                            ('char', 'Single Line Text Box'),
-                                           ('text', 'Multiple Lines Text Box')], string='Matrix Answer Type',
+                                           ('text', 'Multiple Lines Text Box'),
+                                           ('multi', 'Multiple Types')], string='Matrix Answer Type',
                                           default='boolean', store=True)
     matrix_answer_ids = fields.One2many('form.line.answer', 'matrix_question_id', 'Answers', copy=True)
     matrix_coltype = fields.Selection([
@@ -120,4 +139,13 @@ class SurveyQuestionAnswer(models.Model):
     matrix_question_id = fields.Many2one('form.design.line', string='Question (as matrix row)', ondelete='cascade')
     sequence = fields.Integer('Label Sequence order', default=10)
     value = fields.Char('Suggested value', translate=True, required=True)
+    type = fields.Selection([('date', 'Date'),
+                             ('datetime', 'DateTime'),
+                             ('boolean', 'CheckBox'),
+                             ('numerical_box', 'Numerical Value'),
+                             ('char', 'Single Line Text Box'),
+                             ('text', 'Multiple Lines Text Box')], string='Matrix Answer Type',
+                            default='boolean', store=True)
     is_correct = fields.Boolean('Is a correct answer')
+    is_required = fields.Boolean('Is a Required')
+    is_header = fields.Boolean('Is a Header')
