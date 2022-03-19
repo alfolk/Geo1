@@ -13,7 +13,8 @@ class Partner(models.Model):
                                                      ('date', '=', fields.date.today())])
             ids = exist.ids
             if not exist:
-                forms = record.env['form.design'].search([('type', '=', 'medical'), '|', ('category', '=', record.category.id), ('category', '=', False)])
+                forms = record.env['form.design'].search(
+                    [('type', '=', 'medical'), '|', ('category', '=', record.category.id), ('category', '=', False)])
                 for form in forms:
                     lines = []
                     for line in form.question_ids:
@@ -50,7 +51,8 @@ class Partner(models.Model):
                                                      ('date', '=', fields.date.today())])
             ids = exist.ids
             if not exist:
-                forms = record.env['form.design'].search([('type', '=', 'physical'), '|', ('category', '=', record.category.id), ('category', '=', False)])
+                forms = record.env['form.design'].search(
+                    [('type', '=', 'physical'), '|', ('category', '=', record.category.id), ('category', '=', False)])
                 for form in forms:
                     lines = []
                     for line in form.question_ids:
@@ -126,7 +128,8 @@ class Partner(models.Model):
             ids = exist.ids
             if not exist:
                 forms = record.env['form.design'].search(
-                    [('type', '=', 'achievement'), '|', ('category', '=', record.category.id), ('category', '=', False)])
+                    [('type', '=', 'achievement'), '|', ('category', '=', record.category.id),
+                     ('category', '=', False)])
                 for form in forms:
                     lines = []
                     for line in form.question_ids:
@@ -155,3 +158,12 @@ class Partner(models.Model):
                 'domain': [('id', 'in', ids)],
                 'context': "{'default_partner_id': " + str(self._origin.id) + "}",
             }
+
+    is_student = fields.Boolean('_compute_is_student')
+
+    def _compute_is_student(self):
+        for record in self:
+            if record.category.category_type:
+                record.is_student = True
+            else:
+                record.is_student = False
