@@ -12,15 +12,20 @@ class FormDesign(models.Model):
         for record in self:
             record.fill_count = len(record.form_ids)
 
+    type = fields.Selection([('medical', 'Medical File'),
+                             ('physical', 'Physical Measurements'),
+                             ('nutrition', 'Therapeutic Nutrition'),
+                             ('achievement', 'Achievement Rate')
+                             ], string='Form Type', store=True, index=True, required=1, tracking=True)
     category = fields.Many2one('partner.category', 'Partner Category', store=True)
     name = fields.Char('Form Title', required=True, translate=True, tracking=True, store=True, index=True, )
     color = fields.Integer('Color Index', default=0)
     fill_count = fields.Integer('Form Fill In count', default=0, compute='compute_form_fill_in')
-    form_ids = fields.Many2many('form.apply', compute='compute_form_ids',string= 'Form Fill In')
+    form_ids = fields.Many2many('form.apply', compute='compute_form_ids', string='Form Fill In')
 
     def compute_form_ids(self):
         for record in self:
-            record.form_ids = record.form_ids.search([('form_id','=',record.ids)])
+            record.form_ids = record.form_ids.search([('form_id', '=', record.ids)])
 
     description = fields.Html(
         "Description", sanitize=False, translate=True, tracking=True, store=True, index=True, )
@@ -35,13 +40,13 @@ class FormDesign(models.Model):
 
     def view_form_fill_in(self):
         return {
-                'name': _(f'Filled out forms of {self.name}'),
-                'type': 'ir.actions.act_window',
-                'res_model': 'form.apply',
-                'view_mode': 'tree,form',
-                'domain': [('form_id', '=', self._origin.id)],
-                'context': "{'default_form_id': " + str(self._origin.id) + "}",
-            }
+            'name': _(f'Filled out forms of {self.name}'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'form.apply',
+            'view_mode': 'tree,form',
+            'domain': [('form_id', '=', self._origin.id)],
+            'context': "{'default_form_id': " + str(self._origin.id) + "}",
+        }
 
     def view_form_fill_out_line(self):
         id = self.env.context.get('apply_id')
@@ -51,7 +56,7 @@ class FormDesign(models.Model):
                 'type': 'ir.actions.act_window',
                 'res_model': 'form.apply.line',
                 'view_mode': 'tree,form',
-                'domain': [('apply_id', '=', id),('form_id', '=', self._origin.id)],
+                'domain': [('apply_id', '=', id), ('form_id', '=', self._origin.id)],
                 # 'context': "{'default_form_id': " + str(self._origin.id) + "}",
             }
 
