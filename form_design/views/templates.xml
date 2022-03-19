@@ -61,7 +61,7 @@
                                     <t t-foreach="l.get_field_row()" t-as="answer">
                                         <tr>
                                             <th>
-                                                <span t-esc="answer"/>
+                                                <span t-esc="answer.value"/>
                                             </th>
                                             <t t-foreach="l.get_field_col()" t-as="col">
                                                 <th>
@@ -172,7 +172,7 @@
             <field name="report_name">form_design.report_form_apply_line</field>
             <field name="report_file">form_design.report_form_apply_line</field>
             <field name="print_report_name">'Form - %s - %s - %s' % (object.form_id.name, object.form_line_id.title,
-                object.partner_id.name)
+                object.apply_id.partner_id.name)
             </field>
             <field name="binding_model_id" ref="model_form_apply_line"/>
             <field name="binding_type">report</field>
