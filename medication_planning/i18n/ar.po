@@ -10,6 +10,15 @@ msgid "Person"
 msgstr "اسم الشخص"
 
 #. module: medication_planning
+#: model:ir.model.fields,field_description:medication_planning.field_medication_planning__category
+msgid "Category"
+msgstr "التصنيف"
+#. module: medication_planning
+#: model:ir.model.fields,field_description:medication_planning.field_medication_planning__med_type
+msgid "Med Type"
+msgstr "نوع المرض"
+
+#. module: medication_planning
 #: model:ir.model.fields,field_description:medication_planning.field_product_template__pro_type
 msgid "Medicine Type"
 msgstr "نوع الدواء"
@@ -41,6 +50,36 @@ msgstr " اسم العلاج"
 #: model:ir.model.fields,field_description:medication_planning.field_medication_planning_day__quantity
 msgid "Quantity"
 msgstr "الكمية المطلوبة"
+
+#. module: medication_planning
+#: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__no_days
+msgid "Qty Returned"
+msgstr "عدد اﻷيام"
+
+#. module: medication_planning
+#: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__quantity_returned
+msgid "No Days"
+msgstr "الكميةالمرتجعة"
+
+#. module: medication_planning
+#: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__qty
+msgid "Qty"
+msgstr "الكمية"
+
+#. module: medication_planning
+#: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__unit
+msgid "Unit"
+msgstr "الوحدة"
+
+#. module: medication_planning
+#: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__number
+msgid "Times"
+msgstr "عدد المرات"
+
+#. module: medication_planning
+#: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__day
+msgid "Start Date Time"
+msgstr "بداية تلقي العلاج"
 
 #. module: medication_planning
 #: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__quantity_returned
@@ -80,9 +119,22 @@ msgid "Close"
 msgstr "المنتهية"
 
 #. module: medication_planning
+#: model:ir.model.fields.selection,name:medication_planning.selection__medication_planning__med_type__accidental
+msgid "Accidental"
+msgstr "عرضى"
+#. module: medication_planning
+#: model:ir.model.fields.selection,name:medication_planning.selection__medication_planning__med_type__chronic
+msgid "Chronic"
+msgstr "مزمن"
+
+#. module: medication_planning
 #: model:ir.model.fields.selection,name:medication_planning.selection__medication_planning__state__draft
 msgid "Draft"
 msgstr "جديد"
+#. module: medication_planning
+#: model:ir.model.fields.selection,name:medication_planning.selection__medication_planning__state__record_date
+msgid "Record Date Times"
+msgstr "تسجيل مواعيد الدواء"
 
 #. module: medication_planning
 #: model:ir.model.fields.selection,name:medication_planning.selection__medication_planning__state__picking
@@ -119,6 +171,11 @@ msgstr "التاريخ والساعة"
 #: model:ir.model.fields,field_description:medication_planning.field_medication_planning_day__employee
 msgid "Employee"
 msgstr "المشرف"
+
+#. module: medication_planning
+#: model:ir.model.fields,field_description:medication_planning.field_medication_planning_day__is_taken
+msgid "IS Taken?"
+msgstr "هل تم اخذ العلاج"
 
 
 #. module: medication_planning
