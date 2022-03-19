@@ -170,7 +170,13 @@ msgstr "ملاحظات"
 #: model_terms:ir.ui.view,arch_db:form_design.form_apply_line_form_view
 #: model:ir.model.fields,field_description:form_design.field_form_apply_line__employee_id
 msgid "Responsible Employee"
-msgstr "المسؤول"
+msgstr "المسئول"
+
+#. module: form_design
+#: model:ir.model.fields,field_description:form_design.field_form_apply_type
+#: model:ir.model.fields,field_description:form_design.field_form_design_type
+msgid "Form Type"
+msgstr "نوع اﻹستمارة"
 
 #. module: form_design
 #: model_terms:ir.ui.view,arch_db:form_design.form_apply_form_view

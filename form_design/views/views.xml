@@ -20,10 +20,12 @@
                         <group>
                             <group>
                                <field name="category" force_save="1"/>
+                               <field name="assign_type" attrs="{'invisible':[('type','!=','achievement')],'required':[('type','=','achievement')]}" force_save="1"/>
+                               <field name="task_type" attrs="{'invisible':[('assign_type','!=','resident')],'required':[('assign_type','=','resident')]}" force_save="1"/>
 
-                                <field name="res_id"/>
                             </group>
                             <group>
+                                <field name="res_id"/>
                                 <field name="type"/>
                                 <field name="allow_add"/>
                             </group>

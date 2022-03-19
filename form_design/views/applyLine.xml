@@ -115,6 +115,7 @@
                             <field name="date_time"/>
                             <field name="text"/>
                             <field name="is_header"/>
+                            <field name="matrix_id" force_save="1"/>
                             <field name="value"/>
                             <field name="date"/>
                             <field name="textChar"  attrs="{'required':[('is_required','=',True)]}" />
