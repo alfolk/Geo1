@@ -5,27 +5,27 @@
        <field name="model">res.partner</field>
        <field name="inherit_id" ref="base.view_partner_form"/>
        <field name="arch" type="xml">
-
                   <div name="button_box" position="inside">
-                        <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_medical_form" icon="fa-user-md"
+                        <field name="is_student" invisible="1" />
+                        <button class="oe_stat_button o_res_partner_tip_opp" attrs="{'invisible':[('is_student','=',False)]}" type="object" name="open_medical_form" icon="fa-user-md"
                          context="{'default_partner_id': active_id}">
                             Medical File
                         </button>
                     </div>
            <div name="button_box" position="inside">
-                        <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_physical_measurements" icon="fa-universal-access"
+                        <button class="oe_stat_button o_res_partner_tip_opp" type="object" attrs="{'invisible':[('is_student','=',False)]}" name="open_physical_measurements" icon="fa-universal-access"
                          context="{'default_partner_id': active_id}">
                           Measurements
                         </button>
                     </div>
            <div name="button_box" position="inside">
-                        <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_nutrition" icon="fa-envira"
+                        <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_nutrition" attrs="{'invisible':[('is_student','=',False)]}" icon="fa-envira"
                          context="{'default_partner_id': active_id}">
                             Nutrition
                         </button>
                     </div>
            <div name="button_box" position="inside">
-                        <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_rate" icon="fa-trophy"
+                        <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_rate" attrs="{'invisible':[('is_student','=',False)]}" icon="fa-trophy"
                          context="{'default_partner_id': active_id}">
                           Achievement
                         </button>
@@ -33,5 +33,17 @@
 
        </field>
    </record>
+     <!-- Inherit Form View to Modify it -->
+<!--     <record id="res_partner_view_purchase_account_buttons" model="ir.ui.view">-->
+<!--         <field name="name">res.partner</field>-->
+<!--         <field name="model">res.partner</field>-->
+<!--         <field name="inherit_id" ref="purchase.res_partner_view_purchase_account_buttons"/>-->
+<!--         <field name="arch" type="xml">-->
 
+<!--             <xpath expr="//button[@name='%(purchase.act_res_partner_2_supplier_invoices)d']" position="attributes">-->
+<!--                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>-->
+<!--             </xpath>-->
+
+<!--         </field>-->
+<!--     </record>-->
 </odoo>
