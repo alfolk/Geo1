@@ -357,6 +357,6 @@ class alfolk_medication_chart_record_day(models.Model):
 
     quantity_received = fields.Float(string='Quantity received', store=True)
     quantity_re = fields.Float(string='Quantity re', store=True)
-    employee = fields.Many2one('hr.employee', string='Employee', required=True,store=True)
+    employee = fields.Many2one('hr.employee', string='Employee', store=True)
     products = fields.Many2many('product.product', string='product', store=False, related='line_ids.products', )
     is_taken = fields.Boolean(string='IS Taken?', store=True)
