@@ -24,6 +24,7 @@
                                 <field name="res_id"/>
                             </group>
                             <group>
+                                <field name="type"/>
                                 <field name="allow_add"/>
                             </group>
 
@@ -46,6 +47,8 @@
                     <field name="name"/>
                     <field name="res_id"/>
                     <field name="color"/>
+                    <field name="type"/>
+
                     <field name="activity_ids"/>
                     <field name='active'/>
                     <field name='fill_count'/>
@@ -62,8 +65,6 @@
                                              options="{'zoom': true, 'zoom_delay': 1000, 'background': true, 'preventClicks': false}"/>
                                     </a>
                                 </div>
-
-
                                 <div class="oe_kanban_details">
                                     <div class="o_kanban_record_top">
                                         <div class="o_kanban_record_headings">
@@ -73,6 +74,8 @@
                                             </strong>
                                             <span class="o_kanban_record_subtitle">
                                                 <field name="res_id"/>
+                                                <field name="type"/>
+
                                             </span>
 
                                         </div>
