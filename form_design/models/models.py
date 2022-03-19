@@ -17,6 +17,13 @@ class FormDesign(models.Model):
                              ('nutrition', 'Therapeutic Nutrition'),
                              ('achievement', 'Achievement Rate')
                              ], string='Form Type', store=True, index=True, required=1, tracking=True)
+    assign_type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Assign To",
+                                   store=True,
+                                   tracking=True)
+    task_type = fields.Selection(
+        [('morning', 'Morning tasks'), ('night', 'Night tasks'), ('periodic', 'Periodic tasks')], string="Tasks",
+        store=True,
+        tracking=True)
     category = fields.Many2one('partner.category', 'Partner Category', store=True)
     name = fields.Char('Form Title', required=True, translate=True, tracking=True, store=True, index=True, )
     color = fields.Integer('Color Index', default=0)

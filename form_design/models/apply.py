@@ -26,12 +26,10 @@ class ApplyFormDesign(models.Model):
     date = fields.Date('Date', default=fields.Date.today(), tracking=True, store=True, index=True, required=1)
     complete_name = fields.Char('Name', compute='_compute_name', store=True, index=True, tracking=True)
     allow_add = fields.Boolean("Allow Add Line", compute="compute_allow_add_line")
-    type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Type", default='resident',
+    type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Type",
                             store=True,
                             tracking=True)
     form_type = fields.Selection(related='form_id.type', store=True)
-
-
 
     def view_form_fill_in_line(self):
         return {
@@ -49,6 +47,8 @@ class ApplyFormDesign(models.Model):
             name = ''
             if record.partner_id:
                 name += ' ' + record.partner_id.name
+            if record.form_id:
+                name += ' ' + record.form_id.name
             if record.date:
                 name += ' ' + str(record.date)
             record.complete_name = name
@@ -138,13 +138,13 @@ class FormApplyLine(models.Model):
 
     def get_field_row(self):
         for record in self:
-            itemslist = record.answers_ids.mapped('name')
+            itemslist = record.answers_ids.mapped('matrix_id')
             itemslist = list(dict.fromkeys(itemslist))
             return itemslist
 
     def get_filed_value(self, col, row):
         for record in self:
-            raw = record.answers_ids.filtered(lambda line: line.val_name == col and line.name == row)
+            raw = record.answers_ids.filtered(lambda line: line.val_name == col and line.matrix_id == row)
             if raw.is_header:
                 return ''
             elif raw.type == 'boolean':
@@ -220,7 +220,7 @@ class FormApplyLine(models.Model):
                                         'is_required': m.is_required,
                                         'is_header': m.is_header,
                                         'type': c.type,
-                                        'matrix_id': m._origin.id,
+                                        'matrix_id': m.id,
 
                                     })
                                 else:
@@ -243,6 +243,7 @@ class FormApplyLine(models.Model):
                                     'val_name': c,
                                     'is_required': m.is_required,
                                     'type': record.matrix_answer_type,
+                                    'matrix_id': m._origin.id,
 
                                 })
                         elif line.matrix_coltype == 'week':
@@ -253,6 +254,7 @@ class FormApplyLine(models.Model):
                                     'apply_id': record.apply_id._origin.id,
                                     'is_required': m.is_required,
                                     'type': record.matrix_answer_type,
+                                    'matrix_id': m._origin.id,
 
                                 })
             record.answers_ids = answers
