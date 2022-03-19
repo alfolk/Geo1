@@ -20,6 +20,7 @@
         'views/templates.xml',
         'views/applyLine.xml',
         'views/apply.xml',
+        'views/partner.xml',
     ],
     'demo': [
         'demo/demo.xml',

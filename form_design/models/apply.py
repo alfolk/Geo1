@@ -26,19 +26,12 @@ class ApplyFormDesign(models.Model):
     date = fields.Date('Date', default=fields.Date.today(), tracking=True, store=True, index=True, required=1)
     complete_name = fields.Char('Name', compute='_compute_name', store=True, index=True, tracking=True)
     allow_add = fields.Boolean("Allow Add Line", compute="compute_allow_add_line")
-
-    type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Type", default='resident', store=True,
+    type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Type", default='resident',
+                            store=True,
                             tracking=True)
-    answers_ids = fields.One2many('form.apply.line.matrix','apply_id', string='Matrix Answer',store=True)
+    form_type = fields.Selection(related='form_id.type', store=True)
 
-    one_matrix = fields.Boolean(compute='_compute_one_matrix')
 
-    def _compute_one_matrix(self):
-        for record in self:
-            if len(record.apply_ids) == 1:
-                record.one_matrix = True
-            else:
-                record.one_matrix=False
 
     def view_form_fill_in_line(self):
         return {

@@ -2,3 +2,4 @@
 
 from . import models
 from . import apply
+from . import partner
