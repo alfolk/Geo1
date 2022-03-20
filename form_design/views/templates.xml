@@ -65,7 +65,11 @@
                                             </th>
                                             <t t-foreach="l.get_field_col()" t-as="col">
                                                 <th>
-                                                    <span t-esc="l.get_filed_value(col,answer)"/>
+                                                    <span t-esc="l.get_filed_value(col,answer)['value']" t-if="l.get_filed_value(col,answer)['type'] !='boolean'"/>
+
+                                                     <input type="checkbox" id="o_form_checkbox" checked="checked" t-if="l.get_filed_value(col,answer)['type'] =='boolean' and l.get_filed_value(col,answer)['value'] ==True"/>
+                                                    <input type="checkbox" id="o_form_checkbox_false" t-if="l.get_filed_value(col,answer)['type'] =='boolean' and l.get_filed_value(col,answer)['value'] ==False"/>
+
                                                 </th>
                                             </t>
 
