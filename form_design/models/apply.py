@@ -146,19 +146,26 @@ class FormApplyLine(models.Model):
         for record in self:
             raw = record.answers_ids.filtered(lambda line: line.val_name == col and line.matrix_id == row)
             if raw.is_header:
-                return ''
+                return {'value': '',
+                        'type': raw.type}
             elif raw.type == 'boolean':
-                return raw.check
+                return {'value':raw.check,
+                        'type':raw.type}
             elif raw.type == 'text':
-                return raw.text
+                return {'value': raw.text,
+                        'type': raw.type}
             elif raw.type == 'date':
-                return raw.date
+                return {'value': raw.date,
+                        'type': raw.type}
             elif raw.type == 'datetime':
-                return raw.date_time
+                return {'value': raw.date_time,
+                        'type': raw.type}
             elif raw.type == 'char':
-                return raw.textChar
+                return {'value': raw.textChar,
+                        'type': raw.type}
             elif raw.type == 'numerical_box':
-                return raw.value
+                return {'value': raw.value,
+                        'type': raw.type}
 
 
     def save_and_close(self):

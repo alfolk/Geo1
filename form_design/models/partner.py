@@ -159,8 +159,9 @@ class Partner(models.Model):
                 'context': "{'default_partner_id': " + str(self._origin.id) + "}",
             }
 
-    is_student = fields.Boolean('_compute_is_student')
+    is_student = fields.Boolean(compute='_compute_is_student',store=False)
 
+    @api.onchange('category')
     def _compute_is_student(self):
         for record in self:
             if record.category.category_type:
