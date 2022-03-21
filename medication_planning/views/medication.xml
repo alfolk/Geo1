@@ -18,7 +18,8 @@
         <template id="medication_report">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
-                    <div class="article">
+                                        <t t-call="web.external_layout">
+
                         <div class="page">
                             <div class="oe_structure"/>
 
@@ -221,9 +222,9 @@
                                 </t>
                             </div>
                         </div>
-                    </div>
 
                 </t>
+            </t>
             </t>
         </template>
         <report
