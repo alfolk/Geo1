@@ -395,6 +395,7 @@ class FormApplyLine(models.Model):
     #
     #     return super(FormApplyLine, self).write(vals)
 
+
 class FormApplyLineMatrix(models.Model):
     _name = 'form.apply.line.matrix'
     _description = 'Form Apply Line Matrix'
