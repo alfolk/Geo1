@@ -27,20 +27,20 @@ class Partner(models.Model):
                             'question_type': line.question_type,
                             'matrix_answer_type': line.matrix_answer_type,
                         }))
-                    ids.append(record.env['form.apply'].create({
+                    record.env['form.apply'].create({
                         'form_id': form.id,
                         'partner_id': record.id,
                         'date': fields.date.today(),
                         'apply_ids': lines,
 
-                    }).id)
+                    })
 
             return {
                 'name': _(f'Filled out forms of {record.name}'),
                 'type': 'ir.actions.act_window',
                 'res_model': 'form.apply',
                 'view_mode': 'tree,form',
-                'domain': [('id', 'in', ids)],
+                'domain':  [('form_type', '=', 'medical'), ('partner_id', '=', record.id), ('state', '=', 'draft')],
                 'context': "{'default_partner_id': " + str(self._origin.id) + "}",
             }
 
@@ -65,20 +65,20 @@ class Partner(models.Model):
                             'question_type': line.question_type,
                             'matrix_answer_type': line.matrix_answer_type,
                         }))
-                    ids.append(record.env['form.apply'].create({
+                    record.env['form.apply'].create({
                         'form_id': form.id,
                         'partner_id': record.id,
                         'date': fields.date.today(),
                         'apply_ids': lines,
 
-                    }).id)
+                    })
 
             return {
                 'name': _(f'Filled out forms of {record.name}'),
                 'type': 'ir.actions.act_window',
                 'res_model': 'form.apply',
                 'view_mode': 'tree,form',
-                'domain': [('id', 'in', ids)],
+                'domain':  [('form_type', '=', 'physical'), ('partner_id', '=', record.id), ('state', '=', 'draft')],
                 'context': "{'default_partner_id': " + str(self._origin.id) + "}",
             }
 
@@ -103,20 +103,20 @@ class Partner(models.Model):
                             'question_type': line.question_type,
                             'matrix_answer_type': line.matrix_answer_type,
                         }))
-                    ids.append(record.env['form.apply'].create({
+                    record.env['form.apply'].create({
                         'form_id': form.id,
                         'partner_id': record.id,
                         'date': fields.date.today(),
                         'apply_ids': lines,
 
-                    }).id)
+                    })
 
             return {
                 'name': _(f'Filled out forms of {record.name}'),
                 'type': 'ir.actions.act_window',
                 'res_model': 'form.apply',
                 'view_mode': 'tree,form',
-                'domain': [('id', 'in', ids)],
+                'domain': [('form_type', '=', 'nutrition'), ('partner_id', '=', record.id), ('state', '=', 'draft')],
                 'context': "{'default_partner_id': " + str(self._origin.id) + "}",
             }
 
@@ -142,20 +142,20 @@ class Partner(models.Model):
                             'question_type': line.question_type,
                             'matrix_answer_type': line.matrix_answer_type,
                         }))
-                    ids.append(record.env['form.apply'].create({
+                    record.env['form.apply'].create({
                         'form_id': form.id,
                         'partner_id': record.id,
                         'date': fields.date.today(),
                         'apply_ids': lines,
 
-                    }).id)
+                    })
 
             return {
                 'name': _(f'Filled out forms of {record.name}'),
                 'type': 'ir.actions.act_window',
                 'res_model': 'form.apply',
                 'view_mode': 'tree,form',
-                'domain': [('id', 'in', ids)],
+                'domain': [('form_type', '=', 'achievement'), ('partner_id', '=', record.id), ('state', '=', 'draft')],
                 'context': "{'default_partner_id': " + str(self._origin.id) + "}",
             }
 
