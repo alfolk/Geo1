@@ -307,7 +307,8 @@ class alfolk_medication_chart_record_line(models.Model):
     no_days = fields.Integer('No Days', store=True)
     qty = fields.Integer('QTY', store=True)
     number = fields.Integer('Times', store=True)
-    unit = fields.Many2one('uom.uom', string='Unit', store=True)
+    product_uom_category_id = fields.Many2one(related='medication.uom_id.category_id')
+
     state = fields.Selection(related='line_id.state', store=True)
     quantity_received = fields.Float('Qty Received', store=True)
     quantity_returned = fields.Float('Qty Returned', store=True)
@@ -337,9 +338,10 @@ class alfolk_medication_chart_record_line(models.Model):
             product = self.env['product.product'].search([('id', '=', self.medication.id),
                                                           ])
             self.product_uom_id = (product.uom_id.id)
-            # self.product_uom_ids = (product.uom_id.id)
+            self.unit = (product.uom_id.id)
 
     product_uom_id = fields.Many2one('uom.uom', string='Unit of Measure', default=_getuom, store=True)
+    unit = fields.Many2one('uom.uom', string='Unit', default=_getuom,domain="[('category_id', '=', product_uom_category_id)]", store=True)
 
     product_uom_ids = fields.Many2one('uom.uom', string='Unit of Measure', store=True)
 

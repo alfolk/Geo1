@@ -42,7 +42,7 @@
                         <field name="medication"/>
                         <field name="quantity" force_save="1"/>
                         <field name="day"/>
-                          <field name="products" invisible="1"/>
+                        <field name="products" invisible="1"/>
                         <field name="line_ids" invisible="1"/>
 
 
@@ -100,7 +100,7 @@
                         <group>
                             <field name="category"
                                    attrs="{'readonly':[('state','in',('close','picking','receive_med','record_date'))]}"/>
-                           <field name="person"
+                            <field name="person"
                                    attrs="{'readonly':[('state','in',('close','picking','receive_med','record_date'))]}"/>
                             <field name="warehouse"
                                    attrs="{'readonly':[('state','in',('close','picking','receive_med','record_date'))]}"/>
@@ -125,17 +125,17 @@
                                         <tree editable="bottom">
                                             <field name="medication"
                                                    attrs="{'readonly':[('state','in',('close','picking','receive_med'))],'required':1}"/>
-                                              <field name="qty"/>
+                                            <field name="qty"/>
                                             <field name="unit"/>
                                             <field name="number"/>
                                             <field name="no_days"/>
                                             <field name="day"/>
-
-                                          <field name="quantity"
+                                            <field name="product_uom_category_id" invisible="1"/>
+                                            <field name="quantity"
                                                    attrs="{'readonly':[('state','in',('close','picking','receive_med'))],'required':1}"/>
                                             <field name="product_uom_id"
                                                    attrs="{'readonly':[('state','in',('close','picking','receive_med'))],'required':1}"/>
-                                              <field name="quantity_received" invisible="0" readonly="1" force_save="1"/>
+                                            <field name="quantity_received" invisible="0" readonly="1" force_save="1"/>
                                             <field name="quantity_returned" invisible="0" readonly="1" force_save="1"/>
                                             <field name="quantity_re" invisible="0"/>
                                             <field name="product_uom_ids" invisible="0"/>
@@ -154,10 +154,10 @@
                                     <field name="line_ids" attrs="{'readonly':[('state','=','close')]}">
                                         <tree editable="bottom">
                                             <field name="medication"/>
-                                            <field name="day" />
-                                            <field name="quantity" />
-                                            <field name="employee" />
-                                            <field name="is_taken" />
+                                            <field name="day"/>
+                                            <field name="quantity"/>
+                                            <field name="employee"/>
+                                            <field name="is_taken"/>
                                             <field name="products" invisible="1"/>
                                             <field name="state" invisible="1"/>
 
