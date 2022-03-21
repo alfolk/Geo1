@@ -49,7 +49,7 @@ msgstr " اسم العلاج"
 #: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__quantity
 #: model:ir.model.fields,field_description:medication_planning.field_medication_planning_day__quantity
 msgid "Quantity"
-msgstr "الكمية المطلوبة"
+msgstr "الكمية"
 
 #. module: medication_planning
 #: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__no_days
