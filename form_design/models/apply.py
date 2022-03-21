@@ -17,6 +17,9 @@ class ApplyFormDesign(models.Model):
     ]
     category = fields.Many2one('partner.category', 'Partner Category', store=True, index=True, tracking=True,
                                related='form_id.category', readonly=1)
+    task_type = fields.Selection(store=True, index=True, tracking=True,
+                               related='form_id.task_type', readonly=1)
+
     form_id = fields.Many2one('form.design', 'Form', store=True, index=True, tracking=True)
     partner_id = fields.Many2one('res.partner', 'Partner', domain="[('category','=',category)]", store=True, index=True,
                                  tracking=True, required=1)
@@ -28,7 +31,7 @@ class ApplyFormDesign(models.Model):
     allow_add = fields.Boolean("Allow Add Line", compute="compute_allow_add_line")
     type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Type",
                             store=True,
-                            tracking=True)
+                            tracking=True,related='form_id.assign_type')
     form_type = fields.Selection(related='form_id.type', store=True)
 
     def view_form_fill_in_line(self):

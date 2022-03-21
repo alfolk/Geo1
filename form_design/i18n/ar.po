@@ -241,7 +241,7 @@ msgstr "العمود"
 #. module: form_design
 #: model_terms:ir.ui.view,arch_db:form_design.form_design_line_view
 msgid "Col Answers"
-msgstr "أجابة العمود"
+msgstr "اﻷعمدة"
 
 #. module: form_design
 #: model:ir.model.fields,field_description:form_design.field_form_design__color
