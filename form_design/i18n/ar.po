@@ -801,6 +801,7 @@ msgstr "أعادة فتح"
 #. module: form_design
 #: model:ir.model.fields.selection,name:form_design.selection__form_apply__type__resident
 #: model:ir.model.fields.selection,name:form_design.selection__form_design__assign_type__resident
+#: model_terms:ir.ui.view,arch_db:form_design.view_partner_form
 msgid "Resident"
 msgstr "مقيم"
 
@@ -923,6 +924,7 @@ msgstr "نوع"
 #. module: form_design
 #: model:ir.model.fields.selection,name:form_design.selection__form_apply__type__worker
 #: model:ir.model.fields.selection,name:form_design.selection__form_design__assign_type__worker
+#: model_terms:ir.ui.view,arch_db:form_design.view_partner_form
 msgid "Worker"
 msgstr "العامل"
 
