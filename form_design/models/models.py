@@ -119,13 +119,10 @@ class FormDesignLine(models.Model):
     matrix_subtype = fields.Selection([
         ('simple', 'One choice per row'),
         ('multiple', 'Multiple choices per row')], string='Matrix Type', default='simple')
-    column_nb = fields.Selection([
-        ('12', '1'), ('6', '2'), ('4', '3'), ('3', '4'), ('2', '6')],
-        string='Number of columns', default='12',
-        help='These options refer to col-xx-[12|6|4|3|2] classes in Bootstrap for dropdown-based simple and multiple '
-             'choice questions.')
+
     suggested_answer_ids = fields.One2many('form.line.answer', 'question_id', 'Answers')
     matrix_answer_type = fields.Selection([('date', 'Date'),
+                                           ('time', 'Time'),
                                            ('datetime', 'DateTime'),
                                            ('boolean', 'CheckBox'),
                                            ('numerical_box', 'Numerical Value'),
@@ -152,6 +149,7 @@ class SurveyQuestionAnswer(models.Model):
     sequence = fields.Integer('Label Sequence order', default=10)
     value = fields.Char('Suggested value', translate=True, required=True)
     type = fields.Selection([('date', 'Date'),
+                             ('time', 'Time'),
                              ('datetime', 'DateTime'),
                              ('boolean', 'CheckBox'),
                              ('numerical_box', 'Numerical Value'),

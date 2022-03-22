@@ -113,6 +113,7 @@
                             <field name="type"/>
                             <field name="check"/>
                             <field name="date_time"/>
+                            <field name="time"  widget="float_time"/>
                             <field name="text"/>
                             <field name="is_header"/>
                             <field name="matrix_id" force_save="1"/>
@@ -203,6 +204,8 @@
                             <field name="date_time"/>
                             <field name="text"/>
                             <field name="value"/>
+                             <field name="time"  widget="float_time"/>
+
                             <field name="is_header"/>
                             <field name="date"/>
                             <field name="matrix_id"/>

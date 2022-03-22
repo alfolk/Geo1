@@ -126,12 +126,11 @@ class Partner(models.Model):
 
     def open_achievement_worker(self):
         for record in self:
-            ids = []
             record.show_achievement = False
+            record.show_resident = False
             exist = record.env['form.apply'].search([('form_type', '=', 'achievement'),
                                                      ('partner_id', '=', record.id),
                                                      ('date', '=', fields.date.today())])
-            ids = exist.ids
             if not exist:
                 forms = record.env['form.design'].search(
                     [('type', '=', 'achievement'), '|', ('category', '=', record.category.id),
@@ -268,14 +267,12 @@ class Partner(models.Model):
 
     def open_achievement_periodic(self):
         for record in self:
-            ids = []
             record.show_resident = False
             record.show_achievement = False
             exist = record.env['form.apply'].search([('form_type', '=', 'achievement'),
                                                      ('type', '=', 'resident'), ('task_type', '=', 'periodic'),
                                                      ('partner_id', '=', record.id),
                                                      ('date', '=', fields.date.today())])
-            ids = exist.ids
             if not exist:
                 forms = record.env['form.design'].search(
                     [('type', '=', 'achievement'), '|', ('category', '=', record.category.id),

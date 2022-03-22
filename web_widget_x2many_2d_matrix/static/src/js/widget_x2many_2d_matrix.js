@@ -105,6 +105,8 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
                 }
                 else if (record.data[this.field_type] == 'datetime'){
                          this.field_value ='date_time'
+                }else if (record.data[this.field_type] == 'time'){
+                         this.field_value ='time'
                 }else if (record.data[this.field_type] == 'text'){
                          this.field_value ='text'
                 }
