@@ -339,6 +339,7 @@ class alfolk_medication_chart_record_line(models.Model):
                                                           ])
             self.product_uom_id = (product.uom_id.id)
             self.unit = (product.uom_id.id)
+            self.product_uom_ids = (product.uom_id.id)
 
     product_uom_id = fields.Many2one('uom.uom', string='Unit of Measure', default=_getuom, store=True)
     unit = fields.Many2one('uom.uom', string='Unit', default=_getuom,domain="[('category_id', '=', product_uom_category_id)]", store=True)

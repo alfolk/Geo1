@@ -53,6 +53,9 @@
                                     string="Journal Entries" type="object"
                                      icon="fa-bars">
                             </button>
+                                            <button name="action_open_manual_reconciliation_widget" type="object"
+                        string="Payment Matching" class="oe_stat_button" icon="fa-dollar"
+/>
                         </div>
                         <group>
                             <group>
@@ -61,9 +64,8 @@
                                        attrs="{'readonly':[('state','in',('confirm','cancel'))]}"/>
                                 <field name="date" attrs="{'readonly':[('state','in',('confirm','cancel'))]}"/>
                                 <field name="amount" attrs="{'readonly':[('state','in',('confirm','cancel'))]}"/>
-
+                                <field name="currency_id"  attrs="{'readonly':[('state','in',('confirm','cancel'))],'required':[('payment_type','!=','transfer_money')],'invisible':[('payment_type','=','transfer_money')]}"/>
                                 <field name="treasury"  attrs="{'readonly':[('state','in',('confirm','cancel'))],'required':[('payment_type','!=','transfer_money')],'invisible':[('payment_type','=','transfer_money')]}"/>
-
                                 <field name="account_from"
                                        attrs="{'invisible':[('payment_type','!=','transfer_money')],'required':[('payment_type','=','transfer_money')]}"/>
                                 <field name="account_to"
@@ -74,8 +76,9 @@
                                 <field name="description"
                                        attrs="{'readonly':[('state','in',('confirm','cancel'))],'invisible':[('payment_type','!=','expense_money')]}"/>
                                 <field name="note" attrs="{'readonly':[('state','in',('confirm','cancel'))]}"/>
-
-
+                                <field name="company_id" invisible="1"/>
+                                <field name="move_id"  invisible="1"/>
+                                <field name="company_currency_id" invisible="1"/>
                             </group>
                             <group>
 

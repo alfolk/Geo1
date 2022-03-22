@@ -28,6 +28,7 @@
 
         'security/ir.model.access.csv',
         'views/views.xml',
+        'views/print.xml',
         'views/res_partner_edit.xml',
         'wizard/personal_expense.xml',
         'wizard/personal_expense_report.xml',
