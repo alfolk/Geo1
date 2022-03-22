@@ -64,7 +64,7 @@
                                        attrs="{'readonly':[('state','in',('confirm','cancel'))]}"/>
                                 <field name="date" attrs="{'readonly':[('state','in',('confirm','cancel'))]}"/>
                                 <field name="amount" attrs="{'readonly':[('state','in',('confirm','cancel'))]}"/>
-                                <field name="currency_id"  attrs="{'readonly':[('state','in',('confirm','cancel'))],'required':[('payment_type','!=','transfer_money')],'invisible':[('payment_type','=','transfer_money')]}"/>
+                                <field name="currency_id"  attrs="{'readonly':[('state','in',('confirm','cancel'))],'invisible':[('payment_type','=','transfer_money')]}"/>
                                 <field name="treasury"  attrs="{'readonly':[('state','in',('confirm','cancel'))],'required':[('payment_type','!=','transfer_money')],'invisible':[('payment_type','=','transfer_money')]}"/>
                                 <field name="account_from"
                                        attrs="{'invisible':[('payment_type','!=','transfer_money')],'required':[('payment_type','=','transfer_money')]}"/>

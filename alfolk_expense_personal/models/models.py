@@ -20,12 +20,13 @@ class alfolk_expense_personal(models.Model):
     @api.depends('state')
     def _computemove(self):
         for order in self:
-            move=self.env['account.move'].search([('name','=',order.code)])
+            move = self.env['account.move'].search([('name', '=', order.code)])
             order.move_id = move.id
+
     move_id = fields.Many2one(
         comodel_name='account.move',
-        string='Journal Entry',ondelete='cascade',
-        check_company=True,compute='_computemove')
+        string='Journal Entry', ondelete='cascade',
+        check_company=True, compute='_computemove')
 
     def _get_valid_liquidity_accounts(self):
         return (
@@ -52,7 +53,8 @@ class alfolk_expense_personal(models.Model):
         for line in self.move_id.line_ids:
             if line.account_id in self._get_valid_liquidity_accounts():
                 liquidity_lines += line
-            elif line.account_id.internal_type in ('receivable', 'payable') or line.partner_id == line.company_id.partner_id:
+            elif line.account_id.internal_type in (
+            'receivable', 'payable') or line.partner_id == line.company_id.partner_id:
                 counterpart_lines += line
             else:
                 writeoff_lines += line
@@ -92,8 +94,10 @@ class alfolk_expense_personal(models.Model):
             return super(alfolk_expense_personal, self).unlink()
 
     # Fields Defi ne
-    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,  default=lambda self: self.env.company)
-    company_currency_id = fields.Many2one('res.currency', string="Report Company Currency", related='company_id.currency_id', readonly=True)
+    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
+                                 default=lambda self: self.env.company)
+    company_currency_id = fields.Many2one('res.currency', string="Report Company Currency",
+                                          related='company_id.currency_id', readonly=True)
 
     state = fields.Selection(selection=_STATES, string='Status', index=True, track_visibility='onchange', required=True,
                              copy=False, default='draft', store=True)
@@ -166,13 +170,13 @@ class alfolk_expense_personal(models.Model):
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
-                                'debit': debit,
+                                'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.treasury.default_account_id.id,
 
                             }), (0, 0, {
                                 'name': expense.code,
-                                'credit': credit,
-                                'account_id': expense.customer.property_account_receivable_id.id,
+                                'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
+                                                            'account_id': expense.customer.property_account_receivable_id.id,
                                 'partner_id': expense.customer.id,
 
                             })]
@@ -186,12 +190,12 @@ class alfolk_expense_personal(models.Model):
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
-                                'debit': debit,
+                                'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.treasury.default_account_id.id,
 
                             }), (0, 0, {
                                 'name': expense.code,
-                                'credit': credit,
+                                'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.account_id.id,
                                 'partner_id': expense.customer.id,
 
@@ -213,12 +217,12 @@ class alfolk_expense_personal(models.Model):
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
-                                'debit': debit,
+                                'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.customer.property_account_receivable_id.id,
                                 'partner_id': expense.customer.id,
                             }), (0, 0, {
                                 'name': expense.description,
-                                'credit': credit,
+                                'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.treasury.default_account_id.id,
 
                             })]
@@ -230,12 +234,12 @@ class alfolk_expense_personal(models.Model):
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
-                                'debit': debit,
+                                'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.account_id.id,
                                 'partner_id': expense.customer.id,
                             }), (0, 0, {
                                 'name': expense.description,
-                                'credit': credit,
+                                'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.treasury.default_account_id.id,
 
                             })]
@@ -250,12 +254,12 @@ class alfolk_expense_personal(models.Model):
                         'ref': expense.note,
                         'line_ids': [(0, 0, {
                             'name': expense.description,
-                            'debit': debit,
+                            'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                             'account_id': expense.account_to.id,
                             'partner_id': expense.customer.id,
                         }), (0, 0, {
                             'name': expense.description,
-                            'credit': credit,
+                            'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                             'account_id': expense.account_from.id,
 
                         })]
@@ -272,12 +276,12 @@ class alfolk_expense_personal(models.Model):
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
-                                'debit': debit,
+                                'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.treasury.default_account_id.id,
 
                             }), (0, 0, {
                                 'name': expense.code,
-                                'credit': credit,
+                                'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.customer.property_account_receivable_id.id,
                                 'partner_id': expense.customer.id,
 
@@ -293,12 +297,12 @@ class alfolk_expense_personal(models.Model):
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
-                                'debit': debit,
+                                'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.treasury.default_account_id.id,
 
                             }), (0, 0, {
                                 'name': expense.code,
-                                'credit': credit,
+                                'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.account_id.id,
                                 'partner_id': expense.customer.id,
 
@@ -315,12 +319,12 @@ class alfolk_expense_personal(models.Model):
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
-                                'debit': debit,
+                                'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.customer.property_account_receivable_id.id,
                                 'partner_id': expense.customer.id,
                             }), (0, 0, {
                                 'name': expense.description,
-                                'credit': credit,
+                                'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.treasury.default_account_id.id,
 
                             })]
@@ -332,12 +336,12 @@ class alfolk_expense_personal(models.Model):
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
-                                'debit': debit,
+                                'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.account_id.id,
                                 'partner_id': expense.customer.id,
                             }), (0, 0, {
                                 'name': expense.description,
-                                'credit': credit,
+                                'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                                 'account_id': expense.treasury.default_account_id.id,
 
                             })]
@@ -352,12 +356,12 @@ class alfolk_expense_personal(models.Model):
                         'ref': expense.note,
                         'line_ids': [(0, 0, {
                             'name': expense.description,
-                            'debit': debit,
+                            'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                             'account_id': expense.account_to.id,
                             'partner_id': expense.customer.id,
                         }), (0, 0, {
                             'name': expense.description,
-                            'credit': credit,
+                            'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                             'account_id': expense.account_from.id,
 
                         })]
