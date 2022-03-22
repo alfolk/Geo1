@@ -264,7 +264,7 @@ class alfolk_medication_chart_record(models.Model):
                 count_date = 0
                 m = record.day
                 y = datetime.strptime(str(m), '%Y-%m-%d %H:%M:%S')
-                date_edit = y + timedelta(hours=-8)
+                date_edit = y + timedelta(hours=-hour)
                 while count_date <= 24 * record.no_days and count < z:
                     count_date = count_date + hour
                     count = count + 1
