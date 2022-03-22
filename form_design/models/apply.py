@@ -18,7 +18,7 @@ class ApplyFormDesign(models.Model):
     category = fields.Many2one('partner.category', 'Partner Category', store=True, index=True, tracking=True,
                                related='form_id.category', readonly=1)
     task_type = fields.Selection(store=True, index=True, tracking=True,
-                               related='form_id.task_type', readonly=1)
+                                 related='form_id.task_type', readonly=1)
 
     form_id = fields.Many2one('form.design', 'Form', store=True, index=True, tracking=True)
     partner_id = fields.Many2one('res.partner', 'Partner', domain="[('category','=',category)]", store=True, index=True,
@@ -31,7 +31,7 @@ class ApplyFormDesign(models.Model):
     allow_add = fields.Boolean("Allow Add Line", compute="compute_allow_add_line")
     type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Type",
                             store=True,
-                            tracking=True,related='form_id.assign_type')
+                            tracking=True, related='form_id.assign_type')
     form_type = fields.Selection(related='form_id.type', store=True)
 
     def view_form_fill_in_line(self):
@@ -65,7 +65,7 @@ class ApplyFormDesign(models.Model):
     @api.onchange('form_id')
     def form_change(self):
         for record in self:
-            record.apply_ids =False
+            record.apply_ids = False
             forms = record.form_id
             lines = []
             if record.state == 'draft' and not record.apply_ids and record.form_id:
@@ -95,7 +95,7 @@ class ApplyFormDesign(models.Model):
 
     def confirm(self):
         lines = self.apply_ids.filtered(lambda line: (not line.answer or line.question_type == 'matrix') and (
-                    line.user_id == self.env.user or not line.user_id))
+                line.user_id == self.env.user or not line.user_id))
         if lines:
             return {
                 'name': _('Answers'),
@@ -152,8 +152,8 @@ class FormApplyLine(models.Model):
                 return {'value': '',
                         'type': raw.type}
             elif raw.type == 'boolean':
-                return {'value':raw.check,
-                        'type':raw.type}
+                return {'value': raw.check,
+                        'type': raw.type}
             elif raw.type == 'text':
                 return {'value': raw.text,
                         'type': raw.type}
@@ -169,7 +169,6 @@ class FormApplyLine(models.Model):
             elif raw.type == 'numerical_box':
                 return {'value': raw.value,
                         'type': raw.type}
-
 
     def save_and_close(self):
         return {'type': 'ir.actions.act_window_close'}
@@ -234,17 +233,17 @@ class FormApplyLine(models.Model):
 
                                     })
                                 else:
-                                     answers += record.answers_ids.create({
-                                            'name': m.value,
-                                            'val_name': c.value,
-                                         'apply_id': record.apply_id._origin.id,
+                                    answers += record.answers_ids.create({
+                                        'name': m.value,
+                                        'val_name': c.value,
+                                        'apply_id': record.apply_id._origin.id,
 
-                                         'is_required': m.is_required,
-                                            'is_header': m.is_header,
-                                            'type': line.matrix_answer_type,
-                                            'matrix_id': m._origin.id,
+                                        'is_required': m.is_required,
+                                        'is_header': m.is_header,
+                                        'type': line.matrix_answer_type,
+                                        'matrix_id': m._origin.id,
 
-                                        })
+                                    })
                         elif line.matrix_coltype == 'month':
                             num_days = monthrange(fields.date.today().year, fields.date.today().month)[1]
                             for c in range(1, num_days + 1):
@@ -304,6 +303,7 @@ class FormApplyLine(models.Model):
         ('matrix', 'Matrix')], string='Question Type',
         readonly=False, store=True)
     matrix_answer_type = fields.Selection([('date', 'Date'),
+                                           ('time', 'Time'),
                                            ('datetime', 'DateTime'),
                                            ('boolean', 'CheckBox'),
                                            ('numerical_box', 'Numerical Value'),
@@ -314,12 +314,11 @@ class FormApplyLine(models.Model):
 
     def confirm(self):
         ids = self.apply_id.apply_ids.filtered(lambda line: (not line.answer or line.question_type == 'matrix') and (
-                    line.user_id == self.env.user or not line.user_id)).mapped('id')
+                line.user_id == self.env.user or not line.user_id)).mapped('id')
         ids.sort()
         if self._origin.id in ids:
             next_index = ids.index(self._origin.id) + 1
             if next_index < len(ids):
-
                 return {
                     'name': _('Answers'),
                     'type': 'ir.actions.act_window',
@@ -333,7 +332,7 @@ class FormApplyLine(models.Model):
 
     def confirm_view(self):
         ids = self.apply_id.apply_ids.filtered(lambda line: (not line.answer or line.question_type == 'matrix') and (
-                    line.user_id == self.env.user or not line.user_id)).mapped('id')
+                line.user_id == self.env.user or not line.user_id)).mapped('id')
         ids.sort()
         if self._origin.id in ids:
             next_index = ids.index(self._origin.id) + 1
@@ -388,8 +387,11 @@ class FormApplyLine(models.Model):
                 elif record.matrix_answer_type == 'char':
                     record.answer = ','.join(
                         [r.name + ' ' + r.val_name for r in record.answers_ids.filtered(lambda x: x.textChar)])
+                elif record.matrix_answer_type == 'time':
+                    record.answer = ','.join(
+                        [r.name + ' ' + r.val_name for r in record.answers_ids.filtered(lambda x: x.time)])
                 else:
-                    record.answer=False
+                    record.answer = False
             else:
                 record.answer = False
 
@@ -405,6 +407,7 @@ class FormApplyLineMatrix(models.Model):
     matrix_id = fields.Many2one('form.line.answer', store=True, index=True)
     check = fields.Boolean('Check', store=True, index=True)
     value = fields.Float('Answer Value', store=True, index=True)
+    time = fields.Float('Answer Time', store=True, index=True)
     textChar = fields.Char('Answer Char', store=True, index=True)
     date = fields.Date('Answer Date', store=True, index=True)
     date_time = fields.Datetime('Answer DateTime', store=True, index=True)
@@ -412,15 +415,15 @@ class FormApplyLineMatrix(models.Model):
     name = fields.Char('Row', store=True, index=True)
     val_name = fields.Char('Col', store=True, translate=True, index=True)
     form_line_id = fields.Many2one('form.apply.line', 'Form Fill Out', ondelete='cascade', index=True)
-    apply_id = fields.Many2one('form.apply','Form Fill Out', store=True, index=True)
+    apply_id = fields.Many2one('form.apply', 'Form Fill Out', store=True, index=True)
 
     is_required = fields.Boolean('Is Required', store=True, index=True)
     is_header = fields.Boolean('Is Header', store=True, index=True)
     type = fields.Selection([('date', 'Date'),
-                                           ('datetime', 'DateTime'),
-                                           ('boolean', 'CheckBox'),
-                                           ('numerical_box', 'Numerical Value'),
-                                           ('char', 'Single Line Text Box'),
-                                           ('text', 'Multiple Lines Text Box')], string='Matrix Answer Type',
-                                           default='boolean', store=True)
-
+                             ('datetime', 'DateTime'),
+                             ('time', 'Time'),
+                             ('boolean', 'CheckBox'),
+                             ('numerical_box', 'Numerical Value'),
+                             ('char', 'Single Line Text Box'),
+                             ('text', 'Multiple Lines Text Box')], string='Matrix Answer Type',
+                            default='boolean', store=True)

@@ -30,23 +30,23 @@
                     </div>
                              <div name="button_box"  position="after">
                              <div name="button_box2" class="oe_button_box">
-                                  <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_worker" attrs="{'invisible':[('show_achievement','=',False)]}" icon="fa-trophy"
+                                  <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_worker" attrs="{'invisible':[('show_achievement','=',False)]}" icon="fa-users"
                          context="{'default_partner_id': active_id}">
                           worker
-                        </button><button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_resident" attrs="{'invisible':[('show_achievement','=',False)]}" icon="fa-trophy"
+                        </button><button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_resident" attrs="{'invisible':[('show_achievement','=',False)]}" icon="fa-child"
                          context="{'default_partner_id': active_id}">
                           Resident
                         </button>
                              </div>
                                  <div name="button_box3" class="oe_button_box">
-                                  <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_morning" attrs="{'invisible':[('show_resident','=',False)]}" icon="fa-trophy"
+                                  <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_morning" attrs="{'invisible':[('show_resident','=',False)]}" icon="fa-sun-o"
                          context="{'default_partner_id': active_id}">
                           Morning Tasks
-                        </button><button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_night" attrs="{'invisible':[('show_resident','=',False)]}" icon="fa-trophy"
+                        </button><button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_night" attrs="{'invisible':[('show_resident','=',False)]}" icon="fa-moon-o"
                          context="{'default_partner_id': active_id}">
                           Night tasks
                         </button>
-                                     <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_periodic" attrs="{'invisible':[('show_resident','=',False)]}" icon="fa-trophy"
+                                     <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_periodic" attrs="{'invisible':[('show_resident','=',False)]}" icon="fa-list-alt"
                          context="{'default_partner_id': active_id}">
                         Periodic tasks
                         </button>
@@ -91,16 +91,16 @@
 
          </field>
      </record>
-<!--    <record id="res_partner_view_buttons" model="ir.ui.view">-->
-<!--         <field name="name">res.partner</field>-->
-<!--         <field name="model">res.partner</field>-->
-<!--         <field name="inherit_id" ref="sale.res_partner_view_buttons"/>-->
-<!--         <field name="arch" type="xml">-->
+    <record id="res_partner_view_buttons" model="ir.ui.view">
+         <field name="name">res.partner</field>
+         <field name="model">res.partner</field>
+         <field name="inherit_id" ref="sale.res_partner_view_buttons"/>
+         <field name="arch" type="xml">
 
-<!--             <xpath expr="//button[@name='%(sale.act_res_partner_2_sale_order)d']" position="attributes">-->
-<!--                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>-->
-<!--             </xpath>-->
+             <xpath expr="//button[@name='%(sale.act_res_partner_2_sale_order)d']" position="attributes">
+                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>
+             </xpath>
 
-<!--         </field>-->
-<!--     </record>-->
+         </field>
+     </record>
 </odoo>
