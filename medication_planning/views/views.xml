@@ -176,7 +176,26 @@
             </field>
         </record>
         <!-- actions opening views on models -->
+ <record id="medication_planning_search_view" model="ir.ui.view">
+        <field name="name">medication.planning.search</field>
+        <field name="model">medication.planning</field>
+        <field name="arch" type="xml">
+            <search string="Medication Planning">
+                <field name="person" string="Partner" filter_domain="['|',
+                    ('person.name', '=', self),
+                    ('person.code', '=', self)]"/>
 
+
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter string="Partner" name="person" context="{'group_by':'person'}"/>
+
+
+
+                </group>
+            </search>
+        </field>
+    </record>
         <record model="ir.actions.act_window" id="medication_planning_action_window">
             <field name="name">Medication Planned</field>
             <field name="res_model">medication.planning</field>
