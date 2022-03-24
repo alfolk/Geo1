@@ -14,6 +14,11 @@ msgid "Date"
 msgstr "التاريخ"
 
 #. module: alfolk_expense_personal
+#: model:ir.model.fields,field_description:alfolk_expense_personal.field_alfolk_expense_personal__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: alfolk_expense_personal
 #: model:ir.model.fields,field_description:alfolk_expense_personal.field_alfolk_expense_personal__customer
 msgid "Customer"
 msgstr "العميل"
@@ -128,3 +133,13 @@ msgstr "العميل"
 #: model_terms:ir.ui.view,arch_db:alfolk_expense_personal.alfolk_expense_personal_form
 msgid "Confirm"
 msgstr "تأكيد"
+
+#. module: alfolk_expense_personal
+#: model_terms:ir.ui.view,arch_db:alfolk_expense_personal.alfolk_expense_personal_form
+msgid "Payment Matching"
+msgstr "مطابقة المدفوعات"
+
+#. module: alfolk_expense_personal
+#: model_terms:ir.ui.view,arch_db:alfolk_expense_personal.alfolk_expense_personal_form
+msgid "Journal Entries"
+msgstr "قيد اليومية"

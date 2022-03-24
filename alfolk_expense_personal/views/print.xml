@@ -21,10 +21,10 @@
                     <t t-call="web.external_layout">
                         <div class="page">
                             <div class="oe_structure"/>
-                            <h3 t-if="o.payment_type == 'receive_money'" class="text-center">
+                            <h3 t-if="o.payment_type == 'expense_money'" class="text-center">
                                 صرف نقدية
                             </h3>
-                            <h3 t-if="o.payment_type == 'expense_money'" class="text-center">
+                            <h3 t-if="o.payment_type == 'receive_money'" class="text-center">
                                 استلام نقدية
                             </h3>
                             <h3 t-if="o.payment_type == 'transfer_money'" class="text-center">
@@ -48,6 +48,16 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <th class="text-center" width='200px'
+                                                        style="border: 1px solid black;font-size: 12.5px">
+                                                        رقم الايصال
+                                                    </th>
+                                                    <td class="text-left"
+                                                        style="border: 1px solid black;">
+                                                        <span t-field="o.code"/>
+
+                                                    </td>
+                                                </tr> <tr>
                                                     <th class="text-center" width='200px'
                                                         style="border: 1px solid black;font-size: 12.5px">
                                                         المبلغ
@@ -99,6 +109,38 @@
                                                     <td class="text-left"
                                                         style="border: 1px solid black;">
                                                         <span t-field="o.account_id.name"/>
+
+                                                    </td>
+                                                </tr>
+                                               <tr>
+                                                    <th class="text-center" width='200px'
+                                                        style="border: 1px solid black;font-size: 12.5px">
+                                                        العميل
+                                                    </th>
+                                                    <td class="text-left"
+                                                        style="border: 1px solid black;">
+                                                        <span t-field="o.customer.name"/>
+
+                                                    </td>
+                                                </tr>
+                                               <tr t-if="o.payment_type == 'transfer_money'">
+                                                    <th class="text-center" width='200px'
+                                                        style="border: 1px solid black;font-size: 12.5px">
+                                                        من حساب
+                                                    </th>
+                                                    <td class="text-left"
+                                                        style="border: 1px solid black;">
+                                                        <span t-field="o.account_to.name"/>
+
+                                                    </td>
+                                                </tr><tr t-if="o.payment_type == 'transfer_money'">
+                                                    <th class="text-center" width='200px'
+                                                        style="border: 1px solid black;font-size: 12.5px">
+                                                        الي حساب
+                                                    </th>
+                                                    <td class="text-left"
+                                                        style="border: 1px solid black;">
+                                                        <span t-field="o.account_from.name"/>
 
                                                     </td>
                                                 </tr>
