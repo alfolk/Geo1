@@ -97,6 +97,26 @@
             </field>
         </record>
         <!-- actions opening views on models -->
+ <record id="alfolk_expense_personal_search_view" model="ir.ui.view">
+        <field name="name">alfolk.expense.personal.search</field>
+        <field name="model">alfolk.expense.personal</field>
+        <field name="arch" type="xml">
+            <search string="Treasury">
+                <field name="customer" string="Partner" filter_domain="['|',
+                    ('customer.name', '=', self),
+                    ('customer.code', '=', self)]"/>
+
+
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter string="Partner" name="customer" context="{'group_by':'customer'}"/>
+
+
+
+                </group>
+            </search>
+        </field>
+    </record>
 
         <record model="ir.actions.act_window" id="alfolk_expense_personal_action_window">
             <field name="name">Personal Expense</field>

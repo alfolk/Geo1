@@ -53,6 +53,7 @@
                 <page string="Personal Information" name="info">
                     <group>
                         <group>
+                            <field name="code"/>
                             <field name="category"/>
                             <field name="gender"/>
                             <field name="identification_id"/>
