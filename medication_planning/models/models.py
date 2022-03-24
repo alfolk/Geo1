@@ -62,6 +62,8 @@ class alfolk_medication_chart_record(models.Model):
     _name = 'medication.planning'
     _description = 'Medication Planned'
     _rec_name = 'person'
+    _inherit = ['mail.thread']
+
     category = fields.Many2one('partner.category', "Category", store=True)
     med_type = fields.Selection([('chronic', 'Chronic'), ('accidental', 'Accidental')], store=True)
 
