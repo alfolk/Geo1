@@ -206,7 +206,6 @@ class alfolk_medication_chart_record(models.Model):
                                                                                              line.product_uom_id,
                                                                                              rounding_method='HALF-UP')
                             line.quantity_re = 0
-                            line.product_uom_ids = False
 
                     picking.action_confirm()
 
@@ -332,7 +331,9 @@ class alfolk_medication_chart_record_line(models.Model):
             domain = {'product_uom_ids': [('category_id', '=', self.medication.uom_id.category_id.id)]}
             return {'domain': domain}
         else:
-            return {'domain': False}
+            domain = {'product_uom_ids': [('category_id', '=', self.medication.uom_id.category_id.id)]}
+            return {'domain': domain}
+
 
     @api.onchange('medication')
     def _getuom(self):
@@ -341,12 +342,12 @@ class alfolk_medication_chart_record_line(models.Model):
                                                           ])
             self.product_uom_id = (product.uom_id.id)
             self.unit = (product.uom_id.id)
-            self.product_uom_ids = (product.uom_id.id)
+            self.product_uom_ids = product.uom_id.id
 
     product_uom_id = fields.Many2one('uom.uom', string='Unit of Measure', default=_getuom, store=True)
     unit = fields.Many2one('uom.uom', string='Unit', default=_getuom,domain="[('category_id', '=', product_uom_category_id)]", store=True)
 
-    product_uom_ids = fields.Many2one('uom.uom', string='Unit of Measure', store=True)
+    product_uom_ids = fields.Many2one('uom.uom', string='Unit of Measure', default=_getuom,store=True)
 
 
 class alfolk_medication_chart_record_day(models.Model):
