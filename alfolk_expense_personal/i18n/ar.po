@@ -99,13 +99,13 @@ msgstr "تأكيد"
 #: model:ir.actions.act_window,name:alfolk_expense_personal.alfolk_expense_personal_action_window
 #: model:ir.ui.menu,name:alfolk_expense_personal.alfolk_expense_personal_menu_root
 msgid "Personal Expense"
-msgstr "المصروفات الشخصية"
+msgstr "الخزينة"
 
 #. module: alfolk_expense_personal
 #: model:ir.actions.act_window,name:alfolk_expense_personal.alfolk_personal_expense_report_action_window
 #: model:ir.ui.menu,name:alfolk_expense_personal.alfolk_personal_expense_report_menu_root
 msgid "Personal Expense Report"
-msgstr "تقرير المصروفات الشخصية"
+msgstr "تقرير الخزينة"
 
 
 #. module: alfolk_expense_personal
