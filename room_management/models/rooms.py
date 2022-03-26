@@ -20,12 +20,13 @@ class RoomsAlfolk(models.Model):
                                   ("dorm room", "Dorm Room"),
                                   ("other", "Other")], string="Type Of Room", store=True, tracking=True,required=True)
     # type_id = fields.Many2one('folk.type', string="Type", store=True, tracking=True)
-    image = fields.Binary(string="Image", store=True, tracking=True, required=True)
+    image = fields.Binary(string="Image", store=True, tracking=True)
     status = fields.Selection([("available", "Available"),
                                ("occupied", "Occupied")],
                               "Status", tracking=True, default="available",
                               compute='check_room_availability'
                               )
+    # category = fields.Many2one('partner.category','Partner Category', store=True)
 
     # room_line_id = fields.One2many('folk.rooms.accommodations', 'room_id', 'Room', store=True, tracking=True)
 

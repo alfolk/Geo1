@@ -10,6 +10,7 @@
         "views/floor.xml",
         "views/bed.xml",
         "views/clean.xml",
+        "views/inherited_partner.xml",
         "wizard/report_template.xml",
         "wizard/folk_clean_rport.xml",
         "wizard/report_bed_template.xml",

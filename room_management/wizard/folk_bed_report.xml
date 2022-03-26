@@ -20,8 +20,6 @@
                 </footer>
 
             </form>
-
-
         </field>
     </record>
     <record id="menu_action_wizard_bed" model="ir.actions.act_window">
@@ -43,6 +41,7 @@
 
     <menuitem id="wizard_report"
               name="Reports"
+              sequence="20"
               parent="room_root"/>
     <menuitem
             id="menu_wizard_Bed"

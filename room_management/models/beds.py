@@ -12,17 +12,13 @@ class BedsAlfolk(models.Model):
 
     # customer_id = fields.Many2one('hr.employee', store=True, string="Customer Name",tracking=True)
     bed_no = fields.Char(string="Bed No", store=True, tracking=True)
-    image = fields.Binary(string="Image", store=True, tracking=True, required=True)
-    # no_of_beds_in_room = fields.Integer(compute="calc_number_of_beds", store=True)
-    # responsible_id = fields.Many2one('hr.employee', store=True, string="Responsible", tracking=True)
+    image = fields.Binary(string="Image", store=True, tracking=True)
     notes = fields.Text(string="Notes", store=True, tracking=True)
     rooms_ids = fields.Many2one('folk.rooms', string="Room", store=True, tracking=True)
     bed_status = fields.Selection([("available", "Available"),
                                    ("occupied", "Occupied")],
                                   "Status",
                                   default="available", compute="check_bed_availability", tracking=True)
-
-    # bed_capacity = fields.Integer(string="Beds  Capacity", store=True, tracking=True)
 
     def check_bed_availability(self):
         for record in self:
