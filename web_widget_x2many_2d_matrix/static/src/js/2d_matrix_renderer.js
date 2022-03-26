@@ -227,6 +227,11 @@ odoo.define("web_widget_x2many_2d_matrix.X2Many2dMatrixRenderer", function (requ
                 }else if (record.data.type == 'text'){
                          field_value ='text'
                 }
+                else if (record.data.type == 'simple_choice'){
+                         field_value ='value_id'
+                } else if (record.data.type == 'multiple_choice'){
+                         field_value ='value_ids'
+                }
                     column.attrs.name = field_value;
                     console.log(record.data.is_header)
                     if (record.data.is_header == false){

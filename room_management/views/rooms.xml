@@ -44,8 +44,9 @@
                             </group>
 
                             <group string="About Room">
-                                 <field name="status"/>
+<!--                                <field name="category"/>-->
                                 <field name="responsible_id"/>
+                                 <field name="status"/>
 <!--                                <field name="room_capacity_num"/>-->
 
 <!--                                <field name="bed_capacity_num"/>-->

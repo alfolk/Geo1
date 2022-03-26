@@ -169,6 +169,12 @@ class FormApplyLine(models.Model):
             elif raw.type == 'numerical_box':
                 return {'value': raw.value,
                         'type': raw.type}
+            elif raw.type == 'simple_choice':
+                return {'value': raw.value_id.name,
+                        'type': raw.type}
+            elif raw.type == 'multiple_choice':
+                return {'value': ' , '.join(raw.value_ids.mapped('name')),
+                        'type': raw.type}
 
     def save_and_close(self):
         return {'type': 'ir.actions.act_window_close'}
@@ -229,7 +235,8 @@ class FormApplyLine(models.Model):
                                         'is_required': m.is_required,
                                         'is_header': m.is_header,
                                         'type': c.type,
-                                        'matrix_id': m.id,
+                                        'matrix_id': m._origin.id,
+                                        'col_id': c._origin.id,
 
                                     })
                                 else:
@@ -237,7 +244,7 @@ class FormApplyLine(models.Model):
                                         'name': m.value,
                                         'val_name': c.value,
                                         'apply_id': record.apply_id._origin.id,
-
+                                        'col_id': c._origin.id,
                                         'is_required': m.is_required,
                                         'is_header': m.is_header,
                                         'type': line.matrix_answer_type,
@@ -285,7 +292,7 @@ class FormApplyLine(models.Model):
     form_id = fields.Many2one('form.design', 'Form', store=True, index=True)
     apply_id = fields.Many2one('form.apply', ondelete='cascade', index=True, store=True)
     employee_id = fields.Many2one('hr.employee', 'Responsible Employee', store=True)
-    suggested_id = fields.Many2one('form.line.answer', 'Suggested Answer', domain="[('question_id','=',form_line_id)]",
+    suggested_id = fields.Many2one('form.line.value', 'Suggested Answer', domain="[('question_id','=',form_line_id)]",
                                    store=True)
     suggested_ids = fields.Many2many('form.line.answer', string='Suggested Answer',
                                      domain="[('question_id','=',form_line_id)]")
@@ -308,6 +315,7 @@ class FormApplyLine(models.Model):
                                            ('boolean', 'CheckBox'),
                                            ('numerical_box', 'Numerical Value'),
                                            ('char', 'Single Line Text Box'),
+                                           ('simple_choice', 'Multiple choice: only one answer'),
                                            ('text', 'Multiple Lines Text Box'),
                                            ('multi', 'Multiple Types')], string='Matrix Answer Type',
                                           default='boolean', store=True)
@@ -405,6 +413,7 @@ class FormApplyLineMatrix(models.Model):
     _name = 'form.apply.line.matrix'
     _description = 'Form Apply Line Matrix'
     matrix_id = fields.Many2one('form.line.answer', store=True, index=True)
+    col_id = fields.Many2one('form.line.answer', 'Col', store=True, index=True)
     check = fields.Boolean('Check', store=True, index=True)
     value = fields.Float('Answer Value', store=True, index=True)
     time = fields.Float('Answer Time', store=True, index=True)
@@ -420,10 +429,14 @@ class FormApplyLineMatrix(models.Model):
     is_required = fields.Boolean('Is Required', store=True, index=True)
     is_header = fields.Boolean('Is Header', store=True, index=True)
     type = fields.Selection([('date', 'Date'),
-                             ('datetime', 'DateTime'),
                              ('time', 'Time'),
+                             ('datetime', 'DateTime'),
                              ('boolean', 'CheckBox'),
+                             ('simple_choice', 'Multiple choice: only one answer'),
+                             ('multiple_choice', 'Multiple choice: multiple answers allowed'),
                              ('numerical_box', 'Numerical Value'),
                              ('char', 'Single Line Text Box'),
                              ('text', 'Multiple Lines Text Box')], string='Matrix Answer Type',
                             default='boolean', store=True)
+    value_id = fields.Many2one('form.line.value', 'Answer', store=True)
+    value_ids = fields.Many2many('form.line.value', string='Answer Many', store=True)
