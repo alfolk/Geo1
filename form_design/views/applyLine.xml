@@ -114,9 +114,12 @@
                             <field name="check"/>
                             <field name="date_time"/>
                             <field name="time"  widget="float_time"/>
+                            <field name="value_id"  domain="['|', ('matrix_line_id','=',col_id),('question_id','=',parent.form_line_id)]" />
+                            <field name="value_ids"  domain="['|', ('matrix_line_id','=',col_id),('question_id','=',parent.form_line_id)]"  widget="many2many_tags"/>
                             <field name="text"/>
                             <field name="is_header"/>
                             <field name="matrix_id" force_save="1"/>
+                            <field name="col_id" force_save="1"/>
                             <field name="value"/>
                             <field name="date"/>
                             <field name="textChar"  attrs="{'required':[('is_required','=',True)]}" />
@@ -204,8 +207,10 @@
                             <field name="date_time"/>
                             <field name="text"/>
                             <field name="value"/>
-                             <field name="time"  widget="float_time"/>
-
+                            <field name="time"  widget="float_time"/>
+                            <field name="value_id" domain="['|', ('matrix_line_id','=',col_id),('question_id','=',parent.form_line_id)]" />
+                            <field name="value_ids" domain="['|', ('matrix_line_id','=',col_id),('question_id','=',parent.form_line_id)]" />
+                            <field name="col_id" />
                             <field name="is_header"/>
                             <field name="date"/>
                             <field name="matrix_id"/>

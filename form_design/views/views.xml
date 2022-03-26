@@ -19,9 +19,13 @@
                         </div>
                         <group>
                             <group>
-                               <field name="category" force_save="1"/>
-                               <field name="assign_type" attrs="{'invisible':[('type','!=','achievement')],'required':[('type','=','achievement')]}" force_save="1"/>
-                               <field name="task_type" attrs="{'invisible':[('assign_type','!=','resident')],'required':[('assign_type','=','resident')]}" force_save="1"/>
+                                <field name="category" force_save="1"/>
+                                <field name="assign_type"
+                                       attrs="{'invisible':[('type','!=','achievement')],'required':[('type','=','achievement')]}"
+                                       force_save="1"/>
+                                <field name="task_type"
+                                       attrs="{'invisible':[('assign_type','!=','resident')],'required':[('assign_type','=','resident')]}"
+                                       force_save="1"/>
 
                             </group>
                             <group>
@@ -84,7 +88,7 @@
                                     </div>
 
                                 </div>
-                                    <div class="hr_activity_container float-right">
+                                <div class="hr_activity_container float-right">
                                     <field name="activity_ids" widget="kanban_activity"/>
                                 </div>
                                 <div class="oe_kanban_content position-absolute fixed-bottom mr-2 ">
@@ -124,22 +128,24 @@
                         </div>
                         <group>
                             <group>
-                              <field name="user_id" />
+                                <field name="user_id"/>
                             </group>
                             <field name="question_type" widget="radio"/>
-                            <group attrs="{'invisible': [('question_type', 'not in', ['simple_choice', 'multiple_choice', 'matrix'])]}">
 
-                                <field name="suggested_answer_ids" string="Answers">
+
+                            <group attrs="{'invisible': [('question_type', '!=', 'matrix')]}">
+
+                                <field name="suggested_answer_ids" string="Matrix Rows Values">
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <field name="value" string="Choices"/>
-                                        <field name="is_required" attrs="{'column_invisible': [('parent.question_type','!=', 'matrix')]}"/>
-                                        <field name="is_header" attrs="{'column_invisible': [('parent.question_type','!=', 'matrix')]}"/>
+                                        <field name="is_required"
+                                               attrs="{'column_invisible': [('parent.question_type','!=', 'matrix')]}"/>
+                                        <field name="is_header"
+                                               attrs="{'column_invisible': [('parent.question_type','!=', 'matrix')]}"/>
 
                                     </tree>
                                 </field>
-                            </group>
-                            <group attrs="{'invisible': [('question_type', '!=', 'matrix')]}">
                                 <field name="matrix_coltype" widget="radio"
                                        attrs="{'invisible': [('question_type', '!=', 'matrix')]}"
                                        options="{'horizontal': True}"/>
@@ -150,12 +156,43 @@
                                 <field name="matrix_answer_ids" string="Col Answers"
                                        context="{'default_question_id': active_id}"
                                        attrs="{'invisible': [('matrix_coltype', '!=', 'custom')]}">
+
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <field name="value" string="Choices"/>
                                         <field name="type" string="Column Type" attrs="{'column_invisible': [('parent.matrix_answer_type','!=', 'multi')],
                                         'required': [('parent.matrix_answer_type','=', 'multi')]}"/>
+                                        <field name="value_ids" string="Choices Values" attrs="{'column_invisible': [('parent.matrix_answer_type','!=', 'multi')],
+                                        'invisible': [('type', 'not in',['simple_choice', 'multiple_choice'])]}"
+                                               widget="many2many_tags"/>
 
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <field name="sequence"/>
+                                                <field name="value" string="Choices"/>
+                                                <field name="type" string="Column Type" attrs="{'column_invisible': [('parent.matrix_answer_type','!=', 'multi')],
+                                        'required': [('parent.matrix_answer_type','=', 'multi')]}"/>
+                                                <field name="value_ids" string="Choices Values" attrs="{'column_invisible': [('parent.matrix_answer_type','!=', 'multi')],
+                                         'invisible': [('type', 'not in',['simple_choice', 'multiple_choice'])]}">
+                                                    <tree editable="bottom">
+                                                        <field name="sequence" widget="handle"/>
+                                                        <field name="name" string="Choices"/>
+                                                    </tree>
+                                                </field>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </group>
+                            <group attrs="{'invisible': ['|',('question_type', 'not in', ['simple_choice', 'multiple_choice']),
+                            ('question_type', '=',  'matrix'),('matrix_answer_type', 'not in',['simple_choice', 'multiple_choice'])]}">
+
+                                <field name="value_answer_ids" string="Answers">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name" string="Choices"/>
                                     </tree>
                                 </field>
                             </group>
@@ -176,12 +213,53 @@
                 </tree>
             </field>
         </record>
+
+        <record id="form_line_value_form" model="ir.ui.view">
+            <field name="name">form.line.value</field>
+            <field name="model">form.line.value</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="name"/>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="form_line_answer_form" model="ir.ui.view">
+            <field name="name">form.line.answer</field>
+            <field name="model">form.line.answer</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                             <field name="sequence"/>
+                                                <field name="value" string="Choices"/>
+                                                <field name="type" string="Column Type" attrs="{'column_invisible': [('parent.matrix_answer_type','!=', 'multi')],
+                                        'required': [('parent.matrix_answer_type','=', 'multi')]}"/>
+                                                <field name="value_ids" string="Choices Values" attrs="{'column_invisible': [('parent.matrix_answer_type','!=', 'multi')],
+                                         'invisible': [('type', 'not in',['simple_choice', 'multiple_choice'])]}">
+                                                    <tree editable="bottom">
+                                                        <field name="sequence" widget="handle"/>
+                                                        <field name="name" string="Choices"/>
+                                                    </tree>
+                                                </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
         <record model="ir.actions.act_window" id="form_design_action_window">
             <field name="name">Form Design</field>
             <field name="res_model">form.design</field>
             <field name="view_mode">kanban,tree,form</field>
         </record>
+
         <menuitem name="Form Design" action="form_design_action_window" id="form_design_menu_root"
                   web_icon="form_design,static/description/form-icon-png-23.png"/>
+
     </data>
 </odoo>

@@ -215,6 +215,11 @@ msgstr "مربع الاختيار"
 
 #. module: form_design
 #: model_terms:ir.ui.view,arch_db:form_design.form_design_line_view
+msgid "Matrix Rows Values"
+msgstr "قيم صفوف المصفوفة"
+
+#. module: form_design
+#: model_terms:ir.ui.view,arch_db:form_design.form_design_line_view
 msgid "Choices"
 msgstr "الأختيارات"
 
@@ -677,12 +682,16 @@ msgstr "قيم متعددة"
 #. module: form_design
 #: model:ir.model.fields.selection,name:form_design.selection__form_apply_line__question_type__multiple_choice
 #: model:ir.model.fields.selection,name:form_design.selection__form_design_line__question_type__multiple_choice
+#: model:ir.model.fields.selection,name:form_design.selection__form_design_line__matrix_answer_type__multiple_choice
+#: model:ir.model.fields.selection,name:form_design.selection__form_line_answer__type__multiple_choice
 msgid "Multiple choice: multiple answers allowed"
 msgstr "اختيار من متعدد: يُسمح باختيار أكثر من إجابة"
 
 #. module: form_design
 #: model:ir.model.fields.selection,name:form_design.selection__form_apply_line__question_type__simple_choice
 #: model:ir.model.fields.selection,name:form_design.selection__form_design_line__question_type__simple_choice
+#: model:ir.model.fields.selection,name:form_design.selection__form_design_line__matrix_answer_type__simple_choice
+#: model:ir.model.fields.selection,name:form_design.selection__form_line_answer__type__simple_choice
 msgid "Multiple choice: only one answer"
 msgstr "اختيار من متعدد: إجابة واحدة فقط"
 

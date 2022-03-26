@@ -121,12 +121,15 @@ class FormDesignLine(models.Model):
         ('multiple', 'Multiple choices per row')], string='Matrix Type', default='simple')
 
     suggested_answer_ids = fields.One2many('form.line.answer', 'question_id', 'Answers')
+    value_answer_ids = fields.One2many('form.line.value', 'question_id', 'Answers')
     matrix_answer_type = fields.Selection([('date', 'Date'),
                                            ('time', 'Time'),
                                            ('datetime', 'DateTime'),
                                            ('boolean', 'CheckBox'),
                                            ('numerical_box', 'Numerical Value'),
                                            ('char', 'Single Line Text Box'),
+                                           ('simple_choice', 'Multiple choice: only one answer'),
+                                           ('multiple_choice', 'Multiple choice: multiple answers allowed'),
                                            ('text', 'Multiple Lines Text Box'),
                                            ('multi', 'Multiple Types')], string='Matrix Answer Type',
                                           default='boolean', store=True)
@@ -152,10 +155,24 @@ class SurveyQuestionAnswer(models.Model):
                              ('time', 'Time'),
                              ('datetime', 'DateTime'),
                              ('boolean', 'CheckBox'),
+                             ('simple_choice', 'Multiple choice: only one answer'),
                              ('numerical_box', 'Numerical Value'),
                              ('char', 'Single Line Text Box'),
+                             ('multiple_choice', 'Multiple choice: multiple answers allowed'),
                              ('text', 'Multiple Lines Text Box')], string='Matrix Answer Type',
                             default='boolean', store=True)
     is_correct = fields.Boolean('Is a correct answer')
     is_required = fields.Boolean('Is a Required')
     is_header = fields.Boolean('Is a Header')
+    value_ids = fields.One2many('form.line.value', 'matrix_line_id', 'Answers')
+
+
+class SurveyQuestionAnswerValue(models.Model):
+    _name = 'form.line.value'
+    _description = 'Answers Values'
+    _rec_name = "name"
+    _order = 'sequence'
+    question_id = fields.Many2one('form.design.line', string='Question', ondelete='cascade')
+    matrix_line_id = fields.Many2one('form.line.answer', string='Matrix Line', ondelete='cascade')
+    sequence = fields.Integer('Label Sequence order', default=10)
+    name = fields.Char('Selection value', translate=True, required=True)
