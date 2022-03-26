@@ -53,13 +53,9 @@ msgstr "الكمية"
 
 #. module: medication_planning
 #: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__no_days
-msgid "Qty Returned"
+msgid "No Days"
 msgstr "عدد اﻷيام"
 
-#. module: medication_planning
-#: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__quantity_returned
-msgid "No Days"
-msgstr "الكميةالمرتجعة"
 
 #. module: medication_planning
 #: model:ir.model.fields,field_description:medication_planning.field_medication_planning_line__qty

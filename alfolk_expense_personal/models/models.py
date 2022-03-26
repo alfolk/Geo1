@@ -205,7 +205,6 @@ class alfolk_expense_personal(models.Model):
                     move_id = res.write(move)
                     res.action_post()
                     self.write({'state': 'confirm'})
-
                 elif self.payment_type == 'expense_money':
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, expense.date)
@@ -218,7 +217,7 @@ class alfolk_expense_personal(models.Model):
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
                                 'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
-                                'account_id': expense.customer.property_account_receivable_id.id,
+                                'account_id': expense.customer.property_account_payable_id.id,
                                 'partner_id': expense.customer.id,
                             }), (0, 0, {
                                 'name': expense.description,
@@ -244,6 +243,11 @@ class alfolk_expense_personal(models.Model):
 
                             })]
                         }
+                    res.line_ids -= res.line_ids
+                    move_id = res.write(move)
+                    res.action_post()
+                    self.write({'state': 'confirm'})
+
                 elif self.payment_type == 'transfer_money':
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, expense.date)
@@ -264,6 +268,11 @@ class alfolk_expense_personal(models.Model):
 
                         })]
                     }
+                    res.line_ids -= res.line_ids
+                    move_id = res.write(move)
+                    res.action_post()
+                    self.write({'state': 'confirm'})
+
             else:
                 if self.payment_type == 'receive_money':
                     if self.customer:
@@ -320,7 +329,7 @@ class alfolk_expense_personal(models.Model):
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
                                 'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
-                                'account_id': expense.customer.property_account_receivable_id.id,
+                                'account_id': expense.customer.property_account_payable_id.id,
                                 'partner_id': expense.customer.id,
                             }), (0, 0, {
                                 'name': expense.description,
