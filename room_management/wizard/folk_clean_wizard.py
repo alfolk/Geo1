@@ -21,7 +21,6 @@ class FolkCleanWizard(models.TransientModel):
         for wizard in self:
             all_workers = self.env['folk.clean'].search([('time_clean', '>=', wizard.from_date),
                                                          ('time_clean', '<=', wizard.to_date)])
-            # all_workers = self.env['folk.clean'].search([])
 
             if all_workers:
                 for ex in all_workers:
