@@ -24,16 +24,6 @@ class res_partner_edit(models.Model):
     mother_name = fields.Char('Mother Name', store=True)
     date_of_birth = fields.Date('Birth Of Date', store=True)
     identification_id = fields.Char('Identification ID', store=True)
-    code = fields.Char('Code', store=True, required=True)
-    @api.model
-    def name_search(self, name, args=None, operator="ilike", limit=100):
-        args = args or []
-        domain = []
-        if name:
-            domain = ["|", ("code", "=", name), ("name", operator, name)]
-
-        partners = self.search(domain + args, limit=limit)
-        return partners.name_get()
 
     @api.depends('date_of_birth')
     def calculate_age(self):

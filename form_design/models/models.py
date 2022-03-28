@@ -15,9 +15,10 @@ class FormDesign(models.Model):
     type = fields.Selection([('medical', 'Medical File'),
                              ('physical', 'Physical Measurements'),
                              ('nutrition', 'Therapeutic Nutrition'),
-                             ('achievement', 'Achievement Rate')
+                             ('achievement', 'Achievement Rate'),
+                             ('timing', 'Timing Form')
                              ], string='Form Type', store=True, index=True, required=1, tracking=True)
-    assign_type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Assign To",
+    assign_type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker'), ('other', 'Other')], string="Assign To",
                                    store=True,
                                    tracking=True)
     task_type = fields.Selection(

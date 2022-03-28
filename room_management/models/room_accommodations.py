@@ -15,15 +15,15 @@ class RoomsAccommodationsAlfolk(models.Model):
 
     partner_name = fields.Many2one("res.partner", domain="[('category','=',category)]", string="Partner Name",
                                    tracking=True,
-                                   required=True, )
-    partner_code = fields.Char('Partner Code', readonly=True, related='partner_name.code')
+                                   required=True,)
+    # partner_code = fields.Char('Partner Code', readonly=True, related='partner_name.name',invisible=True)
     bed_reserve_from = fields.Date("Reservation From", store=True, tracking=True, default=datetime.today())
     bed_reserve_to = fields.Date("Reservation To", store=True, tracking=True, default=datetime.today())
     responsible_id = fields.Many2one('hr.employee', store=True, tracking=True)
 
     _sql_constraints = [
         ('bed_partner_code_uniq', 'unique(partner_name, bed_reserve_from,bed_reserve_to)',
-         'This bed already reserved in this period'),
+         'this partner can not reserved another bed in the same period'),
 
     ]
 

@@ -136,7 +136,7 @@ msgstr "التنظيف"
 #: model:ir.model.fields,field_description:room_management.field_res_partner__code
 #: model:ir.model.fields,field_description:room_management.field_res_users__code
 msgid "Code"
-msgstr "كود النزيل"
+msgstr "الكود"
 
 #. module: room_management
 #: model:ir.model.constraint,message:room_management.constraint_res_partner_code_unique
@@ -352,7 +352,7 @@ msgstr "اخر"
 #. module: room_management
 #: model:ir.model.fields,field_description:room_management.field_alfolk_bed_report_line__partner_name
 msgid "Partner"
-msgstr "اسم النزيل"
+msgstr "كود/اسم النزيل"
 
 #. module: room_management
 #: model:ir.model.fields,field_description:room_management.field_folk_rooms_accommodations__category
@@ -548,8 +548,8 @@ msgstr ""
 
 #. module: room_management
 #: model:ir.model.constraint,message:room_management.constraint_folk_rooms_accommodations_bed_partner_code_uniq
-msgid "This bed already reserved in this period"
-msgstr "هذا السرير محجوز ف هذه الفترة"
+msgid "this partner can not reserved another bed in the same period"
+msgstr "لا يمكن حجز سرير فى نفس الفترة لنفس النزيل"
 
 #. module: room_management
 #: model:ir.model.fields,field_description:room_management.field_alfolk_clean_report_line__time_clean

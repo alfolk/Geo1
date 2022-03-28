@@ -131,5 +131,13 @@
     <menuitem name="Form Fill Out Line" parent="form_design_menu_root" action="form_apply_line_action_window"
               id="form_apply_line_menu_root" sequence="20"/>
 
-
+        <record id="auto_send_reminder_high" model="ir.cron">
+        <field name="name">Auto Send notification Mail High Level</field>
+        <field name="model_id" ref="form_design.model_form_apply_line"/>
+        <field name="state">code</field>
+        <field name="code">model.get_notifiction()</field>
+        <field name='interval_number'>5</field>
+        <field name='interval_type'>minutes</field>
+        <field name="numbercall">-1</field>
+    </record>
 </odoo>

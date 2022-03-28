@@ -9,11 +9,6 @@ msgid "Type"
 msgstr "النوع"
 
 #. module: partner_category
-#: model:ir.model.fields,field_description:partner_category.field_partner_category__category_type
-msgid "Type"
-msgstr "النوع"
-
-#. module: partner_category
 #: model:ir.actions.act_window,name:partner_category.partner_category_action_window
 #: model:ir.ui.menu,name:partner_category.partner_category_menu_root
 msgid "Partner Category"
