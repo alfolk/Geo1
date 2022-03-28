@@ -22,6 +22,10 @@
                          context="{'default_partner_id': active_id}">
                             Nutrition
                         </button>
+                      <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_timing" attrs="{'invisible':[('is_student','=',False)]}" icon="fa-calendar"
+                         context="{'default_partner_id': active_id}">
+                            Timing
+                        </button>
                         <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_rate" attrs="{'invisible':[('is_student','=',False)]}" icon="fa-trophy"
                          context="{'default_partner_id': active_id}">
                           Achievement
@@ -36,6 +40,10 @@
                         </button><button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_resident" attrs="{'invisible':[('show_achievement','=',False)]}" icon="fa-child"
                          context="{'default_partner_id': active_id}">
                           Resident
+                        </button>
+                                 <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_other" attrs="{'invisible':[('show_achievement','=',False)]}" icon="fa-star"
+                         context="{'default_partner_id': active_id}">
+                          Other
                         </button>
                              </div>
                                  <div name="button_box3" class="oe_button_box">
@@ -55,49 +63,49 @@
 
        </field>
    </record>
-     <record id="res_partner_view_purchase_account_button" model="ir.ui.view">
-         <field name="name">res.partner</field>
-         <field name="model">res.partner</field>
-         <field name="inherit_id" ref="purchase.res_partner_view_purchase_account_buttons"/>
-         <field name="arch" type="xml">
+<!--     <record id="res_partner_view_purchase_account_button" model="ir.ui.view">-->
+<!--         <field name="name">res.partner</field>-->
+<!--         <field name="model">res.partner</field>-->
+<!--         <field name="inherit_id" ref="purchase.res_partner_view_purchase_account_buttons"/>-->
+<!--         <field name="arch" type="xml">-->
 
-             <xpath expr="//button[@name='%(purchase.act_res_partner_2_supplier_invoices)d']" position="attributes">
-                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>
-             </xpath>
+<!--             <xpath expr="//button[@name='%(purchase.act_res_partner_2_supplier_invoices)d']" position="attributes">-->
+<!--                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>-->
+<!--             </xpath>-->
 
-         </field>
-     </record>
-     <record id="res_partner_view_purchase_buttons" model="ir.ui.view">
-         <field name="name">res.partner</field>
-         <field name="model">res.partner</field>
-         <field name="inherit_id" ref="purchase.res_partner_view_purchase_buttons"/>
-         <field name="arch" type="xml">
+<!--         </field>-->
+<!--     </record>-->
+<!--     <record id="res_partner_view_purchase_buttons" model="ir.ui.view">-->
+<!--         <field name="name">res.partner</field>-->
+<!--         <field name="model">res.partner</field>-->
+<!--         <field name="inherit_id" ref="purchase.res_partner_view_purchase_buttons"/>-->
+<!--         <field name="arch" type="xml">-->
 
-             <xpath expr="//button[@name='%(purchase.act_res_partner_2_purchase_order)d']" position="attributes">
-                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>
-             </xpath>
+<!--             <xpath expr="//button[@name='%(purchase.act_res_partner_2_purchase_order)d']" position="attributes">-->
+<!--                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>-->
+<!--             </xpath>-->
 
-         </field>
-     </record>
-    <record id="res_partner_view_purchase_buttons_inherit" model="ir.ui.view">
-         <field name="name">res.partner</field>
-         <field name="model">res.partner</field>
-         <field name="inherit_id" ref="purchase_stock.res_partner_view_purchase_buttons_inherit"/>
-         <field name="arch" type="xml">
+<!--         </field>-->
+<!--     </record>-->
+<!--    <record id="res_partner_view_purchase_buttons_inherit" model="ir.ui.view">-->
+<!--         <field name="name">res.partner</field>-->
+<!--         <field name="model">res.partner</field>-->
+<!--         <field name="inherit_id" ref="purchase_stock.res_partner_view_purchase_buttons_inherit"/>-->
+<!--         <field name="arch" type="xml">-->
 
-             <xpath expr="//button[@name='%(purchase_stock.action_purchase_vendor_delay_report)d']" position="attributes">
-                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>
-             </xpath>
+<!--             <xpath expr="//button[@name='%(purchase_stock.action_purchase_vendor_delay_report)d']" position="attributes">-->
+<!--                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>-->
+<!--             </xpath>-->
 
-         </field>
-     </record>
+<!--         </field>-->
+<!--     </record>-->
 <!--    <record id="res_partner_view_buttons" model="ir.ui.view">-->
 <!--         <field name="name">res.partner</field>-->
 <!--         <field name="model">res.partner</field>-->
 <!--         <field name="inherit_id" ref="sale.res_partner_view_buttons"/>-->
 <!--         <field name="arch" type="xml">-->
 
-<!--             <xpath expr="//button[@name='%(sale.act_res_partner_2_sale_order)d']" position="attributes">-->
+<!--             <xpath expr="//button[@name='action_view_sale_order']" position="attributes">-->
 <!--                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>-->
 <!--             </xpath>-->
 

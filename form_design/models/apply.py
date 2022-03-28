@@ -1,8 +1,24 @@
+import math
+from datetime import time
+
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from calendar import monthrange
+from datetime import datetime, timedelta
+from odoo.tools import float_round
+from dateutil.relativedelta import relativedelta
+
+from pytz import timezone, UTC
 
 WeakDays = ['السبت', 'الاحد', 'الاثنين', 'الثلاثاء', 'الاربعاء', 'الخميس', 'الجمعه']
+
+
+def float_to_time(hours):
+    """ Convert a number of hours into a time object. """
+    if hours == 24.0:
+        return time.max
+    fractional, integral = math.modf(hours)
+    return time(int(integral), int(float_round(60 * fractional, precision_digits=0)), 0)
 
 
 class ApplyFormDesign(models.Model):
@@ -58,6 +74,16 @@ class ApplyFormDesign(models.Model):
 
     def set_close(self):
         self.state = 'done'
+        for line in self.apply_ids:
+            for answer in line.answers_ids.filtered(lambda a: a.type == 'time'):
+                if answer.time > 0.0:
+                    if answer.val_name in WeakDays:
+                        index = WeakDays.index(answer.val_name)
+                        answer.notify_time = datetime.combine(self.date, float_to_time(answer.time)) + relativedelta(
+                            days=index) - relativedelta(hours=2)
+                    if answer.val_name.isnumeric():
+                        answer.notify_time = datetime.combine(self.date, float_to_time(answer.time)) + relativedelta(
+                            days=int(answer.val_name) - 1) - relativedelta(hours=2)
 
     def set_new(self):
         self.state = 'draft'
@@ -132,6 +158,32 @@ class FormApplyLine(models.Model):
     _name = 'form.apply.line'
     _description = 'Form Apply Line'
     _order = 'id'
+
+    @api.model
+    def get_notifiction(self):
+        date = fields.Datetime.now()
+        notifications = self.search([('form_id.type', '=', 'timing'),('state', '=', 'done'), ('date_time', '>=', date),
+                                     ('date_time', '<=', date - relativedelta(minutes=5)),
+                                     ('answers_ids.notify_time', '=', date)])
+        notification = self.answers_ids.search([('apply_id.form_id.type', '=', 'timing'), ('apply_id.state', '=', 'done'),
+                                      ('notify_time', '>=', date - relativedelta(minutes=5)),
+                                      ('notify_time', '<=', date)])
+        for n in notifications:
+            n.apply_id.message_post(
+                partner_ids=[a.partner_id.id for a in n.notify_ids],
+                subject='',
+                body='Kindly See your schedule',
+                subtype_id=self.env.ref('mail.mt_comment').id,
+                email_layout_xmlid='mail.mail_notification_light',
+            )
+        for n in notification:
+            n.apply_id.message_post(
+                partner_ids=[a.partner_id.id for a in n.form_line_id.notify_ids],
+                subject='',
+                body='Kindly See your schedule',
+                subtype_id=self.env.ref('mail.mt_comment').id,
+                email_layout_xmlid='mail.mail_notification_light',
+            )
 
     def get_field_col(self):
         for record in self:
@@ -257,6 +309,7 @@ class FormApplyLine(models.Model):
                                 answers += record.answers_ids.create({
                                     'name': m.value,
                                     'val_name': c,
+                                    'apply_id': record.apply_id._origin.id,
                                     'is_required': m.is_required,
                                     'type': record.matrix_answer_type,
                                     'matrix_id': m._origin.id,
@@ -291,7 +344,9 @@ class FormApplyLine(models.Model):
                                    index=True)
     form_id = fields.Many2one('form.design', 'Form', store=True, index=True)
     apply_id = fields.Many2one('form.apply', ondelete='cascade', index=True, store=True)
+    partner_id = fields.Many2one(related='apply_id.partner_id', store=True)
     employee_id = fields.Many2one('hr.employee', 'Responsible Employee', store=True)
+    notify_ids = fields.Many2many('res.users', string='Notification To', store=True)
     suggested_id = fields.Many2one('form.line.value', 'Suggested Answer', domain="[('question_id','=',form_line_id)]",
                                    store=True)
     suggested_ids = fields.Many2many('form.line.answer', string='Suggested Answer',
@@ -344,9 +399,7 @@ class FormApplyLine(models.Model):
         ids.sort()
         if self._origin.id in ids:
             next_index = ids.index(self._origin.id) + 1
-            print(next_index)
             if next_index < len(ids):
-                print(next_index)
 
                 return {
                     'name': _('Answers'),
@@ -425,7 +478,7 @@ class FormApplyLineMatrix(models.Model):
     val_name = fields.Char('Col', store=True, translate=True, index=True)
     form_line_id = fields.Many2one('form.apply.line', 'Form Fill Out', ondelete='cascade', index=True)
     apply_id = fields.Many2one('form.apply', 'Form Fill Out', store=True, index=True)
-
+    notify_time = fields.Datetime('Notify Time', store=True, index=True)
     is_required = fields.Boolean('Is Required', store=True, index=True)
     is_header = fields.Boolean('Is Header', store=True, index=True)
     type = fields.Selection([('date', 'Date'),
