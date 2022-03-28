@@ -99,6 +99,7 @@
                         </group>
                         <group>
                             <field name="employee_id"  attrs="{'readonly':[('can_edit','=',False)]}"/>
+                            <field name="notify_ids" widget="many2many_tags"  attrs="{'readonly':[('can_edit','=',False)]}"/>
                         </group>
                     </group>
 
@@ -106,7 +107,7 @@
                     <field name="answers_ids" widget="x2many_2d_matrix" field_x_axis="val_name"
                            field_y_axis="name" field_value="textChar" field_type="type"
                            string="Answer"
-                           attrs="{'invisible':[('question_type','!=','matrix')],'required':[('question_type','=','matrix')]}">
+                           attrs="{'invisible':[('question_type','!=','matrix')],'readonly':[('can_edit','=',False)],'required':[('question_type','=','matrix')]}">
                         <tree>
                             <field name="val_name" />
                             <field name="name"/>
@@ -114,9 +115,12 @@
                             <field name="check"/>
                             <field name="date_time"/>
                             <field name="time"  widget="float_time"/>
+                            <field name="value_id"  domain="['|', ('matrix_line_id','=',col_id),('question_id','=',parent.form_line_id)]" />
+                            <field name="value_ids"  domain="['|', ('matrix_line_id','=',col_id),('question_id','=',parent.form_line_id)]"  widget="many2many_tags"/>
                             <field name="text"/>
                             <field name="is_header"/>
                             <field name="matrix_id" force_save="1"/>
+                            <field name="col_id" force_save="1"/>
                             <field name="value"/>
                             <field name="date"/>
                             <field name="textChar"  attrs="{'required':[('is_required','=',True)]}" />
@@ -188,6 +192,8 @@
                         </group>
                         <group>
                             <field name="employee_id" attrs="{'readonly':[('can_edit','=',False)]}"/>
+                                                        <field name="notify_ids" widget="many2many_tags" attrs="{'readonly':[('can_edit','=',False)]}"/>
+
                         </group>
                     </group>
                     <field name="matrix_answer_type" readonly="1" force_save="1" invisible="1"/>
@@ -195,7 +201,7 @@
                     <field name="answers_ids" widget="x2many_2d_matrix" field_x_axis="val_name"
                            field_y_axis="matrix_id" field_value="textChar" field_type="type" field_datetime="date_time"
                            string="Answer"
-                           attrs="{'invisible':[('question_type','!=','matrix')],'required':[('question_type','=','matrix')]}">
+                           attrs="{'invisible':[('question_type','!=','matrix')],'readonly':[('can_edit','=',False)],'required':[('question_type','=','matrix')]}">
                         <tree>
                             <field name="val_name" />
                             <field name="name"/>
@@ -204,8 +210,10 @@
                             <field name="date_time"/>
                             <field name="text"/>
                             <field name="value"/>
-                             <field name="time"  widget="float_time"/>
-
+                            <field name="time"  widget="float_time"/>
+                            <field name="value_id" domain="['|', ('matrix_line_id','=',col_id),('question_id','=',parent.form_line_id)]" />
+                            <field name="value_ids" domain="['|', ('matrix_line_id','=',col_id),('question_id','=',parent.form_line_id)]" />
+                            <field name="col_id" />
                             <field name="is_header"/>
                             <field name="date"/>
                             <field name="matrix_id"/>

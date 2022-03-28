@@ -109,6 +109,10 @@ odoo.define("web_widget_x2many_2d_matrix.widget", function (require) {
                          this.field_value ='time'
                 }else if (record.data[this.field_type] == 'text'){
                          this.field_value ='text'
+                }else if (record.data[this.field_type] == 'simple_choice'){
+                         this.field_value ='value_id'
+                }else if (record.data[this.field_type] == 'multiple_choice'){
+                         this.field_value ='value_ids'
                 }
                   console.log(record.data[this.field_type]);
 
