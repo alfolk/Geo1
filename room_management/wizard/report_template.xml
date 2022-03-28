@@ -1,25 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-
-<!--    <record id="paperformat_medication" model="report.paperformat">-->
-<!--            <field name="name">paperformat_medication</field>-->
-<!--            <field name="default" eval="False"/>-->
-<!--            <field name="format">custom</field>-->
-<!--            <field name="page_width">215</field>-->
-<!--            <field name="page_height">280</field>-->
-<!--            <field name="orientation">Portrait</field>-->
-<!--            <field name="margin_top">10</field>-->
-<!--            <field name="margin_bottom">15</field>-->
-<!--            <field name="margin_left">5</field>-->
-<!--            <field name="margin_right">5</field>-->
-<!--            <field name="header_line" eval="False"/>-->
-<!--            <field name="header_spacing">1</field>-->
-<!--        </record>-->
-
     <template id="alfolk_clean_report_new">
         <t t-call="web.html_container">
-        <t t-call="web.internal_layout">
+            <!--            <t t-call="web.internal_layout">-->
             <t t-foreach="docs" t-as="o">
                 <div class="page">
                     <h3 class="text-center" style="color:#191970 ; font-family:serif">استمارة خاصة بمتابعة أعمال
@@ -28,17 +11,16 @@
                     <br/>
                     <div class="row mt32">
                         <div class="col-4">
-                            <strong>الي تاريخ</strong>
-                            <p t-esc="o.to_date"/>
+                            <strong>الدور:</strong>
+                            <p t-esc="o.floor_id.name"/>
                         </div>
                         <div class="col-4">
-                            <strong>بداية من تاريخ</strong>
+                            <strong>بداية من تاريخ:</strong>
                             <p t-esc="o.from_date"/>
                         </div>
-
                         <div class="col-4">
-                            <strong>الدور</strong>
-                            <p t-esc="o.floor_id.name"/>
+                            <strong>الي تاريخ:</strong>
+                            <p t-esc="o.to_date"/>
                         </div>
 
                     </div>
@@ -46,37 +28,34 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr style="background-color:gray;text-align:center">
-                                 <th>ملاحظات</th>
-                                <th> المشرف</th>
-                                <th>توقيع العامل</th>
-                                <th>الاماكن</th>
-                                <th>التوقيت</th>
                                 <th>اسم العامل</th>
-
+                                <th>التوقيت</th>
+                                <th>الاماكن</th>
+                                <th>توقيع العامل</th>
+                                <th>توقيع المشرف</th>
+                                <th>ملاحظات</th>
                             </tr>
                         </thead>
                         <tbody>
                             <t t-foreach="o.line_ids" t-as="l">
                                 <tr style="text-align:center">
-                                     <td>
-                                        <span t-esc="l.notes"/>
-                                    </td>
-                                     <td>
-                                        <span t-esc="l.responsible_id"/>
-                                    </td>
-
-
                                     <td>
-
-                                    </td>
-                                    <td>
-                                        <span t-esc="l.places_name"/>
+                                        <span t-esc="l.customer_id"/>
                                     </td>
                                     <td>
                                         <span t-esc="l.time_clean"/>
                                     </td>
                                     <td>
-                                        <span t-esc="l.customer_id"/>
+                                        <span t-esc="l.places_name"/>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+                                        <span t-esc="l.responsible_id"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="l.notes"/>
                                     </td>
 
                                 </tr>
@@ -86,7 +65,7 @@
                 </div>
             </t>
         </t>
-                </t>
+        <!--        </t>-->
     </template>
 
 </odoo>

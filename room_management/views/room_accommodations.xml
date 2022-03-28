@@ -7,18 +7,15 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="category" required="1"/>
-                             <field name="partner_name"/>
-                            <field name="partner_code"/>
+                            <field name="customer_name"/>
+                            <field name="responsible_id" required="1"/>
+<!--                            <field name="customer_name" required="1"/>-->
                             <field name="room_id" required="1"/>
                         </group>
                         <group>
-
-                            <field name="responsible_id" required="1"/>
                             <field name="bed_reserve_from" required="1"/>
                             <field name="bed_reserve_to" required="1"/>
                             <field name="bed_id" required="1"/>
-
                             <field name="bed_ids" invisible="1"/>
                         </group>
                     </group>
@@ -38,8 +35,8 @@
         <field name="model">folk.rooms.accommodations</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="partner_name"/>
-                <field name="partner_code"/>
+                <field name="customer_name"/>
+<!--                <field name="partner_name"/>-->
                 <field name="room_id"/>
                 <field name="bed_id"/>
                  <field name="bed_reserve_from"/>
@@ -50,20 +47,15 @@
         </field>
     </record>
 
+
     <!--    add search view-->
     <record id="floor_accommodations_search_view" model="ir.ui.view">
         <field name="name">folk.room.accommodations.search</field>
         <field name="model">folk.rooms.accommodations</field>
         <field name="arch" type="xml">
             <search string="Room Accommodations">
-<!--                <field name="partner_name" filter_domain="['|', ('name','ilike',self), ('code','like',self)]" string="Code"/>-->
-                <field name="partner_name" string="Partner Code" filter_domain="['|',
-                    ('partner_name.name', '=', self),
-                    ('partner_name.code', '=', self)]"/>
-<!--                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]" string="Analytic Account"/>-->
-
                 <field name="responsible_id"/>
-                <field name="partner_name"/>
+                <field name="customer_name"/>
                 <field name="bed_reserve_from"/>
                 <field name="bed_reserve_to"/>
 <!--                <field name="status"/>-->
@@ -71,8 +63,8 @@
                 <separator/>
                 <group expand="1" string="Group By">
                     <filter string="Responsible" name="responsible_id" context="{'group_by':'responsible_id'}"/>
-<!--                    <filter string="Customer" name="customer_name" context="{'group_by':'customer_name'}"/>-->
-                    <filter string="Partner Name" name="partner_name" context="{'group_by':'partner_name'}"/>
+                    <filter string="Customer" name="customer_name" context="{'group_by':'customer_name'}"/>
+<!--                    <filter string="Partner" name="partner_name" context="{'group_by':'partner_name'}"/>-->
 
                     <filter string="Room" name="room_id" context="{'group_by':'room_id'}"/>
 
@@ -91,8 +83,8 @@
             <kanban quick_create="false">
                 <field name="room_id"/>
                 <field name="responsible_id"/>
-                <field name="partner_name"/>
-<!--                <field name="customer_name"/>-->
+<!--                <field name="partner_name"/>-->
+                <field name="customer_name"/>
                 <field name="bed_reserve_from"/>
                 <field name="bed_reserve_to"/>
                 <templates>
@@ -113,10 +105,8 @@
                                         </li>
 
 
-                                        <li>Partner Name :
-<!--                                            <field name="customer_name"/>-->
-
-                                            <field name="partner_name"/>
+                                        <li>Customer :
+                                            <field name="customer_name"/>
                                         </li>
                                          <li>Reserve From :
                                             <field name="bed_reserve_from"/>

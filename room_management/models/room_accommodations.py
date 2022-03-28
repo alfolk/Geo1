@@ -10,22 +10,18 @@ class RoomsAccommodationsAlfolk(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _rec_name = "room_id"
 
-    category = fields.Many2one('partner.category', 'Partner Category')
+    # category_type = fields.Selection([
+    #     ('resident', 'resident'), ('non', 'Non-resident')], string='Category Type')
+    # partner_name = fields.Many2one('partner.category', store=True, index=True, string="partner", tracking=True,
+    #                                required=True)
+
     room_id = fields.Many2one("folk.rooms", "Room", tracking=True, domain=[('status', '=', 'available')])
 
-    partner_name = fields.Many2one("res.partner", domain="[('category','=',category)]", string="Partner Name",
-                                   tracking=True,
-                                   required=True, )
-    partner_code = fields.Char('Partner Code', readonly=True, related='partner_name.code')
+    customer_name = fields.Many2one('res.partner', store=True, index=True, string="Customer Name", tracking=True)
+
     bed_reserve_from = fields.Date("Reservation From", store=True, tracking=True, default=datetime.today())
     bed_reserve_to = fields.Date("Reservation To", store=True, tracking=True, default=datetime.today())
     responsible_id = fields.Many2one('hr.employee', store=True, tracking=True)
-
-    _sql_constraints = [
-        ('bed_partner_code_uniq', 'unique(partner_name, bed_reserve_from,bed_reserve_to)',
-         'This bed already reserved in this period'),
-
-    ]
 
     @api.model
     def _getbed(self):
@@ -61,13 +57,11 @@ class RoomsAccommodationsAlfolk(models.Model):
                 if rec.bed_reserve_to < rec.bed_reserve_from:
                     raise ValidationError(_("Date Of Reservation From Must Be Before Date Of Reservation TO"))
 
-
-
-    # @api.constrains('bed_reserve_from', 'bed_reserve_to', 'bed_id','partner_name')
+    # @api.constrains('bed_reserve_from', 'bed_reserve_to', 'bed_id')
     # def check_availabilty_bed(self):
     #     for rec in self:
-    #         if rec.bed_id and rec.bed_reserve_from and rec.bed_reserve_to and rec.partner_name:
-    #             raise ValidationError(_("Sorry you cant not reserve this bed in this period"))
+    #         if rec.bed_id and rec.bed_reserve_from and rec.bed_reserve_to >= datetime.today():
+    #             raise ValidationError(_("This Bed Is Occupied until %s" %rec.bed_reserve_to))
 
     # @api.constrains('status')
     # def check_availability_bed(self):
