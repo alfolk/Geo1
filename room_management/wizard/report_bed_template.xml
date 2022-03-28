@@ -35,9 +35,9 @@
                                     <th>غرفة</th>
 
 
-                                    <th t-if="o.reserved">أسم النزيل</th>
+                                    <th t-if="o.reserved">كود/أسم النزيل</th>
 
-                                    <th t-if="o.reserved">كود النزيل</th>
+<!--                                    <th t-if="o.reserved">كود النزيل</th>-->
 
                                 </tr>
                             </thead>
@@ -62,12 +62,12 @@
                                         </td>
 
                                          <td t-if="o.reserved">
-                                            <span t-esc="l.partner_name"/>
+                                            <span t-esc="l.partner_name"/> / <span t-esc="l.partner_code"/>
                                         </td>
 
-                                         <td t-if="o.reserved">
-                                            <span t-esc="l.partner_code"/>
-                                        </td>
+<!--                                         <td t-if="o.reserved">-->
+<!--                                            <span t-esc="l.partner_code"/>-->
+<!--                                        </td>-->
 
                                     </tr>
                                 </t>
