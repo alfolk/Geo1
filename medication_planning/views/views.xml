@@ -40,8 +40,12 @@
                     <group>
                         <field name="employee"/>
                         <field name="medication"/>
-                        <field name="quantity" force_save="1"/>
+                                                <field name="quantity" force_save="1"/>
+
+                        <field name="product_uom_id"/>
                         <field name="day"/>
+                        <field name="quantity_received" invisible="1" force_save="1"/>
+                        <field name="quantity_re" invisible="1" force_save="1"/>
                         <field name="products" invisible="1"/>
                         <field name="line_ids" invisible="1"/>
 
@@ -65,7 +69,7 @@
                                 states="draft"
                         />
                         <button name="action_register_day"
-                                string="Register Medication Day"
+                                string="Register Medication"
                                 type="object"
                                 class="oe_highlight"
                                 states="receive_med"
@@ -78,11 +82,11 @@
                         <button name="close"
                                 string="Close"
                                 type="object"
-                                states="record_date"/>
+                                states="receive_med"/>
 
 
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,picking,receive_med,record_date,close"
+                               statusbar_visible="draft,picking,receive_med,close,return_med"
                                statusbar_colors='{"draft":"blue"}'/>
 
                     </header>
@@ -98,16 +102,15 @@
                         </div>
 
                         <group>
-                            <field name="category"
-                                   attrs="{'readonly':[('state','in',('close','picking','receive_med','record_date'))]}"/>
+                            <field name="category"/>
                             <field name="person"
-                                   attrs="{'readonly':[('state','in',('close','picking','receive_med','record_date'))]}"/>
-                            <field name="warehouse"
-                                   attrs="{'readonly':[('state','in',('close','picking','receive_med','record_date'))]}"/>
+                                   attrs="{'readonly':[('state','in',('close','picking','receive_med'))]}"/>
+                                                     <field name="warehouse"
+                                   attrs="{'readonly':[('state','in',('close','picking','receive_med'))]}"/>
 
-                            <field name="med_type"
-                                   attrs="{'readonly':[('state','in',('close','picking','receive_med','record_date'))]}"/>
-                            <field name="location" attrs="{'readonly':[('state','=','close')],'invisible':1}"/>
+                            <field name="medication_duration"
+                                   attrs="{'readonly':[('state','in',('close','picking','receive_med'))]}"/>
+                             <field name="location" attrs="{'readonly':[('state','=','close')],'invisible':1}"/>
                             <field name="location_des" attrs="{'readonly':[('state','=','close')],'invisible':1}"/>
                             <field name="picking_type" attrs="{'readonly':[('state','=','close')],'invisible':1}"/>
                             <field name="company_id" invisible="1"/>
@@ -125,40 +128,38 @@
                                         <tree editable="bottom">
                                             <field name="medication"
                                                    attrs="{'readonly':[('state','in',('close','picking','receive_med'))],'required':1}"/>
-                                            <field name="qty"/>
-                                            <field name="unit"/>
-                                            <field name="number"/>
-                                            <field name="no_days"/>
-                                            <field name="day"/>
-                                            <field name="product_uom_category_id" invisible="1"/>
-                                            <field name="quantity"
+                                                                        <field name="quantity"
                                                    attrs="{'readonly':[('state','in',('close','picking','receive_med'))],'required':1}"/>
                                             <field name="product_uom_id"
                                                    attrs="{'readonly':[('state','in',('close','picking','receive_med'))],'required':1}"/>
-                                            <field name="quantity_received" invisible="0" readonly="1" force_save="1"/>
-                                            <field name="quantity_returned" invisible="0" readonly="1" force_save="1"/>
-                                            <field name="quantity_re" invisible="0"/>
-                                            <field name="product_uom_ids" invisible="0"/>
-                                            <field name="state" invisible="1"/>
-                                            <field name="employee" invisible="1"/>
-                                            <field name="notes" invisible="1"/>
 
+                                            <field name="quantity_received" readonly="1" force_save="1"/>
+                                            <field name="quantity_returned" readonly="1" force_save="1"/>
+                                            <field name="quantity_re"/>
+                                            <field name="product_uom_ids"/>
+                                            <field name="employee"/>
+                                            <field name="notes"/>
+                                            <field name="state" invisible="1"/>
 
                                         </tree>
                                     </field>
 
                                 </page>
 
-                                <page string="Medicament Times">
+                                <page string="Medicament Times"
+                                      attrs="{'invisible':[('state','not in',('close','receive_med'))]}">
 
                                     <field name="line_ids" attrs="{'readonly':[('state','=','close')]}">
                                         <tree editable="bottom">
-                                            <field name="medication"/>
-                                            <field name="day"/>
-                                            <field name="quantity"/>
-                                            <field name="employee"/>
-                                            <field name="is_taken"/>
+                                            <field name="medication" required="1"/>
+                                            <field name="product_uom_id" required="1"/>
+                                            <field name="day" required="1"/>
+                                            <field name="quantity" required="1"/>
+                                            <field name="employee" required="1"/>
+                                            <field name="is_taken" required="1"/>
                                             <field name="products" invisible="1"/>
+                                            <field name="quantity_received" invisible="1"/>
+                                            <field name="quantity_re" invisible="1"/>
                                             <field name="state" invisible="1"/>
 
                                         </tree>
@@ -172,35 +173,11 @@
 
 
                     </sheet>
-                                        <div class="o_attachment_preview"/>
-                    <div class="oe_chatter">
-                        <field name="message_follower_ids"/>
-                        <field name="message_ids"/>
-                    </div>
                 </form>
             </field>
         </record>
         <!-- actions opening views on models -->
- <record id="medication_planning_search_view" model="ir.ui.view">
-        <field name="name">medication.planning.search</field>
-        <field name="model">medication.planning</field>
-        <field name="arch" type="xml">
-            <search string="Medication Planning">
-                <field name="person" string="Partner" filter_domain="['|',
-                    ('person.name', '=', self),
-                    ('person.code', '=', self)]"/>
 
-
-                <separator/>
-                <group expand="1" string="Group By">
-                    <filter string="Partner" name="person" context="{'group_by':'person'}"/>
-
-
-
-                </group>
-            </search>
-        </field>
-    </record>
         <record model="ir.actions.act_window" id="medication_planning_action_window">
             <field name="name">Medication Planned</field>
             <field name="res_model">medication.planning</field>
