@@ -24,8 +24,7 @@
                         <group>
                             <field name="form_id" attrs="{'readonly':[('state','!=','draft')]}" force_save="1"/>
                             <field name="form_type"  force_save="1"/>
-                            <field name="type"  widget="radio" options="{'horizontal': True}" attrs="{'readonly':[('state','!=','draft')],
-                            'invisible':[('form_type','!=','achievement')]}" force_save="1"/>
+                            <field name="type"  widget="radio" options="{'horizontal': True}" invisible="1" force_save="1"/>
                             <field name="allow_add" force_save="1"/>
                         </group>
                         <group>

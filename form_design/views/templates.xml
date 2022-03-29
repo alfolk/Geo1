@@ -42,11 +42,14 @@
 
                                 <div class="col-12" t-if="l.question_type !='matrix'">
                                     <span>Answer :</span>
-                                    <span t-field="l.answer"/>
+                                     <input type="checkbox" id="o_form_checkbox" checked="checked" t-if="l.question_type =='check' and l.answer =='True'"/>
+                                                    <input type="checkbox" id="o_form_checkbox_false" t-if="l.question_type =='check' and l.answer== 'False'"/>
+
+                                    <span t-field="l.answer" t-if="l.question_type !='check'"/>
                                 </div>
 
                             </div>
-                                              <table class="table table-bordered mt32" t-if="l.question_type=='matrix'">
+                             <table class="table table-bordered mt32" t-if="l.question_type=='matrix'">
                                 <thead>
                                     <tr>
                                         <th/>
@@ -119,9 +122,12 @@
                                     <span t-field="o.note"/>
                                 </div>
                             </div>
-                             <div class="col-12" t-if="o.question_type !='matrix'">
-                                    <span>Answer :</span>
-                                    <span t-field="o.answer"/>
+                               <div class="col-12" t-if="o.question_type !='matrix'">
+                                    <span>Answer : </span>
+                                     <input type="checkbox" id="o_form_checkbox" checked="checked" t-if="o.question_type =='check' and o.answer =='True'"/>
+                                                    <input type="checkbox" id="o_form_checkbox_false" t-if="o.question_type =='check' and o.answer== 'False'"/>
+
+                                    <span t-field="o.answer" t-if="o.question_type !='check'"/>
                                 </div>
 
                             <table class="table table-bordered mt32" t-if="o.question_type =='matrix'">

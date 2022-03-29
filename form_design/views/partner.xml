@@ -22,16 +22,17 @@
                          context="{'default_partner_id': active_id}">
                             Nutrition
                         </button>
-                      <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_timing" attrs="{'invisible':[('is_student','=',False)]}" icon="fa-calendar"
-                         context="{'default_partner_id': active_id}">
-                            Timing
-                        </button>
-                        <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_rate" attrs="{'invisible':[('is_student','=',False)]}" icon="fa-trophy"
+                       <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_rate" attrs="{'invisible':[('is_student','=',False)]}" icon="fa-trophy"
                          context="{'default_partner_id': active_id}">
                           Achievement
                         </button>
+                         <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_timing" attrs="{'invisible':[('is_student','=',False)]}" icon="fa-calendar"
+                                                 context="{'default_partner_id': active_id}">
+                                                    Timing
+                                                </button>
+                       </div>
 
-                    </div>
+
                              <div name="button_box"  position="after">
                              <div name="button_box2" class="oe_button_box">
                                   <button class="oe_stat_button o_res_partner_tip_opp" type="object" name="open_achievement_worker" attrs="{'invisible':[('show_achievement','=',False)]}" icon="fa-users"
