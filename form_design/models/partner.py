@@ -171,8 +171,7 @@ class Partner(models.Model):
                                                      ('date', '=', fields.date.today())])
             if not exist:
                 forms = record.env['form.design'].search(
-                    [('type', '=', 'achievement'), '|', ('category', '=', record.category.id),
-                     ('assign_type', '=', 'worker'),
+                    [('type', '=', 'achievement'), ('assign_type', '=', 'worker'), '|', ('category', '=', record.category.id),
                      ('category', '=', False)])
                 for form in forms:
                     lines = []
@@ -216,8 +215,9 @@ class Partner(models.Model):
                                                      ('date', '=', fields.date.today())])
             if not exist:
                 forms = record.env['form.design'].search(
-                    [('type', '=', 'achievement'), '|', ('category', '=', record.category.id),
-                     ('assign_type', '=', 'other'),
+                    [('type', '=', 'achievement'),
+                     ('assign_type', '=', 'other'), '|',
+                     ('category', '=', record.category.id),
                      ('category', '=', False)])
                 for form in forms:
                     lines = []
@@ -248,7 +248,7 @@ class Partner(models.Model):
                            ('partner_id', '=', record.id),
                            ('form_id.assign_type', '=', 'other'),
                            ('state', '=', 'draft'),
-                           ('type', '=', 'worker')],
+                           ],
                 'context': "{'default_partner_id': " + str(self._origin.id) + "}",
             }
 
