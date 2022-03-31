@@ -218,6 +218,9 @@ class FormApplyLine(models.Model):
             elif raw.type == 'char':
                 return {'value': raw.textChar,
                         'type': raw.type}
+            elif raw.type == 'time':
+                return {'value': raw.time,
+                        'type': raw.type}
             elif raw.type == 'numerical_box':
                 return {'value': raw.value,
                         'type': raw.type}
