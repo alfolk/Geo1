@@ -27,57 +27,60 @@
                     </h3>
                     <br/>
                     <div class="row mt32">
+                         <div class="col-4">
+                            <strong>الدور</strong>
+                            <p t-esc="o.floor_id.name"/>
+                        </div>
+                         <div class="col-4">
+                            <strong> من تاريخ</strong>
+                            <p t-esc="o.from_date"/>
+                        </div>
                         <div class="col-4">
                             <strong>الي تاريخ</strong>
                             <p t-esc="o.to_date"/>
                         </div>
-                        <div class="col-4">
-                            <strong>بداية من تاريخ</strong>
-                            <p t-esc="o.from_date"/>
-                        </div>
 
-                        <div class="col-4">
-                            <strong>الدور</strong>
-                            <p t-esc="o.floor_id.name"/>
-                        </div>
+
 
                     </div>
                     <br/>
                     <table class="table table-bordered">
                         <thead>
                             <tr style="background-color:gray;text-align:center">
-                                 <th>ملاحظات</th>
-                                <th> المشرف</th>
-                                <th>توقيع العامل</th>
-                                <th>الاماكن</th>
-                                <th>التوقيت</th>
+                                 <th>الاماكن</th>
+                                <th>التاريخ</th>
+                                <th>ملاحظات</th>
                                 <th>اسم العامل</th>
+                                <th>توقيع العامل</th>
+                                <th> المشرف</th>
 
                             </tr>
                         </thead>
                         <tbody>
                             <t t-foreach="o.line_ids" t-as="l">
                                 <tr style="text-align:center">
+                                       <td>
+                                        <span t-esc="l.places_name"/>
+                                    </td>
+                                      <td>
+                                        <span t-esc="l.time_clean"/>
+                                    </td>
                                      <td>
                                         <span t-esc="l.notes"/>
                                     </td>
                                      <td>
+                                        <span t-esc="l.customer_id"/>
+                                    </td>
+                                    <td>
+                                    </td>
+
+                                       <td>
                                         <span t-esc="l.responsible_id"/>
                                     </td>
 
 
-                                    <td>
 
-                                    </td>
-                                    <td>
-                                        <span t-esc="l.places_name"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="l.time_clean"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="l.customer_id"/>
-                                    </td>
+
 
                                 </tr>
                             </t>

@@ -36,7 +36,7 @@ msgstr ""
 #. module: room_management
 #: model_terms:ir.ui.view,arch_db:room_management.alfolk_clean_report_new
 #: model_terms:ir.ui.view,arch_db:room_management.folk_bed_report
-msgid "<strong>بداية من تاريخ:</strong>"
+msgid "<strong> من تاريخ:</strong>"
 msgstr ""
 
 #. module: room_management
@@ -637,7 +637,7 @@ msgstr ""
 
 #. module: room_management
 #: model_terms:ir.ui.view,arch_db:room_management.alfolk_clean_report_new
-msgid "التوقيت"
+msgid "التاريخ"
 msgstr ""
 
 #. module: room_management
