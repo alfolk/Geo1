@@ -60,6 +60,8 @@
                             <field name="mother_name"/>
                             <field name="date_of_birth"/>
                             <field name="age"/>
+                            <field name="doctor_name"/>
+                            <field name="doctor_phone"/>
                         </group>
                     </group>
                 </page>
