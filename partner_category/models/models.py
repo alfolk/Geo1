@@ -25,7 +25,7 @@ class res_partner_edit(models.Model):
     date_of_birth = fields.Date('Birth Of Date', store=True)
     identification_id = fields.Char('Identification ID', store=True)
     code = fields.Char('Code', store=True, required=True)
-    doctor_name = fields.Many2one('Doctor Name','hr.employee', store=True, )
+    doctor_name = fields.Many2one('hr.employee', string='Doctor Phone', store=True, )
     doctor_phone = fields.Char( 'Doctor Phone', store=True,)
     @api.model
     def name_search(self, name, args=None, operator="ilike", limit=100):
