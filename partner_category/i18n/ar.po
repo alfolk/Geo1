@@ -31,6 +31,16 @@ msgid "Gender"
 msgstr "النوع"
 
 #. module: partner_category
+#: model:ir.model.fields,field_description:partner_category.field_res_partner__doctor_name
+msgid "Doctor Name"
+msgstr "أسم الطبيب"
+
+#. module: partner_category
+#: model:ir.model.fields,field_description:partner_category.field_res_partner__doctor_phone
+msgid "Doctor Phone"
+msgstr "رقم التليفون"
+
+#. module: partner_category
 #: model:ir.model.fields,field_description:partner_category.field_res_partner__father_name
 msgid "Father Name"
 msgstr "أسم اﻷب"
