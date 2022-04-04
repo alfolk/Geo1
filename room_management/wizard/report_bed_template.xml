@@ -13,12 +13,12 @@
                         <div class="row mt32">
 
                             <div class="col-6">
-                                <strong> :الي تاريخ</strong>
-                                <p t-esc="o.to_date"/>
-                            </div>
-                             <div class="col-6">
-                                <strong>:بداية من تاريخ</strong>
+                                 <div class="col-6">
+                                <strong>:من تاريخ</strong>
                                 <p t-esc="o.from_date"/>
+                            </div>
+                                <strong>:الي تاريخ</strong>
+                                <p t-esc="o.to_date"/>
                             </div>
 
                         </div>
@@ -26,16 +26,16 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr style="background-color:gray;text-align:center">
+                                    <th t-if="o.reserved">كود/أسم النزيل</th>
+                                    <th>غرفة</th>
+                                    <th>سرير</th>
+                                    <th t-if="o.reserved">حجز من</th>
+                                    <th t-if="o.reserved">الى</th>
                                     <th t-if="o.reserved">المسئول</th>
 
-                                    <th t-if="o.reserved">الى</th>
-
-                                    <th t-if="o.reserved">حجز من</th>
-                                    <th>سرير</th>
-                                    <th>غرفة</th>
 
 
-                                    <th t-if="o.reserved">كود/أسم النزيل</th>
+
 
 <!--                                    <th t-if="o.reserved">كود النزيل</th>-->
 
@@ -44,26 +44,27 @@
                             <tbody>
                                 <t t-foreach="o.line_ids" t-as="l">
                                     <tr style="text-align:center">
-                                         <td t-if="o.reserved">
-                                            <span t-esc="l.responsible_id"/>
-                                        </td>
                                           <td t-if="o.reserved">
-                                            <span t-esc="l.bed_reserve_to"/>
+                                            <span t-esc="l.partner_name"/> / <span t-esc="l.partner_code"/>
                                         </td>
-
-                                        <td t-if="o.reserved">
-                                            <span t-esc="l.bed_reserve_from"/>
+                                         <td>
+                                            <span t-esc="l.room_id"/>
                                         </td>
                                          <td>
                                             <span t-esc="l.bed_id"/>
                                         </td>
-                                        <td>
-                                            <span t-esc="l.room_id"/>
+                                          <td t-if="o.reserved">
+                                            <span t-esc="l.bed_reserve_from"/>
                                         </td>
 
-                                         <td t-if="o.reserved">
-                                            <span t-esc="l.partner_name"/> / <span t-esc="l.partner_code"/>
+                                          <td t-if="o.reserved">
+                                            <span t-esc="l.bed_reserve_to"/>
                                         </td>
+
+                                           <td t-if="o.reserved">
+                                            <span t-esc="l.responsible_id"/>
+                                        </td>
+
 
 <!--                                         <td t-if="o.reserved">-->
 <!--                                            <span t-esc="l.partner_code"/>-->

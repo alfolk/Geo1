@@ -9,7 +9,7 @@
                         <group>
                             <field name="category" required="1"/>
                              <field name="partner_name"/>
-                            <field name="partner_code"/>
+<!--                            <field name="partner_code"/>-->
                             <field name="room_id" required="1"/>
                         </group>
                         <group>
@@ -39,7 +39,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="partner_name"/>
-                <field name="partner_code"/>
+<!--                <field name="partner_code"/>-->
                 <field name="room_id"/>
                 <field name="bed_id"/>
                  <field name="bed_reserve_from"/>
