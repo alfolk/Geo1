@@ -1,12 +1,23 @@
+from datetime import datetime, timedelta
+
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import math
+from odoo.tools import float_round
+from dateutil.relativedelta import relativedelta
 
 _STATES = [
     ('draft', 'Draft'),
     ('picking', 'Send Picking'),
     ('receive_med', 'Receive Medication'),
+    ('record_date', 'Record Date Times'),
     ('close', 'Closed')
 ]
+
+
+def round_half_up(n, decimals=0):
+    multiplier = 10 ** decimals
+    return math.floor(n * multiplier + 0.9) / multiplier
 
 
 class product_edit(models.Model):
@@ -51,11 +62,14 @@ class alfolk_medication_chart_record(models.Model):
     _name = 'medication.planning'
     _description = 'Medication Planned'
     _rec_name = 'person'
+    _inherit = ['mail.thread']
+
     category = fields.Many2one('partner.category', "Category", store=True)
+    med_type = fields.Selection([('chronic', 'Chronic'), ('accidental', 'Accidental')], store=True)
 
     def unlink(self):
         for l in self:
-            if  l.state != 'draft':
+            if l.state != 'draft':
                 raise UserError(_('Cannot delete a item in post state'))
             return super(alfolk_medication_chart_record, self).unlink()
 
@@ -192,7 +206,6 @@ class alfolk_medication_chart_record(models.Model):
                                                                                              line.product_uom_id,
                                                                                              rounding_method='HALF-UP')
                             line.quantity_re = 0
-                            line.product_uom_ids = False
 
                     picking.action_confirm()
 
@@ -216,8 +229,8 @@ class alfolk_medication_chart_record(models.Model):
 
     person = fields.Many2one('res.partner', string='Person', store=True, required=True)
     medication_duration = fields.Char('Medicine Duration', store=True)
-    line_id = fields.One2many('medication.planning.line', 'line_id')
-    line_ids = fields.One2many('medication.planning.day', 'line_ids')
+    line_id = fields.One2many('medication.planning.line', 'line_id', store=True)
+    line_ids = fields.One2many('medication.planning.day', 'line_ids', store=True)
     state = fields.Selection(selection=_STATES, string='Status', index=True, required=True,
                              copy=False, default='draft', store=True)
 
@@ -244,21 +257,27 @@ class alfolk_medication_chart_record(models.Model):
     products = fields.Many2many('product.product', store=False, compute='_load_all_partner_ids')
 
     def action_register_day(self):
-        ''' Open the account.payment.register wizard to pay the selected journal entries.
-        :return: An action opening the account.payment.register wizard.
-        '''
-        return {
-            'name': _('Register Day'),
-            'res_model': 'medication.planning.day',
-            'view_mode': 'form',
-            'context': {
-                'active_model': 'medication.planning',
-                'active_ids': self.ids,
-                'default_line_ids': self.id
-            },
-            'target': 'new',
-            'type': 'ir.actions.act_window',
-        }
+        for r in self:
+            for record in r.line_id:
+                z = record.no_days * record.number
+                hour = 24 / record.number
+                count = 0
+                count_date = 0
+                m = record.day
+                y = datetime.strptime(str(m), '%Y-%m-%d %H:%M:%S')
+                date_edit = y + timedelta(hours=-hour)
+                while count_date <= 24 * record.no_days and count < z:
+                    count_date = count_date + hour
+                    count = count + 1
+                    date = date_edit + timedelta(hours=count_date)
+                    self.env['medication.planning.day'].create({
+                        'line_ids': r.id,
+                        'medication': record.medication.id,
+                        'day': date,
+
+                    })
+
+                self.write({'state': 'record_date'})
 
 
 class alfolk_medication_chart_record_line(models.Model):
@@ -269,7 +288,28 @@ class alfolk_medication_chart_record_line(models.Model):
     medication = fields.Many2one('product.product',
                                  domain="[('medication','=',True)]",
                                  string='Medicine', store=True)
-    quantity = fields.Float('Qty Ordered', store=True)
+
+    @api.depends('no_days', 'number', 'unit', 'qty')
+    def _compute_qty(self):
+        for record in self:
+            if record.medication.pro_type == 'rivet':
+                if record.number:
+                    y = record.qty * record.number * record.no_days
+                    record.quantity = fields.float_round(record.unit._compute_quantity(y, record.product_uom_id, ),
+                                                         precision_digits=0,
+                                                         rounding_method='UP')
+                else:
+                    record.quantity = 0
+            else:
+                record.quantity = 1
+
+    quantity = fields.Integer('Qty Ordered', store=True, compute='_compute_qty')
+    day = fields.Datetime(string='Start Date Time', required=True, store=True)
+    no_days = fields.Integer('No Days', store=True)
+    qty = fields.Integer('QTY', store=True)
+    number = fields.Integer('Times', store=True)
+    product_uom_category_id = fields.Many2one(related='medication.uom_id.category_id')
+
     state = fields.Selection(related='line_id.state', store=True)
     quantity_received = fields.Float('Qty Received', store=True)
     quantity_returned = fields.Float('Qty Returned', store=True)
@@ -291,21 +331,23 @@ class alfolk_medication_chart_record_line(models.Model):
             domain = {'product_uom_ids': [('category_id', '=', self.medication.uom_id.category_id.id)]}
             return {'domain': domain}
         else:
-            return {'domain': False}
+            domain = {'product_uom_ids': [('category_id', '=', self.medication.uom_id.category_id.id)]}
+            return {'domain': domain}
+
 
     @api.onchange('medication')
-    def _getline1(self):
+    def _getuom(self):
         if self.medication:
-            employees = self.env['product.product'].search([('id', '=', self.medication.id),
-                                                       ])
-        
-            self.product_uom_id=(employees.uom_id.id)
-            self.product_uom_ids=(employees.uom_id.id)
+            product = self.env['product.product'].search([('id', '=', self.medication.id),
+                                                          ])
+            self.product_uom_id = (product.uom_id.id)
+            self.unit = (product.uom_id.id)
+            self.product_uom_ids = product.uom_id.id
 
+    product_uom_id = fields.Many2one('uom.uom', string='Unit of Measure', default=_getuom, store=True)
+    unit = fields.Many2one('uom.uom', string='Unit', default=_getuom,domain="[('category_id', '=', product_uom_category_id)]", store=True)
 
-    product_uom_id = fields.Many2one('uom.uom',string= 'Unit of Measure', default=_getline1,store=True)
-
-    product_uom_ids = fields.Many2one('uom.uom',string= 'Unit of Measure', store=True)
+    product_uom_ids = fields.Many2one('uom.uom', string='Unit of Measure', default=_getuom,store=True)
 
 
 class alfolk_medication_chart_record_day(models.Model):
@@ -314,24 +356,13 @@ class alfolk_medication_chart_record_day(models.Model):
     line_ids = fields.Many2one('medication.planning', ondelete="cascade", string='Medication', store=True)
     state = fields.Selection(related='line_ids.state', store=True)
 
-    medication = fields.Many2one('product.product', required=True, domain="[('id', 'in',products)]", string='Medicine',
+    medication = fields.Many2one('product.product', required=True, string='Medicine',
                                  store=True)
     day = fields.Datetime(string='Day With Hour', required=True, store=True)
-    quantity = fields.Char(string='Quantity', required=True, store=True)
+    quantity = fields.Char(string='Quantity', store=True)
 
-    @api.onchange('medication')
-    def onchange_field_uom_category(self):
-        if self.medication:
-            domain = {'product_uom_id': [('category_id', '=', self.medication.uom_id.category_id.id)]}
-            return {'domain': domain}
-        else:
-            return {'domain': False}
-
-    product_uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=True, store=True)
-
-
-    quantity_received = fields.Float(string='Quantity received',  store=True)
+    quantity_received = fields.Float(string='Quantity received', store=True)
     quantity_re = fields.Float(string='Quantity re', store=True)
-    employee = fields.Many2one('hr.employee', required=True, string='Employee', store=True)
+    employee = fields.Many2one('hr.employee', string='Employee', store=True)
     products = fields.Many2many('product.product', string='product', store=False, related='line_ids.products', )
     is_taken = fields.Boolean(string='IS Taken?', store=True)

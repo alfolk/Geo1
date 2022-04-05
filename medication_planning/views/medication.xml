@@ -154,10 +154,7 @@
                                                         style="border: 1px solid black;font-size: 12.5px">
 
                                                         اسم العلاج
-                                                    </th><th class="text-center" width='200px'
-                                                        style="border: 1px solid black;font-size: 12.5px">
-                                                    الوحدة
-                                                 </th>
+                                                    </th>
                                                     <th class="text-center" width='200px'
                                                         style="border: 1px solid black;font-size: 12.5px">
                                                         اليوم بالساعة
@@ -168,6 +165,9 @@
                                                     </th>
                                                     <th class="text-center" width='200px'
                                                         style="border: 1px solid black;font-size: 12.5px">
+هل اخذ العلاج
+                                                    </th> <th class="text-center" width='200px'
+                                                        style="border: 1px solid black;font-size: 12.5px">
                                                         توقيع المشرف
                                                     </th>
 
@@ -177,15 +177,10 @@
                                             <tbody class="invoice_tbody">
                                                 <t t-foreach="o.line_ids" t-as="l">
                                                     <tr>
-
                                                         <td class="text-left" width='200px'
                                                             style="border: 1px solid black;">
                                                             <span
                                                                     t-esc="l.medication.name"/>
-                                                        </td> <td class="text-left" width='200px'
-                                                            style="border: 1px solid black;">
-                                                            <span
-                                                                    t-esc="l.product_uom_id.name"/>
                                                         </td>
                                                         <td class="text-center" width='200px'
                                                             style="border: 1px solid black;">
@@ -197,6 +192,12 @@
                                                             style="border: 1px solid black;">
                                                             <span style="font-size: 13px"
                                                                   t-esc="l.quantity"/>
+
+                                                        </td>
+                                                        <td class="text-center" width='200px'
+                                                            style="border: 1px solid black;">
+                                                            <span style="font-size: 13px" t-esc="l.is_taken"
+                                                            />
 
                                                         </td>
                                                         <td class="text-center" width='200px'
@@ -221,8 +222,9 @@
                                 </t>
                             </div>
                         </div>
-                                        </t>
+
                 </t>
+            </t>
             </t>
         </template>
         <report
