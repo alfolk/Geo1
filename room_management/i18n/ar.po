@@ -326,6 +326,13 @@ msgstr "غرفة :"
 msgid "No Of Beds"
 msgstr "عدد السراير"
 
+
+#. module: room_management
+#: model:ir.actions.report,name:room_management.room_reserved_report
+msgid "Room Reserved Report"
+msgstr "طباعة خاصة بحجز الغرف"
+
+
 #. module: room_management
 #: model:ir.model.fields,field_description:room_management.field_alfolk_clean_report_line__notes
 #: model:ir.model.fields,field_description:room_management.field_folk_beds__notes

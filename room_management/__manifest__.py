@@ -16,6 +16,8 @@
         "wizard/folk_clean_rport.xml",
         "wizard/report_bed_template.xml",
         "wizard/folk_bed_report.xml",
+        "report/room_report.xml",
+        "report/room_report_template.xml"
 
     ],
     'images': ['static/description/icon.jpg'],
