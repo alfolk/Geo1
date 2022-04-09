@@ -24,9 +24,10 @@ class res_partner_edit(models.Model):
     mother_name = fields.Char('Mother Name', store=True)
     date_of_birth = fields.Date('Birth Of Date', store=True)
     identification_id = fields.Char('Identification ID', store=True)
-    code = fields.Char('Code', store=True, required=True)
+    # code = fields.Char('Code', store=True, required=True)
     doctor_name = fields.Many2one('hr.employee', string='Doctor Phone', store=True, )
-    doctor_phone = fields.Char( 'Doctor Phone', store=True,)
+    doctor_phone = fields.Char('Doctor Phone', store=True, )
+
     @api.model
     def name_search(self, name, args=None, operator="ilike", limit=100):
         args = args or []
@@ -43,7 +44,7 @@ class res_partner_edit(models.Model):
             if record.date_of_birth:
                 today = date.today()
                 record.age = today.year - self.date_of_birth.year - (
-                            (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+                        (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
             else:
                 return False
 
