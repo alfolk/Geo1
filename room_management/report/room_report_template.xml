@@ -8,7 +8,7 @@
                     </h3>
                          <table class="table table-bordered">
                              <tr style="background-color:gray;text-align:center">
-                                 <th>كود/أسم النزيل</th>
+                                 <th>أسم/كود النزيل</th>
                                   <th>غرفة</th>
                                  <th>سرير</th>
                                   <th>محجوز من تاريخ</th>

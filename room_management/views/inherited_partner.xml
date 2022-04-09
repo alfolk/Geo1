@@ -9,6 +9,14 @@
                 <xpath expr="//field[@name='vat']" position="after">
                     <field name="code"/>
                 </xpath>
+                <xpath expr="//field[@name='image_1920']" position="after">
+
+                <field
+                            name="new_image"
+                            widget="image"
+                            style="padding-right:10px"
+                            class="oe_avatar"/>
+                </xpath>
             </field>
         </record>
     </data>

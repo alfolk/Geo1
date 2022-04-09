@@ -18,7 +18,7 @@ def float_to_time(hours):
     if hours == 24.0:
         return time.max
     fractional, integral = math.modf(hours)
-    return time(int(integral), int(float_round(60 * fractional, precision_digits=0)), 0)
+    return time(int(integral), int(float_round(60 * fractional, precision_digits=0)))
 
 
 class ApplyFormDesign(models.Model):
@@ -84,6 +84,8 @@ class ApplyFormDesign(models.Model):
                     if answer.val_name.isnumeric():
                         answer.notify_time = datetime.combine(self.date, float_to_time(answer.time)) + relativedelta(
                             days=int(answer.val_name) - 1) - relativedelta(hours=2)
+                elif answer.date_time:
+                    answer.notify_time = answer.date_time
 
     def set_new(self):
         self.state = 'draft'
@@ -157,19 +159,20 @@ class ApplyFormDesign(models.Model):
 class FormApplyLine(models.Model):
     _name = 'form.apply.line'
     _description = 'Form Apply Line'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id'
 
     @api.model
     def get_notifiction(self):
         date = fields.Datetime.now()
-        notifications = self.search([('form_id.type', '=', 'timing'),('state', '=', 'done'), ('date_time', '>=', date),
-                                     ('date_time', '<=', date - relativedelta(minutes=5)),
-                                     ('answers_ids.notify_time', '=', date)])
+        notifications = self.search([('form_id.type', '=', 'timing'), ('state', '=', 'done'), ('date_time', '>=', date),
+                                     ('date_time', '<=', date + relativedelta(day=1)),
+                                    ('apply_id.state', '=', 'done'),])
         notification = self.answers_ids.search([('apply_id.form_id.type', '=', 'timing'), ('apply_id.state', '=', 'done'),
-                                      ('notify_time', '>=', date - relativedelta(minutes=5)),
-                                      ('notify_time', '<=', date)])
+                                      ('notify_time', '<=', date + relativedelta(day=1)),
+                                      ('notify_time', '>=', date)])
         for n in notifications:
-            n.apply_id.message_post(
+            n.message_post(
                 partner_ids=[a.partner_id.id for a in n.notify_ids],
                 subject='',
                 body='Kindly See your schedule',
@@ -177,7 +180,7 @@ class FormApplyLine(models.Model):
                 email_layout_xmlid='mail.mail_notification_light',
             )
         for n in notification:
-            n.apply_id.message_post(
+            n.message_post(
                 partner_ids=[a.partner_id.id for a in n.form_line_id.notify_ids],
                 subject='',
                 body='Kindly See your schedule',
@@ -219,7 +222,7 @@ class FormApplyLine(models.Model):
                 return {'value': raw.textChar,
                         'type': raw.type}
             elif raw.type == 'time':
-                return {'value': raw.time,
+                return {'value': float_to_time(raw.time).strftime('%H:%M'),
                         'type': raw.type}
             elif raw.type == 'numerical_box':
                 return {'value': raw.value,

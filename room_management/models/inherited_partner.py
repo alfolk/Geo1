@@ -14,6 +14,7 @@ class ResPartnerInherited(models.Model):
          'Code of partner must be unique'),
 
     ]
+    new_image = fields.Image("Other Image", store=True, compute_sudo=True)
 
     @api.model
     def name_search(self, name, args=None, operator="ilike", limit=100):

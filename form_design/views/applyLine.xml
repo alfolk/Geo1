@@ -60,7 +60,6 @@
                         <span>
                             <field name="question_type" force_save="1" readonly="1" invisible="1"/>
                             <field name="form_line_id" force_save="1" attrs="{'readonly':[('id','!=',False)]}"/>
-                            <field name="form_id" force_save="1" invisible="1"/>
                             <field name="id" invisible="1"/>
                             <field name="apply_id" force_save="1" invisible="1"/>
                             <field name="state" force_save="1" invisible="1"/>
@@ -70,7 +69,7 @@
 
                     </h2>
                     <group>
-                                                     <field name="matrix_answer_type" readonly="1" force_save="1" invisible="1" />
+                            <field name="matrix_answer_type" readonly="1" force_save="1" invisible="1" />
 
 
                         <group>
@@ -94,6 +93,8 @@
                         <group>
                         </group>
                         <group>
+                            <field name="apply_id" force_save="1" readonly="1" />
+                            <field name="form_id" force_save="1" invisible="1" />
                             <field name="note"  attrs="{'readonly':[('can_edit','=',False)]}"/>
 
                         </group>
@@ -128,6 +129,11 @@
                             <field name="form_line_id"/>
                         </tree>
                     </field>
+                  <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
             </form>
         </field>
     </record>

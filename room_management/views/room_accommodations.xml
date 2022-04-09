@@ -42,7 +42,7 @@
 <!--                <field name="partner_code"/>-->
                 <field name="room_id"/>
                 <field name="bed_id"/>
-                 <field name="bed_reserve_from"/>
+                 <field name="bed_reserve_from" widget="Date"/>
                 <field name="bed_reserve_to"/>
                 <field name="responsible_id"/>
             </tree>
