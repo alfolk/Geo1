@@ -3,6 +3,8 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from odoo.exceptions import UserError
+from datetime import date,datetime
+import datetime
 
 _STATES = [
     ('draft', 'Draft'),
@@ -103,7 +105,7 @@ class alfolk_expense_personal(models.Model):
                              copy=False, default='draft', store=True)
     customer = fields.Many2one('res.partner', string='Customer', store=True, index=True, tracking=True)
     amount = fields.Float(string='Amount', store=True, index=True, tracking=True, required=True)
-    date = fields.Date(string='Date', store=True, tracking=True, required=True, default=fields.Date.today())
+    date = fields.Datetime(string='Date', store=True, tracking=True, required=True, default=fields.Datetime.now())
 
     @api.model
     def _getjournalId(self):
@@ -159,14 +161,16 @@ class alfolk_expense_personal(models.Model):
             res = self.env['account.move'].search([('name', '=', expense.code)])
             ff = self.env['account.move.line'].search([('move_id', '=', res.id)])
             if res:
+                dt = datetime.datetime.strptime(expense.date, '%Y-%m-%d %H:%M:%S')
+                dt.date()
                 if self.payment_type == 'receive_money':
                     if self.customer:
                         balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
-                                                               expense.company_id, expense.date)
+                                                               expense.company_id, dt)
                         debit = credit = balance
 
                         move = {
-                            'date': expense.date,
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
@@ -183,10 +187,10 @@ class alfolk_expense_personal(models.Model):
                         }
                     else:
                         balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
-                                                               expense.company_id, expense.date)
+                                                               expense.company_id, dt)
                         debit = credit = balance
                         move = {
-                            'date': expense.date,
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
@@ -207,12 +211,12 @@ class alfolk_expense_personal(models.Model):
                     self.write({'state': 'confirm'})
                 elif self.payment_type == 'expense_money':
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
-                                                           expense.company_id, expense.date)
+                                                           expense.company_id, dt)
                     debit = credit = balance
                     if self.customer:
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': expense.date,
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
@@ -229,7 +233,7 @@ class alfolk_expense_personal(models.Model):
                     else:
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': expense.date,
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
@@ -250,11 +254,11 @@ class alfolk_expense_personal(models.Model):
 
                 elif self.payment_type == 'transfer_money':
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
-                                                           expense.company_id, expense.date)
+                                                           expense.company_id, dt)
                     debit = credit = balance
                     move = {
                         # 'journal_id': expense.treasury.id,
-                        'date': expense.date,
+                        'date': dt,
                         'ref': expense.note,
                         'line_ids': [(0, 0, {
                             'name': expense.description,
@@ -275,13 +279,15 @@ class alfolk_expense_personal(models.Model):
 
             else:
                 if self.payment_type == 'receive_money':
+                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S')
+                    dt.date()
                     if self.customer:
                         balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
-                                                               expense.company_id, expense.date)
+                                                               expense.company_id, dt)
                         debit = credit = balance
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': expense.date,
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
@@ -298,11 +304,11 @@ class alfolk_expense_personal(models.Model):
                         }
                     else:
                         balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
-                                                               expense.company_id, expense.date)
+                                                               expense.company_id, dt)
                         debit = credit = balance
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': expense.date,
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
@@ -319,12 +325,12 @@ class alfolk_expense_personal(models.Model):
                         }
                 elif self.payment_type == 'expense_money':
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
-                                                           expense.company_id, expense.date)
+                                                           expense.company_id, dt)
                     debit = credit = balance
                     if self.customer:
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': expense.date,
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
@@ -341,7 +347,7 @@ class alfolk_expense_personal(models.Model):
                     else:
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': expense.date,
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
@@ -357,11 +363,11 @@ class alfolk_expense_personal(models.Model):
                         }
                 elif self.payment_type == 'transfer_money':
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
-                                                           expense.company_id, expense.date)
+                                                           expense.company_id, dt)
                     debit = credit = balance
                     move = {
                         # 'journal_id': expense.treasury.id,
-                        'date': expense.date,
+                        'date': dt,
                         'ref': expense.note,
                         'line_ids': [(0, 0, {
                             'name': expense.description,
