@@ -166,13 +166,15 @@ class FormApplyLine(models.Model):
     def get_notifiction(self):
         date = fields.Datetime.now()
         notifications = self.search([('form_id.type', '=', 'timing'), ('state', '=', 'done'), ('date_time', '>=', date),
-                                     ('date_time', '<=', date + relativedelta(day=1)),
+                                     ('date_time', '<=', date + relativedelta(days=1)),
                                     ('apply_id.state', '=', 'done'),])
         notification = self.answers_ids.search([('apply_id.form_id.type', '=', 'timing'), ('apply_id.state', '=', 'done'),
-                                      ('notify_time', '<=', date + relativedelta(day=1)),
+                                      ('notify_time', '<=', date + relativedelta(days=1)),
                                       ('notify_time', '>=', date)])
+        print(date + relativedelta(days=1))
+        print(date)
         for n in notifications:
-            n.message_post(
+            n.form_line_id.message_post(
                 partner_ids=[a.partner_id.id for a in n.notify_ids],
                 subject='',
                 body='Kindly See your schedule',
@@ -180,7 +182,7 @@ class FormApplyLine(models.Model):
                 email_layout_xmlid='mail.mail_notification_light',
             )
         for n in notification:
-            n.message_post(
+            n.form_line_id.message_post(
                 partner_ids=[a.partner_id.id for a in n.form_line_id.notify_ids],
                 subject='',
                 body='Kindly See your schedule',
