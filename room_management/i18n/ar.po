@@ -359,7 +359,7 @@ msgstr "اخر"
 #. module: room_management
 #: model:ir.model.fields,field_description:room_management.field_alfolk_bed_report_line__partner_name
 msgid "Partner"
-msgstr "كود/اسم النزيل"
+msgstr "أسم/كود النزيل"
 
 #. module: room_management
 #: model:ir.model.fields,field_description:room_management.field_folk_rooms_accommodations__category
@@ -376,12 +376,12 @@ msgstr "كود النزيل"
 #: model:ir.model.fields,field_description:room_management.field_folk_rooms_accommodations__partner_name
 #: model_terms:ir.ui.view,arch_db:room_management.floor_accommodations_search_view
 msgid "Partner Name"
-msgstr "أسم النزيل"
+msgstr "أسم/كود النزيل"
 
 #. module: room_management
 #: model_terms:ir.ui.view,arch_db:room_management.room_accommodations_kanban_view
 msgid "Partner Name :"
-msgstr "أسم النزيل"
+msgstr "أسم/كود النزيل"
 
 #. module: room_management
 #: model:ir.model.fields,field_description:room_management.field_folk_clean__places
@@ -622,7 +622,7 @@ msgstr "موديول حجز الغرف"
 
 #. module: room_management
 #: model_terms:ir.ui.view,arch_db:room_management.folk_bed_report
-msgid "أسم النزيل"
+msgid "أسم/كود النزيل"
 msgstr ""
 
 #. module: room_management

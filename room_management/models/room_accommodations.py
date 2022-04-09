@@ -17,8 +17,8 @@ class RoomsAccommodationsAlfolk(models.Model):
                                    tracking=True,
                                    required=True,)
     # partner_code = fields.Char('Partner Code', readonly=True, related='partner_name.name',invisible=True)
-    bed_reserve_from = fields.Date("Reservation From", store=True, tracking=True, default=datetime.today())
-    bed_reserve_to = fields.Date("Reservation To", store=True, tracking=True, default=datetime.today())
+    bed_reserve_from = fields.Datetime("Reservation From", store=True, tracking=True, default=datetime.today())
+    bed_reserve_to = fields.Datetime("Reservation To", store=True, tracking=True, default=datetime.today())
     responsible_id = fields.Many2one('hr.employee', store=True, tracking=True)
 
     _sql_constraints = [
