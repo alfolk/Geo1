@@ -4,7 +4,8 @@ from operator import itemgetter
 
 from dateutil.relativedelta import relativedelta
 from datetime import timedelta
-
+from datetime import date, datetime
+import datetime
 from odoo import api, fields, models, _
 
 
@@ -37,20 +38,23 @@ class personalExpense(models.TransientModel):
         residual = 0
         if self.customer:
             receive = self.env['alfolk.expense.personal'].search(
-                [('date', '>=', self.date_from),
-                 ('date', '<=', self.date_to), ('customer', '=', self.customer.id), ('treasury', '=', self.treasury.id),
+                [('customer', '=', self.customer.id), ('treasury', '=', self.treasury.id),
                  ('payment_type', '=', 'receive_money'), ('state', '=', 'confirm')
                  ])
             for line in receive:
-                value_receive += (line.amount)
+                dt = datetime.datetime.strptime(str(line.date), '%Y-%m-%d %H:%M:%S')
+                if self.date_from <= dt.date() <= self.date_to:
+                    value_receive += (line.amount)
             expense = self.env['alfolk.expense.personal'].search(
-                [('date', '>=', self.date_from),
-                 ('date', '<=', self.date_to), ('customer', '=', self.customer.id),
-                 ('treasury', '=', self.treasury.id), ('payment_type', '=', 'expense_money'),
-                 ('state', '=', 'confirm')
-                 ])
+                [
+                    ('customer', '=', self.customer.id),
+                    ('treasury', '=', self.treasury.id), ('payment_type', '=', 'expense_money'),
+                    ('state', '=', 'confirm')
+                ])
             for line in expense:
-                value_expense += (line.amount)
+                dt = datetime.datetime.strptime(str(line.date), '%Y-%m-%d %H:%M:%S')
+                if self.date_from <= dt.date() <= self.date_to:
+                    value_expense += (line.amount)
 
         return round(value_receive - value_expense, 0)
 
@@ -78,24 +82,24 @@ class personalExpense(models.TransientModel):
             if wizard.customer:
 
                 expense = self.env['alfolk.expense.personal'].search(
-                    [('date', '>=', wizard.date_from),
-                     ('date', '<=', wizard.date_to), ('customer', '=', wizard.customer.id),
+                    [('customer', '=', wizard.customer.id),
                      ('treasury', '=', self.treasury.id), ('payment_type', '=', 'expense_money'),
                      ('state', '=', 'confirm')
                      ])
-
                 if expense:
                     for ex in expense:
-                        line_ids.append((0, 0, {
-                            'date': ex.date,
-                            'description': ex.description,
-                            'journal_id': ex.treasury.name,
-                            'expense_amount': ex.amount,
-                            'employee': ex.employee.name,
-                            'code': ex.code,
-                            'note': ex.note,
+                        dt = datetime.datetime.strptime(str(ex.date), '%Y-%m-%d %H:%M:%S')
+                        if wizard.date_from <= dt.date() <= wizard.date_to:
+                            line_ids.append((0, 0, {
+                                'date': ex.date,
+                                'description': ex.description,
+                                'journal_id': ex.treasury.name,
+                                'expense_amount': ex.amount,
+                                'employee': ex.employee.name,
+                                'code': ex.code,
+                                'note': ex.note,
 
-                        }))
+                            }))
         self.write({'line_ids': line_ids})
         context = {
             'lang': 'en_US',
