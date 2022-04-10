@@ -20,7 +20,6 @@ class alfolk_expense_personal(models.Model):
     _rec_name = 'code'
 
 
-    date_date = fields.Date('Date', store=True, visibility='onchange', )
 
     @api.depends('state')
     def _computemove(self):

@@ -72,7 +72,7 @@ class personalExpense(models.TransientModel):
         return first_day
 
     date_from = fields.Date("Start Date", default=_get_date)
-    date_to = fields.Date("End Date", default=datetime.today(), )
+    date_to = fields.Date("End Date", default=date.today(), )
     line_ids = fields.One2many('alfolk.personal.expense.report.line', 'wizard_id', required=True, ondelete='cascade')
 
     def print_pdf_personal_expense_report(self):
