@@ -655,6 +655,13 @@ msgid "Lines"
 msgstr "العناصر"
 
 #. module: form_design
+#: code:addons/form_design/models/apply.py:0
+#: model_terms:ir.ui.view,arch_db:form_design.form_apply_form_view
+#, python-format
+msgid "Closed Form Cannot be deleted"
+msgstr "لا يمكن حذف النموذج المغلق"
+
+#. module: form_design
 #: model:ir.model.fields,field_description:form_design.field_form_apply__message_main_attachment_id
 #: model:ir.model.fields,field_description:form_design.field_form_design__message_main_attachment_id
 msgid "Main Attachment"
