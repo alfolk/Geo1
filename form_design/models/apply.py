@@ -2,7 +2,7 @@ import math
 from datetime import time
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from calendar import monthrange
 from datetime import datetime, timedelta
 from odoo.tools import float_round
@@ -35,7 +35,12 @@ class ApplyFormDesign(models.Model):
                                related='form_id.category', readonly=1)
     task_type = fields.Selection(store=True, index=True, tracking=True,
                                  related='form_id.task_type', readonly=1)
-
+    def unlink(self):
+        for rec in self:
+                if rec.state =='done':
+                    raise ValidationError(_('Closed Form Cannot be deleted'))
+        res = super(ApplyFormDesign, self).unlink()
+        return res
     form_id = fields.Many2one('form.design', 'Form', store=True, index=True, tracking=True)
     partner_id = fields.Many2one('res.partner', 'Partner', domain="[('category','=',category)]", store=True, index=True,
                                  tracking=True, required=1)
