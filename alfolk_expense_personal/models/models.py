@@ -19,6 +19,9 @@ class alfolk_expense_personal(models.Model):
     _inherit = ['mail.thread']
     _rec_name = 'code'
 
+
+    date_date = fields.Date('Date', store=True, visibility='onchange', )
+
     @api.depends('state')
     def _computemove(self):
         for order in self:
@@ -210,6 +213,9 @@ class alfolk_expense_personal(models.Model):
                     res.action_post()
                     self.write({'state': 'confirm'})
                 elif self.payment_type == 'expense_money':
+                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S')
+                    dt.date()
+
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, dt)
                     debit = credit = balance
@@ -251,8 +257,9 @@ class alfolk_expense_personal(models.Model):
                     move_id = res.write(move)
                     res.action_post()
                     self.write({'state': 'confirm'})
-
                 elif self.payment_type == 'transfer_money':
+                    dt = datetime.datetime.strptime(expense.date, '%Y-%m-%d %H:%M:%S')
+                    dt.date()
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, dt)
                     debit = credit = balance
@@ -324,6 +331,9 @@ class alfolk_expense_personal(models.Model):
                             })]
                         }
                 elif self.payment_type == 'expense_money':
+                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S')
+                    dt.date()
+
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, dt)
                     debit = credit = balance
@@ -362,6 +372,9 @@ class alfolk_expense_personal(models.Model):
                             })]
                         }
                 elif self.payment_type == 'transfer_money':
+                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S')
+                    dt.date()
+
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, dt)
                     debit = credit = balance
