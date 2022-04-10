@@ -163,10 +163,10 @@ class alfolk_expense_personal(models.Model):
             res = self.env['account.move'].search([('name', '=', expense.code)])
             ff = self.env['account.move.line'].search([('move_id', '=', res.id)])
             if res:
-                dt = datetime.datetime.strptime(expense.date, '%Y-%m-%d %H:%M:%S')
-                dt.date()
+                dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S').date()
                 if self.payment_type == 'receive_money':
                     if self.customer:
+                        
                         balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                                expense.company_id, dt)
                         debit = credit = balance
@@ -192,7 +192,7 @@ class alfolk_expense_personal(models.Model):
                                                                expense.company_id, dt)
                         debit = credit = balance
                         move = {
-                            'date': dt,
+                            'date': dt.date(),
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
@@ -212,8 +212,7 @@ class alfolk_expense_personal(models.Model):
                     res.action_post()
                     self.write({'state': 'confirm'})
                 elif self.payment_type == 'expense_money':
-                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S')
-                    dt.date()
+                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S').date()
 
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, dt)
@@ -238,7 +237,7 @@ class alfolk_expense_personal(models.Model):
                     else:
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': dt,
+                            'date': dt.date(),
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
@@ -257,8 +256,7 @@ class alfolk_expense_personal(models.Model):
                     res.action_post()
                     self.write({'state': 'confirm'})
                 elif self.payment_type == 'transfer_money':
-                    dt = datetime.datetime.strptime(expense.date, '%Y-%m-%d %H:%M:%S')
-                    dt.date()
+                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S').date()
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, dt)
                     debit = credit = balance
@@ -285,8 +283,7 @@ class alfolk_expense_personal(models.Model):
 
             else:
                 if self.payment_type == 'receive_money':
-                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S')
-                    dt.date()
+                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S').date()
                     if self.customer:
                         balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                                expense.company_id, dt)
@@ -314,7 +311,7 @@ class alfolk_expense_personal(models.Model):
                         debit = credit = balance
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': dt,
+                            'date': dt.date(),
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
@@ -330,8 +327,7 @@ class alfolk_expense_personal(models.Model):
                             })]
                         }
                 elif self.payment_type == 'expense_money':
-                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S')
-                    dt.date()
+                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S').date()
 
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, dt)
@@ -356,7 +352,7 @@ class alfolk_expense_personal(models.Model):
                     else:
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': dt,
+                            'date': dt.date(),
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
@@ -371,8 +367,7 @@ class alfolk_expense_personal(models.Model):
                             })]
                         }
                 elif self.payment_type == 'transfer_money':
-                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S')
-                    dt.date()
+                    dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S').date()
 
                     balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                            expense.company_id, dt)
