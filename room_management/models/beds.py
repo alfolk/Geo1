@@ -22,7 +22,7 @@ class BedsAlfolk(models.Model):
 
     def check_bed_availability(self):
         for record in self:
-            check_date = date.today()
+            check_date = fields.Datetime.now()
             available_bed = self.env['folk.rooms.accommodations'].search(
                 [('bed_id', '=', record.id)])
             if available_bed:
