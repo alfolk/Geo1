@@ -713,6 +713,11 @@ msgid "Measurements"
 msgstr " القياسات البدنية"
 
 #. module: form_design
+#: model_terms:ir.ui.view,arch_db:form_design.view_partner_form
+msgid "Closed Forms"
+msgstr "الاستمارات المنتهية"
+
+#. module: form_design
 #: model:ir.model.fields.selection,name:form_design.selection__form_design__type__medical
 #: model_terms:ir.ui.view,arch_db:form_design.view_partner_form
 msgid "Medical File"

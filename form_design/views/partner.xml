@@ -9,7 +9,11 @@
                         <field name="is_student" invisible="1" />
                         <field name="show_achievement" invisible="1" />
                         <field name="show_resident" invisible="1" />
-                        <button class="oe_stat_button o_res_partner_tip_opp" attrs="{'invisible':[('is_student','=',False)]}" type="object" name="open_medical_form" icon="fa-user-md"
+                        <button class="oe_stat_button o_res_partner_tip_opp" attrs="{'invisible':[('is_student','=',False)]}" type="object" name="view_closed_forms"  icon="fa-wpforms"
+                         context="{'default_partner_id': active_id}">
+                            Closed Forms
+                        </button>
+                      <button class="oe_stat_button o_res_partner_tip_opp" attrs="{'invisible':[('is_student','=',False)]}" type="object" name="open_medical_form" icon="fa-user-md"
                          context="{'default_partner_id': active_id}">
                             Medical File
                         </button>
@@ -107,6 +111,18 @@
          <field name="arch" type="xml">
 
              <xpath expr="//button[@name='action_view_sale_order']" position="attributes">
+                     <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>
+             </xpath>
+
+         </field>
+     </record>
+    <record id="view_partners_form_calender" model="ir.ui.view">
+         <field name="name">res.partner</field>
+         <field name="model">res.partner</field>
+         <field name="inherit_id" ref="calendar.view_partners_form"/>
+         <field name="arch" type="xml">
+
+             <xpath expr="//button[@name='schedule_meeting']" position="attributes">
                      <attribute name="attrs">{'invisible':[('is_student','=',True)]}</attribute>
              </xpath>
 

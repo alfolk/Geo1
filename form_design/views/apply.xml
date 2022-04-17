@@ -31,6 +31,7 @@
                             <field name="category" force_save="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="partner_id" attrs="{'readonly':[('state','!=','draft')]}" force_save="1"/>
                             <field name="date" attrs="{'readonly':[('state','!=','draft')]}" force_save="1"/>
+                            <field name="end_date" invisible="1"  force_save="1"/>
                         </group>
 
                     </group>
@@ -131,7 +132,7 @@
               id="form_apply_line_menu_root" sequence="20"/>
 
         <record id="auto_send_reminder_high" model="ir.cron">
-        <field name="name">Auto Send notification Mail High Level</field>
+        <field name="name">Auto Send notification</field>
         <field name="model_id" ref="form_design.model_form_apply_line"/>
         <field name="state">code</field>
         <field name="code">model.get_notifiction()</field>
