@@ -35,12 +35,14 @@ class ApplyFormDesign(models.Model):
                                related='form_id.category', readonly=1)
     task_type = fields.Selection(store=True, index=True, tracking=True,
                                  related='form_id.task_type', readonly=1)
+
     def unlink(self):
         for rec in self:
-                if rec.state =='done':
-                    raise ValidationError(_('Closed Form Cannot be deleted'))
+            if rec.state == 'done':
+                raise ValidationError(_('Closed Form Cannot be deleted'))
         res = super(ApplyFormDesign, self).unlink()
         return res
+
     form_id = fields.Many2one('form.design', 'Form', store=True, index=True, tracking=True)
     partner_id = fields.Many2one('res.partner', 'Partner', domain="[('category','=',category)]", store=True, index=True,
                                  tracking=True, required=1)
@@ -48,8 +50,10 @@ class ApplyFormDesign(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('done', 'Closed')], default='draft', store=True,
                              tracking=True)
     date = fields.Date('Date', default=fields.Date.today(), tracking=True, store=True, index=True, required=1)
+    end_date = fields.Datetime('End Date', store=True)
     complete_name = fields.Char('Name', compute='_compute_name', store=True, index=True, tracking=True)
     allow_add = fields.Boolean("Allow Add Line", compute="compute_allow_add_line")
+    is_decline = fields.Boolean("Declined Form", store=True)
     type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker')], string="Type",
                             store=True,
                             tracking=True, related='form_id.assign_type')
@@ -79,18 +83,31 @@ class ApplyFormDesign(models.Model):
 
     def set_close(self):
         self.state = 'done'
+        close_date = datetime.fromisoformat(self.date.isoformat())
         for line in self.apply_ids:
             for answer in line.answers_ids.filtered(lambda a: a.type == 'time'):
                 if answer.time > 0.0:
                     if answer.val_name in WeakDays:
+
                         index = WeakDays.index(answer.val_name)
                         answer.notify_time = datetime.combine(self.date, float_to_time(answer.time)) + relativedelta(
                             days=index) - relativedelta(hours=2)
+                        if answer.notify_time > close_date:
+                            close_date = answer.notify_time
+
                     if answer.val_name.isnumeric():
                         answer.notify_time = datetime.combine(self.date, float_to_time(answer.time)) + relativedelta(
                             days=int(answer.val_name) - 1) - relativedelta(hours=2)
+                        if answer.notify_time > close_date:
+                            close_date = answer.notify_time
                 elif answer.date_time:
                     answer.notify_time = answer.date_time
+                    if answer.notify_time > close_date:
+                        close_date = answer.notify_time
+                self.end_date = close_date
+        for record in self.search([('partner_id', '=', self.partner_id.id), ('form_id', '=', self.form_id.id),
+                                   ('end_date', '<', self.end_date), ('end_date', '>', datetime.now())]):
+            record.is_decline = True
 
     def set_new(self):
         self.state = 'draft'
@@ -172,10 +189,11 @@ class FormApplyLine(models.Model):
         date = fields.Datetime.now()
         notifications = self.search([('form_id.type', '=', 'timing'), ('state', '=', 'done'), ('date_time', '>=', date),
                                      ('date_time', '<=', date + relativedelta(days=1)),
-                                    ('apply_id.state', '=', 'done'),])
-        notification = self.answers_ids.search([('apply_id.form_id.type', '=', 'timing'), ('apply_id.state', '=', 'done'),
-                                      ('notify_time', '<=', date + relativedelta(days=1)),
-                                      ('notify_time', '>=', date)])
+                                     ('apply_id.state', '=', 'done'), ('apply_id.is_decline', '=', False), ])
+        notification = self.answers_ids.search(
+            [('apply_id.form_id.type', '=', 'timing'), ('apply_id.state', '=', 'done'),
+             ('notify_time', '<=', date + relativedelta(days=1)),
+             ('notify_time', '>=', date), ('apply_id.is_decline', '=', False)])
         print(date + relativedelta(days=1))
         print(date)
         for n in notifications:
@@ -413,7 +431,6 @@ class FormApplyLine(models.Model):
         if self._origin.id in ids:
             next_index = ids.index(self._origin.id) + 1
             if next_index < len(ids):
-
                 return {
                     'name': _('Answers'),
                     'type': 'ir.actions.act_window',

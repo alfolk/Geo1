@@ -44,6 +44,17 @@ class Partner(models.Model):
                 'context': "{'default_partner_id': " + str(self._origin.id) + "}",
             }
 
+    def view_closed_forms(self):
+        for record in self:
+            return {
+                'name': _(f'Filled out forms of {record.name}'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'form.apply',
+                'view_mode': 'tree,form',
+                'domain': [('partner_id', '=', record.id), ('state', '=', 'done')],
+                'context': "{'default_partner_id': " + str(self._origin.id) + "}",
+            }
+
     def open_physical_measurements(self):
         for record in self:
             ids = []
