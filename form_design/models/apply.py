@@ -200,7 +200,8 @@ class FormApplyLine(models.Model):
             n.form_line_id.message_post(
                 partner_ids=[a.partner_id.id for a in n.notify_ids],
                 subject='',
-                body='Kindly See your schedule',
+                body='Kindly See your schedule for partner ' + str(n.form_line_id.partner_id.name) + ' ' +
+                     str(n.form_line_id.form_id.name + ' ' + str(n.notify_time)),
                 subtype_id=self.env.ref('mail.mt_comment').id,
                 email_layout_xmlid='mail.mail_notification_light',
             )
@@ -208,7 +209,8 @@ class FormApplyLine(models.Model):
             n.form_line_id.message_post(
                 partner_ids=[a.partner_id.id for a in n.form_line_id.notify_ids],
                 subject='',
-                body='Kindly See your schedule',
+                body='Kindly See your schedule for ' + str(n.form_line_id.partner_id.name) + ' ' +
+                     str(n.form_line_id.form_id.name + ' ' + str(n.notify_time)),
                 subtype_id=self.env.ref('mail.mt_comment').id,
                 email_layout_xmlid='mail.mail_notification_light',
             )
