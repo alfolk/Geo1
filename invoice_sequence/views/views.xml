@@ -1,0 +1,29 @@
+<odoo>
+  <data>
+       <record id="sequence_draft_seq" model="ir.sequence">
+            <field name="name">Invoice</field>
+            <field name="code">invoice</field>
+            <field name="prefix">INV</field>
+            <field name="padding">7</field>
+      </record>
+       <record id="sequence_draft_refund_seq" model="ir.sequence">
+            <field name="name">Refund</field>
+            <field name="code">refund</field>
+            <field name="prefix">RINV</field>
+            <field name="padding">7</field>
+      </record>
+       <record id="sequence_Bill_seq" model="ir.sequence">
+            <field name="name">Vendor Bill</field>
+            <field name="code">bill</field>
+            <field name="prefix">BILL</field>
+            <field name="padding">8</field>
+      </record>
+       <record id="sequence_purchase_refund_seq" model="ir.sequence">
+            <field name="name">Refund Bill</field>
+            <field name="code">refund_bill</field>
+            <field name="prefix">RBILL</field>
+            <field name="padding">7</field>
+      </record>
+
+  </data>
+</odoo>
