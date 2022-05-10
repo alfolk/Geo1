@@ -714,8 +714,8 @@ msgstr " القياسات البدنية"
 
 #. module: form_design
 #: model_terms:ir.ui.view,arch_db:form_design.view_partner_form
-msgid "Closed Forms"
-msgstr "الاستمارات المنتهية"
+msgid "<span class=\"o_stat_text\">Closed Forms</span>"
+msgstr "<span class=\"o_stat_text\">استمارات مغلقة</span>"
 
 #. module: form_design
 #: model:ir.model.fields.selection,name:form_design.selection__form_design__type__medical

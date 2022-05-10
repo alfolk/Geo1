@@ -11,7 +11,7 @@
                         <field name="show_resident" invisible="1" />
                         <button class="oe_stat_button o_res_partner_tip_opp" attrs="{'invisible':[('is_student','=',False)]}" type="object" name="view_closed_forms"  icon="fa-wpforms"
                          context="{'default_partner_id': active_id}">
-                            Closed Forms
+                            <span class="o_stat_text">Closed Forms</span>
                         </button>
                       <button class="oe_stat_button o_res_partner_tip_opp" attrs="{'invisible':[('is_student','=',False)]}" type="object" name="open_medical_form" icon="fa-user-md"
                          context="{'default_partner_id': active_id}">

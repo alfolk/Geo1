@@ -31,7 +31,7 @@
                             <group>
                                 <field name="res_id"/>
                                 <field name="type"/>
-                                <field name="allow_add"/>
+                                <field name="allow_add" invisible="1"/>
                             </group>
 
                         </group>

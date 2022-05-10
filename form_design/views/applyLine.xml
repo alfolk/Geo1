@@ -61,7 +61,6 @@
                             <field name="question_type" force_save="1" readonly="1" invisible="1"/>
                             <field name="form_line_id" force_save="1" attrs="{'readonly':[('id','!=',False)]}"/>
                             <field name="id" invisible="1"/>
-                            <field name="apply_id" force_save="1" invisible="1"/>
                             <field name="state" force_save="1" invisible="1"/>
                             <field name="can_edit" force_save="1" invisible="1"/>
 
@@ -93,13 +92,15 @@
                         <group>
                         </group>
                         <group>
-                            <field name="apply_id" force_save="1" readonly="1" />
+                            <field name="apply_id" force_save="1" readonly="1"  invisible="1" />
                             <field name="form_id" force_save="1" invisible="1" />
-                            <field name="note"  attrs="{'readonly':[('can_edit','=',False)]}"/>
+                            <field name="employee_id"  attrs="{'readonly':[('can_edit','=',False)]}"/>
+
 
                         </group>
                         <group>
-                            <field name="employee_id"  attrs="{'readonly':[('can_edit','=',False)]}"/>
+                            <field name="note"  attrs="{'readonly':[('can_edit','=',False)]}"/>
+
                             <field name="notify_ids" widget="many2many_tags"  attrs="{'readonly':[('can_edit','=',False)]}"/>
                         </group>
                     </group>
@@ -165,7 +166,6 @@
                             <field name="form_line_id" force_save="1" attrs="{'readonly':[('id','!=',False)]}"/>
                             <field name="form_id" force_save="1" invisible="1" />
                             <field name="id" invisible="1"/>
-                            <field name="apply_id" force_save="1" invisible="1"/>
                             <field name="state" force_save="1" invisible="1"/>
                             <field name="can_edit" force_save="1" invisible="1"/>
                         </span>
@@ -193,11 +193,14 @@
                         <group>
                         </group>
                         <group>
-                            <field name="note" attrs="{'readonly':[('can_edit','=',False)]}"/>
+                                                        <field name="apply_id" force_save="1" readonly="1" invisible="0"/>
+
+                            <field name="employee_id" attrs="{'readonly':[('can_edit','=',False)]}"/>
 
                         </group>
                         <group>
-                            <field name="employee_id" attrs="{'readonly':[('can_edit','=',False)]}"/>
+                                                            <field name="note" attrs="{'readonly':[('can_edit','=',False)]}"/>
+
                                                         <field name="notify_ids" widget="many2many_tags" attrs="{'readonly':[('can_edit','=',False)]}"/>
 
                         </group>

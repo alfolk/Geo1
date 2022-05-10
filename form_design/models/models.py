@@ -17,7 +17,7 @@ class FormDesign(models.Model):
                              ('nutrition', 'Therapeutic Nutrition'),
                              ('achievement', 'Achievement Rate'),
                              ('timing', 'Timing Form')
-                             ], string='Form Type', store=True, index=True, required=1, tracking=True)
+                             ], string='Form Type', store=True, index=True, tracking=True)
     assign_type = fields.Selection([('resident', 'Resident'), ('worker', 'Worker'), ('other', 'Other')], string="Assign To",
                                    store=True,
                                    tracking=True)
