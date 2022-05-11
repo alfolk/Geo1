@@ -408,6 +408,7 @@ class alfolk_expense_personal(models.Model):
                 res.button_draft()
                 self.write({'state': 'draft'})
 
+
     def cancel(self):
         for record in self:
             res = self.env['account.move'].search([('name', '=', record.code)])
