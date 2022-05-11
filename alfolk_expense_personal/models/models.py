@@ -30,7 +30,7 @@ class alfolk_expense_personal(models.Model):
     move_id = fields.Many2one(
         comodel_name='account.move',
         string='Journal Entry', ondelete='cascade',
-        check_company=True, compute='_computemove',translate=True)
+        check_company=True, compute='_computemove')
 
     def _get_valid_liquidity_accounts(self):
         return (
@@ -100,15 +100,15 @@ class alfolk_expense_personal(models.Model):
 
     # Fields Defi ne
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
-                                 default=lambda self: self.env.company,translate=True)
+                                 default=lambda self: self.env.company)
     company_currency_id = fields.Many2one('res.currency', string="Report Company Currency",
-                                          related='company_id.currency_id', translate=True,readonly=True)
+                                          related='company_id.currency_id', readonly=True)
 
     state = fields.Selection(selection=_STATES, string='Status', index=True, track_visibility='onchange', required=True,
-                             copy=False, default='draft', store=True,translate=True)
-    customer = fields.Many2one('res.partner', string='Customer', store=True, index=True, tracking=True,translate=True)
-    amount = fields.Float(string='Amount', store=True, index=True, tracking=True, required=True,translate=True)
-    date = fields.Datetime(string='Date', store=True, tracking=True, required=True, default=fields.Datetime.now,translate=True)
+                             copy=False, default='draft', store=True)
+    customer = fields.Many2one('res.partner', string='Customer', store=True, index=True, tracking=True)
+    amount = fields.Float(string='Amount', store=True, index=True, tracking=True, required=True)
+    date = fields.Datetime(string='Date', store=True, tracking=True, required=True, default=fields.Datetime.now)
 
     @api.model
     def _getjournalId(self):
@@ -122,26 +122,26 @@ class alfolk_expense_personal(models.Model):
                     ]
 
     treasury = fields.Many2one('account.journal', string='Treasury', store=True,
-                               domain=_getjournalId,translate=True)
+                               domain=_getjournalId)
     treasury_to = fields.Many2one('account.journal', string='To Treasury', store=True,
-                                  domain="[('type', 'in', ('cash','bank'))]",translate=True)
-    account_to = fields.Many2one('account.account', string='To Account', store=True,translate=True
+                                  domain="[('type', 'in', ('cash','bank'))]")
+    account_to = fields.Many2one('account.account', string='To Account', store=True,
                                  )
-    account_id = fields.Many2one('account.account', string='Account', store=True,translate=True
+    account_id = fields.Many2one('account.account', string='Account', store=True,
                                  )
-    account_from = fields.Many2one('account.account', string='From Account', store=True,translate=True
+    account_from = fields.Many2one('account.account', string='From Account', store=True,
                                    )
     code = fields.Char('Reference', size=32, copy=False,
-                       store=True,translate=True,
+                       store=True,
                        default=lambda self: (" "))
-    description = fields.Char(string='Expense For', store=True,translate=True, index=True, tracking=True)
-    note = fields.Char(string='Note', store=True, index=True,translate=True, tracking=True)
-    employee = fields.Many2one('hr.employee', string='Employee',translate=True, store=True, index=True, tracking=True, )
-    currency_id = fields.Many2one('res.currency', string='Currency',translate=True, store=True, index=True, tracking=True)
+    description = fields.Char(string='Expense For', store=True, index=True, tracking=True)
+    note = fields.Char(string='Note', store=True, index=True, tracking=True)
+    employee = fields.Many2one('hr.employee', string='Employee', store=True, index=True, tracking=True, )
+    currency_id = fields.Many2one('res.currency', string='Currency', store=True, index=True, tracking=True)
     payment_type = fields.Selection([
         ('receive_money', 'Receive Money'),
         ('expense_money', 'Expense Money'), ('transfer_money', 'Transfer Money')],
-        string='Type', default='receive_money',translate=True, store=True, track_visibility='onchange')
+        string='Type', default='receive_money', store=True, track_visibility='onchange')
 
     def button_journal_entries(self):
         return {
@@ -167,7 +167,7 @@ class alfolk_expense_personal(models.Model):
                 dt = datetime.datetime.strptime(str(expense.date), '%Y-%m-%d %H:%M:%S').date()
                 if self.payment_type == 'receive_money':
                     if self.customer:
-                        
+
                         balance = expense.currency_id._convert(expense.amount, expense.company_currency_id,
                                                                expense.company_id, dt)
                         debit = credit = balance
@@ -268,15 +268,12 @@ class alfolk_expense_personal(models.Model):
                         'line_ids': [(0, 0, {
                             'name': expense.description,
                             'credit': credit,
-                            'amount_currency':credit,
-                            'currency_id':expense.currency_id.id,
+                            'amount_currency':credit,'currency_id':expense.currency_id.id,
                             'account_id': expense.account_to.id,
                             'partner_id': expense.customer.id,
                         }), (0, 0, {
                             'name': expense.description,
-                            'debit': debit,
-                            'amount_currency': -debit,
-                            'currency_id':expense.currency_id.id,
+                            'debit': debit, 'amount_currency': -debit,'currency_id':expense.currency_id.id,
                             'account_id': expense.account_from.id,
 
                         })]
@@ -299,12 +296,16 @@ class alfolk_expense_personal(models.Model):
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
-                                'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
+                                'debit': debit,''
+                                'amount_currency':debit,
+                                'currency_id':expense.currency_id.id,
                                 'account_id': expense.treasury.default_account_id.id,
 
                             }), (0, 0, {
                                 'name': expense.code,
-                                'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
+                                'credit': credit,
+                                'amount_currency': -credit,
+                                'currency_id':expense.currency_id.id,
                                 'account_id': expense.customer.property_account_receivable_id.id,
                                 'partner_id': expense.customer.id,
 
@@ -383,15 +384,15 @@ class alfolk_expense_personal(models.Model):
                         'ref': expense.note,
                         'line_ids': [(0, 0, {
                             'name': expense.description,
-                            'credit': credit,
-                            'amount_currency':credit,
+                            'credit': debit,
+                            'amount_currency':debit,
                             'currency_id':expense.currency_id.id,
                             'account_id': expense.account_to.id,
                             'partner_id': expense.customer.id,
                         }), (0, 0, {
                             'name': expense.description,
-                            'debit': debit,
-                            'amount_currency': -debit,
+                            'debit': credit,
+                            'amount_currency': -credit,
                             'currency_id':expense.currency_id.id,
                             'account_id': expense.account_from.id,
 
@@ -411,7 +412,6 @@ class alfolk_expense_personal(models.Model):
             if res:
                 res.button_draft()
                 self.write({'state': 'draft'})
-
 
     def cancel(self):
         for record in self:
