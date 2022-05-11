@@ -107,7 +107,7 @@ class alfolk_expense_personal(models.Model):
                              copy=False, default='draft', store=True)
     customer = fields.Many2one('res.partner', string='Customer', store=True, index=True, tracking=True)
     amount = fields.Float(string='Amount', store=True, index=True, tracking=True, required=True)
-    date = fields.Datetime(string='Date', store=True, tracking=True, required=True, default=fields.Datetime.now())
+    date = fields.Datetime(string='Date', store=True, tracking=True, required=True, default=fields.Datetime.now)
 
     @api.model
     def _getjournalId(self):
@@ -192,7 +192,7 @@ class alfolk_expense_personal(models.Model):
                                                                expense.company_id, dt)
                         debit = credit = balance
                         move = {
-                            'date': dt.date(),
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
@@ -237,7 +237,7 @@ class alfolk_expense_personal(models.Model):
                     else:
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': dt.date(),
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
@@ -266,12 +266,12 @@ class alfolk_expense_personal(models.Model):
                         'ref': expense.note,
                         'line_ids': [(0, 0, {
                             'name': expense.description,
-                            'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
+                            'credit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
                             'account_id': expense.account_to.id,
                             'partner_id': expense.customer.id,
                         }), (0, 0, {
                             'name': expense.description,
-                            'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
+                            'debit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
                             'account_id': expense.account_from.id,
 
                         })]
@@ -311,7 +311,7 @@ class alfolk_expense_personal(models.Model):
                         debit = credit = balance
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': dt.date(),
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.code,
@@ -352,7 +352,7 @@ class alfolk_expense_personal(models.Model):
                     else:
                         move = {
                             'journal_id': expense.treasury.id,
-                            'date': dt.date(),
+                            'date': dt,
                             'ref': expense.note,
                             'line_ids': [(0, 0, {
                                 'name': expense.description,
@@ -378,12 +378,16 @@ class alfolk_expense_personal(models.Model):
                         'ref': expense.note,
                         'line_ids': [(0, 0, {
                             'name': expense.description,
-                            'debit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
+                            'credit': debit,
+                            'amount_currency':debit,
+                            'currency_id':expense.currency_id.id,
                             'account_id': expense.account_to.id,
                             'partner_id': expense.customer.id,
                         }), (0, 0, {
                             'name': expense.description,
-                            'credit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
+                            'debit': credit,
+                            'amount_currency': -credit,
+                            'currency_id':expense.currency_id.id,
                             'account_id': expense.account_from.id,
 
                         })]
