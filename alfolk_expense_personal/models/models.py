@@ -267,12 +267,16 @@ class alfolk_expense_personal(models.Model):
                         'ref': expense.note,
                         'line_ids': [(0, 0, {
                             'name': expense.description,
-                            'credit': debit,'amount_currency':debit,'currency_id':expense.currency_id.id,
+                            'credit': credit,
+                            'amount_currency':credit,
+                            'currency_id':expense.currency_id.id,
                             'account_id': expense.account_to.id,
                             'partner_id': expense.customer.id,
                         }), (0, 0, {
                             'name': expense.description,
-                            'debit': credit, 'amount_currency': -credit,'currency_id':expense.currency_id.id,
+                            'debit': debit,
+                            'amount_currency': -debit,
+                            'currency_id':expense.currency_id.id,
                             'account_id': expense.account_from.id,
 
                         })]
@@ -379,15 +383,15 @@ class alfolk_expense_personal(models.Model):
                         'ref': expense.note,
                         'line_ids': [(0, 0, {
                             'name': expense.description,
-                            'credit': debit,
-                            'amount_currency':debit,
+                            'credit': credit,
+                            'amount_currency':credit,
                             'currency_id':expense.currency_id.id,
                             'account_id': expense.account_to.id,
                             'partner_id': expense.customer.id,
                         }), (0, 0, {
                             'name': expense.description,
-                            'debit': credit,
-                            'amount_currency': -credit,
+                            'debit': debit,
+                            'amount_currency': -debit,
                             'currency_id':expense.currency_id.id,
                             'account_id': expense.account_from.id,
 
