@@ -1144,7 +1144,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:form_design.selection__form_design__assign_type__worker
 #: model_terms:ir.ui.view,arch_db:form_design.view_partner_form
 msgid "Worker"
-msgstr "نظافة"
+msgstr "العامل"
 
 #. module: form_design
 #: model_terms:ir.ui.view,arch_db:form_design.form_design_tree_view
